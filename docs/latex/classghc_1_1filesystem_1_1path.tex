@@ -1,0 +1,335 @@
+\doxysection{ghc\+::filesystem\+::path Class Reference}
+\hypertarget{classghc_1_1filesystem_1_1path}{}\label{classghc_1_1filesystem_1_1path}\index{ghc::filesystem::path@{ghc::filesystem::path}}
+Inheritance diagram for ghc\+::filesystem\+::path\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classghc_1_1filesystem_1_1path}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structghc_1_1filesystem_1_1path_1_1__is__basic__string}{\+\_\+is\+\_\+basic\+\_\+string}}
+\item 
+struct \mbox{\hyperlink{structghc_1_1filesystem_1_1path_1_1__is__basic__string_3_01std_1_1basic__string_3_01_char_t_00_0454d093cd8125c5149a1fe74ea56d39e}{\+\_\+is\+\_\+basic\+\_\+string$<$ std\+::basic\+\_\+string$<$ Char\+T, std\+::char\+\_\+traits$<$ Char\+T $>$, std\+::allocator$<$ Char\+T $>$ $>$ $>$}}
+\item 
+struct \mbox{\hyperlink{structghc_1_1filesystem_1_1path_1_1__is__basic__string_3_01std_1_1basic__string_3_01_char_t_00_01_traits_00_01_alloc_01_4_01_4}{\+\_\+is\+\_\+basic\+\_\+string$<$ std\+::basic\+\_\+string$<$ Char\+T, Traits, Alloc $>$ $>$}}
+\item 
+class \mbox{\hyperlink{classghc_1_1filesystem_1_1path_1_1iterator}{iterator}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{classghc_1_1filesystem_1_1path_a653db4113e2ef7e029ff07d8ef93beb8}{format}} \{ \mbox{\hyperlink{classghc_1_1filesystem_1_1path_a653db4113e2ef7e029ff07d8ef93beb8ae0cd6ab50119a6418438aa1f1374dec1}{generic\+\_\+format}}
+, \mbox{\hyperlink{classghc_1_1filesystem_1_1path_a653db4113e2ef7e029ff07d8ef93beb8a6ca91f13f0cae3e7e1b309ff8277c950}{native\+\_\+format}}
+, \mbox{\hyperlink{classghc_1_1filesystem_1_1path_a653db4113e2ef7e029ff07d8ef93beb8ab446768c630eb5d87b3ac72c01ba3bd0}{auto\+\_\+format}}
+ \}
+\begin{DoxyCompactList}\small\item\em The path format in which the constructor argument is given. \end{DoxyCompactList}\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_a15015baa2004f5b59682de64d429ac25}\label{classghc_1_1filesystem_1_1path_a15015baa2004f5b59682de64d429ac25} 
+using {\bfseries string\+\_\+type} = std\+::basic\+\_\+string$<$value\+\_\+type$>$
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_a33db06cf149fba396334e4ef65348b91}\label{classghc_1_1filesystem_1_1path_a33db06cf149fba396334e4ef65348b91} 
+{\footnotesize template$<$typename T1, typename T2 = void$>$ }\\using {\bfseries path\+\_\+type} = typename std\+::enable\+\_\+if$<$!std\+::is\+\_\+same$<$\mbox{\hyperlink{classghc_1_1filesystem_1_1path}{path}}, T1$>$\+::value, \mbox{\hyperlink{classghc_1_1filesystem_1_1path}{path}}$>$\+::type
+\item 
+{\footnotesize template$<$typename T$>$ }\\using \mbox{\hyperlink{classghc_1_1filesystem_1_1path_a825643d136aac040f88f3fa2dfe315a5}{path\+\_\+from\+\_\+string}}
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_ad5a27aa95d6f0882aaad69719b4fe94b}\label{classghc_1_1filesystem_1_1path_ad5a27aa95d6f0882aaad69719b4fe94b} 
+{\footnotesize template$<$typename T$>$ }\\using {\bfseries path\+\_\+type\+\_\+\+EcharT} = typename std\+::enable\+\_\+if$<$std\+::is\+\_\+same$<$T, char$>$\+::value \texorpdfstring{$\vert$}{|}\texorpdfstring{$\vert$}{|} std\+::is\+\_\+same$<$T, char16\+\_\+t$>$\+::value \texorpdfstring{$\vert$}{|}\texorpdfstring{$\vert$}{|} std\+::is\+\_\+same$<$T, char32\+\_\+t$>$\+::value \texorpdfstring{$\vert$}{|}\texorpdfstring{$\vert$}{|} std\+::is\+\_\+same$<$T, wchar\+\_\+t$>$\+::value, \mbox{\hyperlink{classghc_1_1filesystem_1_1path}{path}}$>$\+::type
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_a0df93e701f2ae194c1927feff4167ca8}\label{classghc_1_1filesystem_1_1path_a0df93e701f2ae194c1927feff4167ca8} 
+using {\bfseries const\+\_\+iterator} = \mbox{\hyperlink{classghc_1_1filesystem_1_1path_1_1iterator}{iterator}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_aec862e43ea564f7c231b6c0f5ebdd09f}\label{classghc_1_1filesystem_1_1path_aec862e43ea564f7c231b6c0f5ebdd09f} 
+{\bfseries path} (const \mbox{\hyperlink{classghc_1_1filesystem_1_1path}{path}} \&p)
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_a860de493176a4330fdf71bafbeb814f6}\label{classghc_1_1filesystem_1_1path_a860de493176a4330fdf71bafbeb814f6} 
+{\bfseries path} (\mbox{\hyperlink{classghc_1_1filesystem_1_1path}{path}} \&\&p) noexcept
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_aaf7c9def75058582d0ef9af82a7d1bb7}\label{classghc_1_1filesystem_1_1path_aaf7c9def75058582d0ef9af82a7d1bb7} 
+{\bfseries path} (string\+\_\+type \&\&source, \mbox{\hyperlink{classghc_1_1filesystem_1_1path_a653db4113e2ef7e029ff07d8ef93beb8}{format}} fmt=\mbox{\hyperlink{classghc_1_1filesystem_1_1path_a653db4113e2ef7e029ff07d8ef93beb8ab446768c630eb5d87b3ac72c01ba3bd0}{auto\+\_\+format}})
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_a7f71e851ab8d954c3b052e6371efcdf4}\label{classghc_1_1filesystem_1_1path_a7f71e851ab8d954c3b052e6371efcdf4} 
+{\footnotesize template$<$class Source, typename = path\+\_\+from\+\_\+string$<$\+Source$>$$>$ }\\{\bfseries path} (const Source \&source, \mbox{\hyperlink{classghc_1_1filesystem_1_1path_a653db4113e2ef7e029ff07d8ef93beb8}{format}} fmt=\mbox{\hyperlink{classghc_1_1filesystem_1_1path_a653db4113e2ef7e029ff07d8ef93beb8ab446768c630eb5d87b3ac72c01ba3bd0}{auto\+\_\+format}})
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_ac18d761588b94cb0771aa7c653b4181c}\label{classghc_1_1filesystem_1_1path_ac18d761588b94cb0771aa7c653b4181c} 
+{\footnotesize template$<$class Input\+Iterator$>$ }\\{\bfseries path} (Input\+Iterator first, Input\+Iterator last, \mbox{\hyperlink{classghc_1_1filesystem_1_1path_a653db4113e2ef7e029ff07d8ef93beb8}{format}} fmt=\mbox{\hyperlink{classghc_1_1filesystem_1_1path_a653db4113e2ef7e029ff07d8ef93beb8ab446768c630eb5d87b3ac72c01ba3bd0}{auto\+\_\+format}})
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_ac9aa13f923dfc30084d02cfa7b6fb020}\label{classghc_1_1filesystem_1_1path_ac9aa13f923dfc30084d02cfa7b6fb020} 
+\mbox{\hyperlink{classghc_1_1filesystem_1_1path}{path}} \& {\bfseries operator=} (const \mbox{\hyperlink{classghc_1_1filesystem_1_1path}{path}} \&p)
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_a1e3123c263ee8e2a53bf3d83bdaa31bb}\label{classghc_1_1filesystem_1_1path_a1e3123c263ee8e2a53bf3d83bdaa31bb} 
+\mbox{\hyperlink{classghc_1_1filesystem_1_1path}{path}} \& {\bfseries operator=} (\mbox{\hyperlink{classghc_1_1filesystem_1_1path}{path}} \&\&p) noexcept
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_a3ed3266d87917a316b9a3d86951cc322}\label{classghc_1_1filesystem_1_1path_a3ed3266d87917a316b9a3d86951cc322} 
+\mbox{\hyperlink{classghc_1_1filesystem_1_1path}{path}} \& {\bfseries operator=} (string\+\_\+type \&\&source)
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_acca2e4f0a4593dc4ab2f9cf611fe31cb}\label{classghc_1_1filesystem_1_1path_acca2e4f0a4593dc4ab2f9cf611fe31cb} 
+\mbox{\hyperlink{classghc_1_1filesystem_1_1path}{path}} \& {\bfseries assign} (string\+\_\+type \&\&source)
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_aabd879d886cd2abdc062770cb17589cf}\label{classghc_1_1filesystem_1_1path_aabd879d886cd2abdc062770cb17589cf} 
+{\footnotesize template$<$class Source$>$ }\\\mbox{\hyperlink{classghc_1_1filesystem_1_1path}{path}} \& {\bfseries operator=} (const Source \&source)
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_a90b93c2b41b42cf7b3916a49bef9b1c5}\label{classghc_1_1filesystem_1_1path_a90b93c2b41b42cf7b3916a49bef9b1c5} 
+{\footnotesize template$<$class Source$>$ }\\\mbox{\hyperlink{classghc_1_1filesystem_1_1path}{path}} \& {\bfseries assign} (const Source \&source)
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_af7b4cd931465562f4925b6a732083f91}\label{classghc_1_1filesystem_1_1path_af7b4cd931465562f4925b6a732083f91} 
+{\footnotesize template$<$class Input\+Iterator$>$ }\\\mbox{\hyperlink{classghc_1_1filesystem_1_1path}{path}} \& {\bfseries assign} (Input\+Iterator first, Input\+Iterator last)
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_ad7e59423d3cec25ed08e126462e54003}\label{classghc_1_1filesystem_1_1path_ad7e59423d3cec25ed08e126462e54003} 
+\mbox{\hyperlink{classghc_1_1filesystem_1_1path}{path}} \& {\bfseries operator/=} (const \mbox{\hyperlink{classghc_1_1filesystem_1_1path}{path}} \&p)
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_a17f5318b66b012b6029be904ab31dbb6}\label{classghc_1_1filesystem_1_1path_a17f5318b66b012b6029be904ab31dbb6} 
+{\footnotesize template$<$class Source$>$ }\\\mbox{\hyperlink{classghc_1_1filesystem_1_1path}{path}} \& {\bfseries operator/=} (const Source \&source)
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_a5971ef1172e3d0788f005e76277ea1ab}\label{classghc_1_1filesystem_1_1path_a5971ef1172e3d0788f005e76277ea1ab} 
+{\footnotesize template$<$class Source$>$ }\\\mbox{\hyperlink{classghc_1_1filesystem_1_1path}{path}} \& {\bfseries append} (const Source \&source)
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_ac18cfd247ec398479e00ca2f391b96c9}\label{classghc_1_1filesystem_1_1path_ac18cfd247ec398479e00ca2f391b96c9} 
+{\footnotesize template$<$class Input\+Iterator$>$ }\\\mbox{\hyperlink{classghc_1_1filesystem_1_1path}{path}} \& {\bfseries append} (Input\+Iterator first, Input\+Iterator last)
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_ae9a63c370c1aa30705321cd9d87d55d7}\label{classghc_1_1filesystem_1_1path_ae9a63c370c1aa30705321cd9d87d55d7} 
+\mbox{\hyperlink{classghc_1_1filesystem_1_1path}{path}} \& {\bfseries operator+=} (const \mbox{\hyperlink{classghc_1_1filesystem_1_1path}{path}} \&x)
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_a26d417e1a6e58137aa1b12fb4cc17c1e}\label{classghc_1_1filesystem_1_1path_a26d417e1a6e58137aa1b12fb4cc17c1e} 
+\mbox{\hyperlink{classghc_1_1filesystem_1_1path}{path}} \& {\bfseries operator+=} (const string\+\_\+type \&x)
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_a2f5f96347827ecbdef2b72f8b0971829}\label{classghc_1_1filesystem_1_1path_a2f5f96347827ecbdef2b72f8b0971829} 
+\mbox{\hyperlink{classghc_1_1filesystem_1_1path}{path}} \& {\bfseries operator+=} (const value\+\_\+type \texorpdfstring{$\ast$}{*}x)
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_a821b06e7c2785d17c6ba8364c93b2bb1}\label{classghc_1_1filesystem_1_1path_a821b06e7c2785d17c6ba8364c93b2bb1} 
+\mbox{\hyperlink{classghc_1_1filesystem_1_1path}{path}} \& {\bfseries operator+=} (value\+\_\+type x)
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_af3d89b4086c72fce2262a2601f46d77c}\label{classghc_1_1filesystem_1_1path_af3d89b4086c72fce2262a2601f46d77c} 
+{\footnotesize template$<$class Source$>$ }\\path\+\_\+from\+\_\+string$<$ Source $>$ \& {\bfseries operator+=} (const Source \&x)
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_a17a99515819aaa395474a351b7ebfaa9}\label{classghc_1_1filesystem_1_1path_a17a99515819aaa395474a351b7ebfaa9} 
+{\footnotesize template$<$class EcharT$>$ }\\path\+\_\+type\+\_\+\+EcharT$<$ EcharT $>$ \& {\bfseries operator+=} (EcharT x)
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_a8fe322fd7fca1918ad27d2c5e5fcd230}\label{classghc_1_1filesystem_1_1path_a8fe322fd7fca1918ad27d2c5e5fcd230} 
+{\footnotesize template$<$class Source$>$ }\\\mbox{\hyperlink{classghc_1_1filesystem_1_1path}{path}} \& {\bfseries concat} (const Source \&x)
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_a0dad3f0befa1198de267cd80dc8cfb4d}\label{classghc_1_1filesystem_1_1path_a0dad3f0befa1198de267cd80dc8cfb4d} 
+{\footnotesize template$<$class Input\+Iterator$>$ }\\\mbox{\hyperlink{classghc_1_1filesystem_1_1path}{path}} \& {\bfseries concat} (Input\+Iterator first, Input\+Iterator last)
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_a181496e2a3cf050dcf627ed1be32dedb}\label{classghc_1_1filesystem_1_1path_a181496e2a3cf050dcf627ed1be32dedb} 
+void {\bfseries clear} () noexcept
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_a283643dff8d347a394ea3a813ca41d32}\label{classghc_1_1filesystem_1_1path_a283643dff8d347a394ea3a813ca41d32} 
+\mbox{\hyperlink{classghc_1_1filesystem_1_1path}{path}} \& {\bfseries make\+\_\+preferred} ()
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_a2483435c65cd1c89cef2b92d502f0efc}\label{classghc_1_1filesystem_1_1path_a2483435c65cd1c89cef2b92d502f0efc} 
+\mbox{\hyperlink{classghc_1_1filesystem_1_1path}{path}} \& {\bfseries remove\+\_\+filename} ()
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_a01bc7a271a1f832d490b31033e08de60}\label{classghc_1_1filesystem_1_1path_a01bc7a271a1f832d490b31033e08de60} 
+\mbox{\hyperlink{classghc_1_1filesystem_1_1path}{path}} \& {\bfseries replace\+\_\+filename} (const \mbox{\hyperlink{classghc_1_1filesystem_1_1path}{path}} \&replacement)
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_aa8de63a96e654437964aab89e50a0554}\label{classghc_1_1filesystem_1_1path_aa8de63a96e654437964aab89e50a0554} 
+\mbox{\hyperlink{classghc_1_1filesystem_1_1path}{path}} \& {\bfseries replace\+\_\+extension} (const \mbox{\hyperlink{classghc_1_1filesystem_1_1path}{path}} \&replacement=\mbox{\hyperlink{classghc_1_1filesystem_1_1path}{path}}())
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_ab4900fa72b562cd48fe5f57df369b023}\label{classghc_1_1filesystem_1_1path_ab4900fa72b562cd48fe5f57df369b023} 
+void {\bfseries swap} (\mbox{\hyperlink{classghc_1_1filesystem_1_1path}{path}} \&rhs) noexcept
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_aebfc23d62e57ac6d4d5fe0dd14ddaace}\label{classghc_1_1filesystem_1_1path_aebfc23d62e57ac6d4d5fe0dd14ddaace} 
+const string\+\_\+type \& {\bfseries native} () const noexcept
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_af21728e8dc22be41184893b18d477d17}\label{classghc_1_1filesystem_1_1path_af21728e8dc22be41184893b18d477d17} 
+const value\+\_\+type \texorpdfstring{$\ast$}{*} {\bfseries c\+\_\+str} () const noexcept
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_a42ccc34aac6ae04da7a88c52ea26269f}\label{classghc_1_1filesystem_1_1path_a42ccc34aac6ae04da7a88c52ea26269f} 
+{\bfseries operator string\+\_\+type} () const
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_ad12852454dfea7faec6753a0b8d73576}\label{classghc_1_1filesystem_1_1path_ad12852454dfea7faec6753a0b8d73576} 
+{\footnotesize template$<$class EcharT, class traits = std\+::char\+\_\+traits$<$\+Echar\+T$>$, class Allocator = std\+::allocator$<$\+Echar\+T$>$$>$ }\\std\+::basic\+\_\+string$<$ EcharT, traits, Allocator $>$ {\bfseries string} (const Allocator \&a=Allocator()) const
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_a9e163ba1c3e494dc94789d8a91d05e8e}\label{classghc_1_1filesystem_1_1path_a9e163ba1c3e494dc94789d8a91d05e8e} 
+std\+::string {\bfseries string} () const
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_a8e54e678a025f5395f8ed13ba7802630}\label{classghc_1_1filesystem_1_1path_a8e54e678a025f5395f8ed13ba7802630} 
+std\+::wstring {\bfseries wstring} () const
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_a042e5aeacd0b363a97f19f52f73f4960}\label{classghc_1_1filesystem_1_1path_a042e5aeacd0b363a97f19f52f73f4960} 
+std\+::string {\bfseries u8string} () const
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_adcb0c3182733f09d4145d52ac4be1fcd}\label{classghc_1_1filesystem_1_1path_adcb0c3182733f09d4145d52ac4be1fcd} 
+std\+::u16string {\bfseries u16string} () const
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_a26cdf2ef9775408a5e6a0a1740b4c0fb}\label{classghc_1_1filesystem_1_1path_a26cdf2ef9775408a5e6a0a1740b4c0fb} 
+std\+::u32string {\bfseries u32string} () const
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_acd8a4f10ce98d6c1f52a09059fa6295c}\label{classghc_1_1filesystem_1_1path_acd8a4f10ce98d6c1f52a09059fa6295c} 
+{\footnotesize template$<$class EcharT, class traits = std\+::char\+\_\+traits$<$\+Echar\+T$>$, class Allocator = std\+::allocator$<$\+Echar\+T$>$$>$ }\\std\+::basic\+\_\+string$<$ EcharT, traits, Allocator $>$ {\bfseries generic\+\_\+string} (const Allocator \&a=Allocator()) const
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_a442cc7d626a06ca2d38e104409771fe8}\label{classghc_1_1filesystem_1_1path_a442cc7d626a06ca2d38e104409771fe8} 
+std\+::string {\bfseries generic\+\_\+string} () const
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_adcd82c134d821312f82497aaad9807df}\label{classghc_1_1filesystem_1_1path_adcd82c134d821312f82497aaad9807df} 
+std\+::wstring {\bfseries generic\+\_\+wstring} () const
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_a75e78bc83456fb10fa6357438adc3acf}\label{classghc_1_1filesystem_1_1path_a75e78bc83456fb10fa6357438adc3acf} 
+std\+::string {\bfseries generic\+\_\+u8string} () const
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_a6886c6f6e2d1059666545990c6612043}\label{classghc_1_1filesystem_1_1path_a6886c6f6e2d1059666545990c6612043} 
+std\+::u16string {\bfseries generic\+\_\+u16string} () const
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_ac17f119a4055dfe4bb7efdda3cb0b3fa}\label{classghc_1_1filesystem_1_1path_ac17f119a4055dfe4bb7efdda3cb0b3fa} 
+std\+::u32string {\bfseries generic\+\_\+u32string} () const
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_a2ffea4e2aa594f89618499f7e3ca7e5a}\label{classghc_1_1filesystem_1_1path_a2ffea4e2aa594f89618499f7e3ca7e5a} 
+int {\bfseries compare} (const \mbox{\hyperlink{classghc_1_1filesystem_1_1path}{path}} \&p) const noexcept
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_acb4790cfd719ce8e1e973f808a83fdfb}\label{classghc_1_1filesystem_1_1path_acb4790cfd719ce8e1e973f808a83fdfb} 
+int {\bfseries compare} (const string\+\_\+type \&s) const
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_a84da91a3be8a34259607f0c6253c3951}\label{classghc_1_1filesystem_1_1path_a84da91a3be8a34259607f0c6253c3951} 
+int {\bfseries compare} (const value\+\_\+type \texorpdfstring{$\ast$}{*}s) const
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_a38e18a392e0effa9e726ce84811a2606}\label{classghc_1_1filesystem_1_1path_a38e18a392e0effa9e726ce84811a2606} 
+\mbox{\hyperlink{classghc_1_1filesystem_1_1path}{path}} {\bfseries root\+\_\+name} () const
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_ac51f3d91a9d6de43149a45106f15631a}\label{classghc_1_1filesystem_1_1path_ac51f3d91a9d6de43149a45106f15631a} 
+\mbox{\hyperlink{classghc_1_1filesystem_1_1path}{path}} {\bfseries root\+\_\+directory} () const
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_ac7cdf06857a41c420fba25fc2ea8c465}\label{classghc_1_1filesystem_1_1path_ac7cdf06857a41c420fba25fc2ea8c465} 
+\mbox{\hyperlink{classghc_1_1filesystem_1_1path}{path}} {\bfseries root\+\_\+path} () const
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_a942b4e296fbe2909f85333cc95c3fa67}\label{classghc_1_1filesystem_1_1path_a942b4e296fbe2909f85333cc95c3fa67} 
+\mbox{\hyperlink{classghc_1_1filesystem_1_1path}{path}} {\bfseries relative\+\_\+path} () const
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_a9fcecc7a0cac53f36e6b0001fe21c1f5}\label{classghc_1_1filesystem_1_1path_a9fcecc7a0cac53f36e6b0001fe21c1f5} 
+\mbox{\hyperlink{classghc_1_1filesystem_1_1path}{path}} {\bfseries parent\+\_\+path} () const
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_a3433af1ae98ce7a83ed24bfae41b857f}\label{classghc_1_1filesystem_1_1path_a3433af1ae98ce7a83ed24bfae41b857f} 
+\mbox{\hyperlink{classghc_1_1filesystem_1_1path}{path}} {\bfseries filename} () const
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_a199672ba3df2a0ccc7f3cfdbf730863e}\label{classghc_1_1filesystem_1_1path_a199672ba3df2a0ccc7f3cfdbf730863e} 
+\mbox{\hyperlink{classghc_1_1filesystem_1_1path}{path}} {\bfseries stem} () const
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_a69f434c444945bbc77ba47af23c107d8}\label{classghc_1_1filesystem_1_1path_a69f434c444945bbc77ba47af23c107d8} 
+\mbox{\hyperlink{classghc_1_1filesystem_1_1path}{path}} {\bfseries extension} () const
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_af54007dc8c7882729fbc129aa41473c0}\label{classghc_1_1filesystem_1_1path_af54007dc8c7882729fbc129aa41473c0} 
+bool {\bfseries empty} () const noexcept
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_a81d9d6db80251ea042bf103519cce1df}\label{classghc_1_1filesystem_1_1path_a81d9d6db80251ea042bf103519cce1df} 
+bool {\bfseries has\+\_\+root\+\_\+name} () const
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_a0b2f8b2f43372c034e003f77df06d8ac}\label{classghc_1_1filesystem_1_1path_a0b2f8b2f43372c034e003f77df06d8ac} 
+bool {\bfseries has\+\_\+root\+\_\+directory} () const
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_af48a7d4bd9c57ffdaabe85f3df95983f}\label{classghc_1_1filesystem_1_1path_af48a7d4bd9c57ffdaabe85f3df95983f} 
+bool {\bfseries has\+\_\+root\+\_\+path} () const
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_af4b9c10cd3e7241198c6862b00f86c0d}\label{classghc_1_1filesystem_1_1path_af4b9c10cd3e7241198c6862b00f86c0d} 
+bool {\bfseries has\+\_\+relative\+\_\+path} () const
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_abf017cd773e299e2e2cd3110624bf8c8}\label{classghc_1_1filesystem_1_1path_abf017cd773e299e2e2cd3110624bf8c8} 
+bool {\bfseries has\+\_\+parent\+\_\+path} () const
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_a855c94232dd926b102e6803e4130ca8a}\label{classghc_1_1filesystem_1_1path_a855c94232dd926b102e6803e4130ca8a} 
+bool {\bfseries has\+\_\+filename} () const
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_a733d54497077dd26152d5cd5cbc051ab}\label{classghc_1_1filesystem_1_1path_a733d54497077dd26152d5cd5cbc051ab} 
+bool {\bfseries has\+\_\+stem} () const
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_a717183b36e3dcf05d04198dee3f683f2}\label{classghc_1_1filesystem_1_1path_a717183b36e3dcf05d04198dee3f683f2} 
+bool {\bfseries has\+\_\+extension} () const
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_aa39ce907ff1d53038d6626915e8ea756}\label{classghc_1_1filesystem_1_1path_aa39ce907ff1d53038d6626915e8ea756} 
+bool {\bfseries is\+\_\+absolute} () const
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_a3969dab286f7b20890ec107534aff36b}\label{classghc_1_1filesystem_1_1path_a3969dab286f7b20890ec107534aff36b} 
+bool {\bfseries is\+\_\+relative} () const
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_a9ed24b7e54bbc33b69ac09891a478621}\label{classghc_1_1filesystem_1_1path_a9ed24b7e54bbc33b69ac09891a478621} 
+\mbox{\hyperlink{classghc_1_1filesystem_1_1path}{path}} {\bfseries lexically\+\_\+normal} () const
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_ae7bc9b31f2e9de2dde743e0682ca2276}\label{classghc_1_1filesystem_1_1path_ae7bc9b31f2e9de2dde743e0682ca2276} 
+\mbox{\hyperlink{classghc_1_1filesystem_1_1path}{path}} {\bfseries lexically\+\_\+relative} (const \mbox{\hyperlink{classghc_1_1filesystem_1_1path}{path}} \&base) const
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_a742cf92aac7dfcc4c2bd5057d7f86b22}\label{classghc_1_1filesystem_1_1path_a742cf92aac7dfcc4c2bd5057d7f86b22} 
+\mbox{\hyperlink{classghc_1_1filesystem_1_1path}{path}} {\bfseries lexically\+\_\+proximate} (const \mbox{\hyperlink{classghc_1_1filesystem_1_1path}{path}} \&base) const
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_a97ac356fa70dea31d8ab24d2111e5c6b}\label{classghc_1_1filesystem_1_1path_a97ac356fa70dea31d8ab24d2111e5c6b} 
+\mbox{\hyperlink{classghc_1_1filesystem_1_1path_1_1iterator}{iterator}} {\bfseries begin} () const
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_a496f4e5d5fb6549ee4a26bd88c168307}\label{classghc_1_1filesystem_1_1path_a496f4e5d5fb6549ee4a26bd88c168307} 
+\mbox{\hyperlink{classghc_1_1filesystem_1_1path_1_1iterator}{iterator}} {\bfseries end} () const
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_a5572fde6f0743a41aab75c135650e06b}\label{classghc_1_1filesystem_1_1path_a5572fde6f0743a41aab75c135650e06b} 
+template$<$$>$ \mbox{\hyperlink{classghc_1_1filesystem_1_1path}{path}} \& {\bfseries assign} (const \mbox{\hyperlink{classghc_1_1filesystem_1_1path}{path}} \&source)
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_a3254005a2445165b80da6baeb30b003b}\label{classghc_1_1filesystem_1_1path_a3254005a2445165b80da6baeb30b003b} 
+template$<$$>$ \mbox{\hyperlink{classghc_1_1filesystem_1_1path}{path}} \& {\bfseries append} (const \mbox{\hyperlink{classghc_1_1filesystem_1_1path}{path}} \&p)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_a5be6256bef252bb8713f9b7c81d2fa6c}\label{classghc_1_1filesystem_1_1path_a5be6256bef252bb8713f9b7c81d2fa6c} 
+class {\bfseries directory\+\_\+iterator}
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_a94992fb3515ff2a6c301c4af74524c49}\label{classghc_1_1filesystem_1_1path_a94992fb3515ff2a6c301c4af74524c49} 
+void {\bfseries swap} (\mbox{\hyperlink{classghc_1_1filesystem_1_1path}{path}} \&lhs, \mbox{\hyperlink{classghc_1_1filesystem_1_1path}{path}} \&rhs)
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_afc2d0751db5b9cd1448966bb185ee154}\label{classghc_1_1filesystem_1_1path_afc2d0751db5b9cd1448966bb185ee154} 
+size\+\_\+t {\bfseries hash\+\_\+value} (const \mbox{\hyperlink{classghc_1_1filesystem_1_1path}{path}} \&p)
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_a1519cd0bc1e4e0ea9901faab4cc5e098}\label{classghc_1_1filesystem_1_1path_a1519cd0bc1e4e0ea9901faab4cc5e098} 
+\mbox{\hyperlink{classghc_1_1filesystem_1_1path}{path}} {\bfseries canonical} (const \mbox{\hyperlink{classghc_1_1filesystem_1_1path}{path}} \&p, std\+::error\+\_\+code \&ec)
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1path_a532dbdf6335f2021a813bfdd7340f11c}\label{classghc_1_1filesystem_1_1path_a532dbdf6335f2021a813bfdd7340f11c} 
+bool {\bfseries create\+\_\+directories} (const \mbox{\hyperlink{classghc_1_1filesystem_1_1path}{path}} \&p, std\+::error\+\_\+code \&ec)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Typedef Documentation}
+\Hypertarget{classghc_1_1filesystem_1_1path_a825643d136aac040f88f3fa2dfe315a5}\index{ghc::filesystem::path@{ghc::filesystem::path}!path\_from\_string@{path\_from\_string}}
+\index{path\_from\_string@{path\_from\_string}!ghc::filesystem::path@{ghc::filesystem::path}}
+\doxysubsubsection{\texorpdfstring{path\_from\_string}{path\_from\_string}}
+{\footnotesize\ttfamily \label{classghc_1_1filesystem_1_1path_a825643d136aac040f88f3fa2dfe315a5} 
+template$<$typename T$>$ \\
+using ghc\+::filesystem\+::path\+::path\+\_\+from\+\_\+string}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ std::enable\_if<\_is\_basic\_string<T>::value\ ||\ std::is\_same<char\ const*,\ typename\ std::decay<T>::type>::value\ ||\ std::is\_same<char*,\ typename\ std::decay<T>::type>::value\ ||}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::is\_same<char16\_t\ const*,\ typename\ std::decay<T>::type>::value\ ||\ std::is\_same<char16\_t*,\ typename\ std::decay<T>::type>::value\ ||\ std::is\_same<char32\_t\ const*,\ typename\ std::decay<T>::type>::value\ ||}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::is\_same<char32\_t*,\ typename\ std::decay<T>::type>::value\ ||\ std::is\_same<wchar\_t\ const*,\ typename\ std::decay<T>::type>::value\ ||\ std::is\_same<wchar\_t*,\ typename\ std::decay<T>::type>::value,}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ path>::type}
+
+\end{DoxyCode}
+
+
+\doxysubsection{Member Enumeration Documentation}
+\Hypertarget{classghc_1_1filesystem_1_1path_a653db4113e2ef7e029ff07d8ef93beb8}\index{ghc::filesystem::path@{ghc::filesystem::path}!format@{format}}
+\index{format@{format}!ghc::filesystem::path@{ghc::filesystem::path}}
+\doxysubsubsection{\texorpdfstring{format}{format}}
+{\footnotesize\ttfamily \label{classghc_1_1filesystem_1_1path_a653db4113e2ef7e029ff07d8ef93beb8} 
+enum ghc\+::filesystem\+::path\+::format}
+
+
+
+The path format in which the constructor argument is given. 
+
+\begin{DoxyEnumFields}[2]{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{generic\_format@{generic\_format}!ghc::filesystem::path@{ghc::filesystem::path}}\index{ghc::filesystem::path@{ghc::filesystem::path}!generic\_format@{generic\_format}}}\Hypertarget{classghc_1_1filesystem_1_1path_a653db4113e2ef7e029ff07d8ef93beb8ae0cd6ab50119a6418438aa1f1374dec1}\label{classghc_1_1filesystem_1_1path_a653db4113e2ef7e029ff07d8ef93beb8ae0cd6ab50119a6418438aa1f1374dec1} 
+generic\+\_\+format&The generic format, internally used by \doxylink{classghc_1_1filesystem_1_1path}{ghc\+::filesystem\+::path} with slashes \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{native\_format@{native\_format}!ghc::filesystem::path@{ghc::filesystem::path}}\index{ghc::filesystem::path@{ghc::filesystem::path}!native\_format@{native\_format}}}\Hypertarget{classghc_1_1filesystem_1_1path_a653db4113e2ef7e029ff07d8ef93beb8a6ca91f13f0cae3e7e1b309ff8277c950}\label{classghc_1_1filesystem_1_1path_a653db4113e2ef7e029ff07d8ef93beb8a6ca91f13f0cae3e7e1b309ff8277c950} 
+native\+\_\+format&The format native to the current platform this code is build for \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{auto\_format@{auto\_format}!ghc::filesystem::path@{ghc::filesystem::path}}\index{ghc::filesystem::path@{ghc::filesystem::path}!auto\_format@{auto\_format}}}\Hypertarget{classghc_1_1filesystem_1_1path_a653db4113e2ef7e029ff07d8ef93beb8ab446768c630eb5d87b3ac72c01ba3bd0}\label{classghc_1_1filesystem_1_1path_a653db4113e2ef7e029ff07d8ef93beb8ab446768c630eb5d87b3ac72c01ba3bd0} 
+auto\+\_\+format&Try to auto-\/detect the format, fallback to native. \\
+\hline
+
+\end{DoxyEnumFields}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/xroja/\+Desktop/\+JPO projekt/\+Projekt\+Jezyki\+Programowania\+Obiektowego/build/vcpkg\+\_\+installed/x64-\/windows/include/ghc/filesystem.\+hpp\end{DoxyCompactItemize}

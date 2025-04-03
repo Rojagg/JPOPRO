@@ -1,0 +1,67 @@
+\doxysection{detail\+::printf\+\_\+arg\+\_\+formatter\texorpdfstring{$<$}{<} Char \texorpdfstring{$>$}{>} Class Template Reference}
+\hypertarget{classdetail_1_1printf__arg__formatter}{}\label{classdetail_1_1printf__arg__formatter}\index{detail::printf\_arg\_formatter$<$ Char $>$@{detail::printf\_arg\_formatter$<$ Char $>$}}
+Inheritance diagram for detail\+::printf\+\_\+arg\+\_\+formatter\texorpdfstring{$<$}{<} Char \texorpdfstring{$>$}{>}\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classdetail_1_1printf__arg__formatter}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classdetail_1_1printf__arg__formatter_ac85d7fbba5eb24156a24e43bfd49b1f3}\label{classdetail_1_1printf__arg__formatter_ac85d7fbba5eb24156a24e43bfd49b1f3} 
+{\bfseries printf\+\_\+arg\+\_\+formatter} (\mbox{\hyperlink{classbasic__appender}{basic\+\_\+appender}}$<$ Char $>$ iter, \mbox{\hyperlink{structformat__specs}{format\+\_\+specs}} \&s, \mbox{\hyperlink{classbasic__printf__context}{context\+\_\+type}} \&ctx)
+\item 
+\Hypertarget{classdetail_1_1printf__arg__formatter_a8d7ea1d6157e7b75eaa169e982133fbd}\label{classdetail_1_1printf__arg__formatter_a8d7ea1d6157e7b75eaa169e982133fbd} 
+void {\bfseries operator()} (\mbox{\hyperlink{structmonostate}{monostate}} \mbox{\hyperlink{classdetail_1_1value}{value}})
+\item 
+\Hypertarget{classdetail_1_1printf__arg__formatter_a82813713e45cd2a260d77658511c55c1}\label{classdetail_1_1printf__arg__formatter_a82813713e45cd2a260d77658511c55c1} 
+{\footnotesize template$<$typename T, FMT\+\_\+\+ENABLE\+\_\+\+IF(\mbox{\hyperlink{structdetail_1_1is__integral}{detail\+::is\+\_\+integral}}$<$ T $>$\+::value)$>$ }\\void {\bfseries operator()} (T \mbox{\hyperlink{classdetail_1_1value}{value}})
+\item 
+\Hypertarget{classdetail_1_1printf__arg__formatter_a82813713e45cd2a260d77658511c55c1}\label{classdetail_1_1printf__arg__formatter_a82813713e45cd2a260d77658511c55c1} 
+{\footnotesize template$<$typename T, FMT\+\_\+\+ENABLE\+\_\+\+IF(std\+::is\+\_\+floating\+\_\+point$<$ T $>$\+::value)$>$ }\\void {\bfseries operator()} (T \mbox{\hyperlink{classdetail_1_1value}{value}})
+\item 
+\Hypertarget{classdetail_1_1printf__arg__formatter_a5d1229aead6a2fc8edf1c792a4468218}\label{classdetail_1_1printf__arg__formatter_a5d1229aead6a2fc8edf1c792a4468218} 
+void {\bfseries operator()} (const char \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{classdetail_1_1value}{value}})
+\item 
+\Hypertarget{classdetail_1_1printf__arg__formatter_a81fda0a2e963da291724292045b8e368}\label{classdetail_1_1printf__arg__formatter_a81fda0a2e963da291724292045b8e368} 
+void {\bfseries operator()} (const wchar\+\_\+t \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{classdetail_1_1value}{value}})
+\item 
+\Hypertarget{classdetail_1_1printf__arg__formatter_a6e5101600f645733b7e08359212060fd}\label{classdetail_1_1printf__arg__formatter_a6e5101600f645733b7e08359212060fd} 
+void {\bfseries operator()} (\mbox{\hyperlink{classbasic__string__view}{basic\+\_\+string\+\_\+view}}$<$ Char $>$ \mbox{\hyperlink{classdetail_1_1value}{value}})
+\item 
+\Hypertarget{classdetail_1_1printf__arg__formatter_a4fc8a51e83d2383cc41cffe2e5c85e96}\label{classdetail_1_1printf__arg__formatter_a4fc8a51e83d2383cc41cffe2e5c85e96} 
+void {\bfseries operator()} (const void \texorpdfstring{$\ast$}{*}\mbox{\hyperlink{classdetail_1_1value}{value}})
+\item 
+\Hypertarget{classdetail_1_1printf__arg__formatter_a0311b7f027276f64c39264582024ebb1}\label{classdetail_1_1printf__arg__formatter_a0311b7f027276f64c39264582024ebb1} 
+void {\bfseries operator()} (typename \mbox{\hyperlink{classbasic__format__arg}{basic\+\_\+format\+\_\+arg}}$<$ \mbox{\hyperlink{classbasic__printf__context}{context\+\_\+type}} $>$\+::handle handle)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{structdetail_1_1arg__formatter}{detail\+::arg\+\_\+formatter$<$ Char $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename T$>$ }\\FMT\+\_\+\+CONSTEXPR FMT\+\_\+\+INLINE auto {\bfseries operator()} (T \mbox{\hyperlink{classdetail_1_1value}{value}}) -\/$>$ \mbox{\hyperlink{classbasic__appender}{iterator}}
+\item 
+auto {\bfseries operator()} (typename \mbox{\hyperlink{classbasic__format__arg}{basic\+\_\+format\+\_\+arg}}$<$ \mbox{\hyperlink{classcontext}{context}} $>$\+::handle) -\/$>$ \mbox{\hyperlink{classbasic__appender}{iterator}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Additional Inherited Members}
+\doxysubsection*{Public Types inherited from \mbox{\hyperlink{structdetail_1_1arg__formatter}{detail\+::arg\+\_\+formatter$<$ Char $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+using {\bfseries iterator} = \mbox{\hyperlink{classbasic__appender}{basic\+\_\+appender}}$<$Char$>$
+\item 
+using {\bfseries context} = buffered\+\_\+context$<$Char$>$
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes inherited from \mbox{\hyperlink{structdetail_1_1arg__formatter}{detail\+::arg\+\_\+formatter$<$ Char $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classbasic__appender}{iterator}} {\bfseries out}
+\item 
+const \mbox{\hyperlink{structformat__specs}{format\+\_\+specs}} \& {\bfseries specs}
+\item 
+\mbox{\hyperlink{classdetail_1_1locale__ref}{locale\+\_\+ref}} {\bfseries locale}
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/xroja/\+Desktop/\+JPO projekt/\+Projekt\+Jezyki\+Programowania\+Obiektowego/build/vcpkg\+\_\+installed/x64-\/windows/include/fmt/printf.\+h\end{DoxyCompactItemize}

@@ -1,0 +1,19 @@
+{
+  "dependencies": [
+    "curl",
+    "fmt",
+    "ghc-filesystem",
+    "glad",
+    "glfw3",
+    {
+      "name": "imgui",
+      "features": [
+        "glfw-binding",
+        "opengl3-binding"
+      ]
+    },
+    "implot",
+    "nlohmann-json",
+    "gtest"
+  ]
+}

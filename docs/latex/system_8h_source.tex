@@ -1,0 +1,446 @@
+\doxysection{system.\+h}
+\hypertarget{system_8h_source}{}\label{system_8h_source}\index{C:/Users/xroja/Desktop/JPO projekt/ProjektJezykiProgramowaniaObiektowego/build/vcpkg\_installed/x64-\/windows/include/curl/system.h@{C:/Users/xroja/Desktop/JPO projekt/ProjektJezykiProgramowaniaObiektowego/build/vcpkg\_installed/x64-\/windows/include/curl/system.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ CURLINC\_SYSTEM\_H}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ CURLINC\_SYSTEM\_H}}
+\DoxyCodeLine{00003\ \textcolor{comment}{/***************************************************************************}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \_\ \ \ \_\ \_\_\_\_\ \ \_}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ *\ \ Project\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \_\_\_|\ |\ |\ |\ \ \_\ \(\backslash\)|\ |}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ /\ \_\_|\ |\ |\ |\ |\_)\ |\ |}}
+\DoxyCodeLine{00007\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ |\ (\_\_|\ |\_|\ |\ \ \_\ <|\ |\_\_\_}}
+\DoxyCodeLine{00008\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)\_\_\_|\(\backslash\)\_\_\_/|\_|\ \(\backslash\)\_\(\backslash\)\_\_\_\_\_|}}
+\DoxyCodeLine{00009\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00010\ \textcolor{comment}{\ *\ Copyright\ (C)\ Daniel\ Stenberg,\ <daniel@haxx.se>,\ et\ al.}}
+\DoxyCodeLine{00011\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00012\ \textcolor{comment}{\ *\ This\ software\ is\ licensed\ as\ described\ in\ the\ file\ COPYING,\ which}}
+\DoxyCodeLine{00013\ \textcolor{comment}{\ *\ you\ should\ have\ received\ as\ part\ of\ this\ distribution.\ The\ terms}}
+\DoxyCodeLine{00014\ \textcolor{comment}{\ *\ are\ also\ available\ at\ https://curl.se/docs/copyright.html.}}
+\DoxyCodeLine{00015\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00016\ \textcolor{comment}{\ *\ You\ may\ opt\ to\ use,\ copy,\ modify,\ merge,\ publish,\ distribute\ and/or\ sell}}
+\DoxyCodeLine{00017\ \textcolor{comment}{\ *\ copies\ of\ the\ Software,\ and\ permit\ persons\ to\ whom\ the\ Software\ is}}
+\DoxyCodeLine{00018\ \textcolor{comment}{\ *\ furnished\ to\ do\ so,\ under\ the\ terms\ of\ the\ COPYING\ file.}}
+\DoxyCodeLine{00019\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00020\ \textcolor{comment}{\ *\ This\ software\ is\ distributed\ on\ an\ "{}AS\ IS"{}\ basis,\ WITHOUT\ WARRANTY\ OF\ ANY}}
+\DoxyCodeLine{00021\ \textcolor{comment}{\ *\ KIND,\ either\ express\ or\ implied.}}
+\DoxyCodeLine{00022\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00023\ \textcolor{comment}{\ *\ SPDX-\/License-\/Identifier:\ curl}}
+\DoxyCodeLine{00024\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00025\ \textcolor{comment}{\ ***************************************************************************/}}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00028\ \textcolor{comment}{\ *\ Try\ to\ keep\ one\ section\ per\ platform,\ compiler\ and\ architecture,\ otherwise,}}
+\DoxyCodeLine{00029\ \textcolor{comment}{\ *\ if\ an\ existing\ section\ is\ reused\ for\ a\ different\ one\ and\ later\ on\ the}}
+\DoxyCodeLine{00030\ \textcolor{comment}{\ *\ original\ is\ adjusted,\ probably\ the\ piggybacking\ one\ can\ be\ adversely}}
+\DoxyCodeLine{00031\ \textcolor{comment}{\ *\ changed.}}
+\DoxyCodeLine{00032\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00033\ \textcolor{comment}{\ *\ In\ order\ to\ differentiate\ between\ platforms/compilers/architectures\ use}}
+\DoxyCodeLine{00034\ \textcolor{comment}{\ *\ only\ compiler\ built-\/in\ predefined\ preprocessor\ symbols.}}
+\DoxyCodeLine{00035\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00036\ \textcolor{comment}{\ *\ curl\_off\_t}}
+\DoxyCodeLine{00037\ \textcolor{comment}{\ *\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00038\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00039\ \textcolor{comment}{\ *\ For\ any\ given\ platform/compiler\ curl\_off\_t\ must\ be\ typedef'ed\ to\ a\ 64-\/bit}}
+\DoxyCodeLine{00040\ \textcolor{comment}{\ *\ wide\ signed\ integral\ data\ type.\ The\ width\ of\ this\ data\ type\ must\ remain}}
+\DoxyCodeLine{00041\ \textcolor{comment}{\ *\ constant\ and\ independent\ of\ any\ possible\ large\ file\ support\ settings.}}
+\DoxyCodeLine{00042\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00043\ \textcolor{comment}{\ *\ As\ an\ exception\ to\ the\ above,\ curl\_off\_t\ shall\ be\ typedef'ed\ to\ a\ 32-\/bit}}
+\DoxyCodeLine{00044\ \textcolor{comment}{\ *\ wide\ signed\ integral\ data\ type\ if\ there\ is\ no\ 64-\/bit\ type.}}
+\DoxyCodeLine{00045\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00046\ \textcolor{comment}{\ *\ As\ a\ general\ rule,\ curl\_off\_t\ shall\ not\ be\ mapped\ to\ off\_t.\ This\ rule\ shall}}
+\DoxyCodeLine{00047\ \textcolor{comment}{\ *\ only\ be\ violated\ if\ off\_t\ is\ the\ only\ 64-\/bit\ data\ type\ available\ and\ the}}
+\DoxyCodeLine{00048\ \textcolor{comment}{\ *\ size\ of\ off\_t\ is\ independent\ of\ large\ file\ support\ settings.\ Keep\ your}}
+\DoxyCodeLine{00049\ \textcolor{comment}{\ *\ build\ on\ the\ safe\ side\ avoiding\ an\ off\_t\ gating.\ If\ you\ have\ a\ 64-\/bit}}
+\DoxyCodeLine{00050\ \textcolor{comment}{\ *\ off\_t\ then\ take\ for\ sure\ that\ another\ 64-\/bit\ data\ type\ exists,\ dig\ deeper}}
+\DoxyCodeLine{00051\ \textcolor{comment}{\ *\ and\ you\ will\ find\ it.}}
+\DoxyCodeLine{00052\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00053\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00054\ }
+\DoxyCodeLine{00055\ \textcolor{preprocessor}{\#if\ defined(\_\_DJGPP\_\_)}}
+\DoxyCodeLine{00056\ \textcolor{preprocessor}{\#\ \ define\ CURL\_TYPEOF\_CURL\_OFF\_T\ \ \ \ \ long\ long}}
+\DoxyCodeLine{00057\ \textcolor{preprocessor}{\#\ \ define\ CURL\_FORMAT\_CURL\_OFF\_T\ \ \ \ \ "{}lld"{}}}
+\DoxyCodeLine{00058\ \textcolor{preprocessor}{\#\ \ define\ CURL\_FORMAT\_CURL\_OFF\_TU\ \ \ \ "{}llu"{}}}
+\DoxyCodeLine{00059\ \textcolor{preprocessor}{\#\ \ define\ CURL\_SUFFIX\_CURL\_OFF\_T\ \ \ \ \ LL}}
+\DoxyCodeLine{00060\ \textcolor{preprocessor}{\#\ \ define\ CURL\_SUFFIX\_CURL\_OFF\_TU\ \ \ \ ULL}}
+\DoxyCodeLine{00061\ \textcolor{preprocessor}{\#\ \ define\ CURL\_TYPEOF\_CURL\_SOCKLEN\_T\ int}}
+\DoxyCodeLine{00062\ }
+\DoxyCodeLine{00063\ \textcolor{preprocessor}{\#elif\ defined(\_\_BORLANDC\_\_)}}
+\DoxyCodeLine{00064\ \textcolor{preprocessor}{\#\ \ define\ CURL\_TYPEOF\_CURL\_OFF\_T\ \ \ \ \ \_\_int64}}
+\DoxyCodeLine{00065\ \textcolor{preprocessor}{\#\ \ define\ CURL\_FORMAT\_CURL\_OFF\_T\ \ \ \ \ "{}I64d"{}}}
+\DoxyCodeLine{00066\ \textcolor{preprocessor}{\#\ \ define\ CURL\_FORMAT\_CURL\_OFF\_TU\ \ \ \ "{}I64u"{}}}
+\DoxyCodeLine{00067\ \textcolor{preprocessor}{\#\ \ define\ CURL\_SUFFIX\_CURL\_OFF\_T\ \ \ \ \ i64}}
+\DoxyCodeLine{00068\ \textcolor{preprocessor}{\#\ \ define\ CURL\_SUFFIX\_CURL\_OFF\_TU\ \ \ \ ui64}}
+\DoxyCodeLine{00069\ \textcolor{preprocessor}{\#\ \ define\ CURL\_TYPEOF\_CURL\_SOCKLEN\_T\ int}}
+\DoxyCodeLine{00070\ }
+\DoxyCodeLine{00071\ \textcolor{preprocessor}{\#elif\ defined(\_\_POCC\_\_)}}
+\DoxyCodeLine{00072\ \textcolor{preprocessor}{\#\ \ if\ defined(\_MSC\_VER)}}
+\DoxyCodeLine{00073\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_TYPEOF\_CURL\_OFF\_T\ \ \ \ \ \_\_int64}}
+\DoxyCodeLine{00074\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_FORMAT\_CURL\_OFF\_T\ \ \ \ \ "{}I64d"{}}}
+\DoxyCodeLine{00075\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_FORMAT\_CURL\_OFF\_TU\ \ \ \ "{}I64u"{}}}
+\DoxyCodeLine{00076\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_SUFFIX\_CURL\_OFF\_T\ \ \ \ \ i64}}
+\DoxyCodeLine{00077\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_SUFFIX\_CURL\_OFF\_TU\ \ \ \ ui64}}
+\DoxyCodeLine{00078\ \textcolor{preprocessor}{\#\ \ else}}
+\DoxyCodeLine{00079\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_TYPEOF\_CURL\_OFF\_T\ \ \ \ \ long\ long}}
+\DoxyCodeLine{00080\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_FORMAT\_CURL\_OFF\_T\ \ \ \ \ "{}lld"{}}}
+\DoxyCodeLine{00081\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_FORMAT\_CURL\_OFF\_TU\ \ \ \ "{}llu"{}}}
+\DoxyCodeLine{00082\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_SUFFIX\_CURL\_OFF\_T\ \ \ \ \ LL}}
+\DoxyCodeLine{00083\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_SUFFIX\_CURL\_OFF\_TU\ \ \ \ ULL}}
+\DoxyCodeLine{00084\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{00085\ \textcolor{preprocessor}{\#\ \ define\ CURL\_TYPEOF\_CURL\_SOCKLEN\_T\ int}}
+\DoxyCodeLine{00086\ }
+\DoxyCodeLine{00087\ \textcolor{preprocessor}{\#elif\ defined(\_\_LCC\_\_)}}
+\DoxyCodeLine{00088\ \textcolor{preprocessor}{\#\ \ if\ defined(\_\_MCST\_\_)\ }\textcolor{comment}{/*\ MCST\ eLbrus\ Compiler\ Collection\ */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{00089\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_TYPEOF\_CURL\_OFF\_T\ \ \ \ \ long}}
+\DoxyCodeLine{00090\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_FORMAT\_CURL\_OFF\_T\ \ \ \ \ "{}ld"{}}}
+\DoxyCodeLine{00091\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_FORMAT\_CURL\_OFF\_TU\ \ \ \ "{}lu"{}}}
+\DoxyCodeLine{00092\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_SUFFIX\_CURL\_OFF\_T\ \ \ \ \ L}}
+\DoxyCodeLine{00093\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_SUFFIX\_CURL\_OFF\_TU\ \ \ \ UL}}
+\DoxyCodeLine{00094\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_TYPEOF\_CURL\_SOCKLEN\_T\ socklen\_t}}
+\DoxyCodeLine{00095\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_PULL\_SYS\_TYPES\_H\ \ \ \ \ \ 1}}
+\DoxyCodeLine{00096\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_PULL\_SYS\_SOCKET\_H\ \ \ \ \ 1}}
+\DoxyCodeLine{00097\ \textcolor{preprocessor}{\#\ \ else\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }\textcolor{comment}{/*\ Local\ (or\ Little)\ C\ Compiler\ */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{00098\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_TYPEOF\_CURL\_OFF\_T\ \ \ \ \ long}}
+\DoxyCodeLine{00099\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_FORMAT\_CURL\_OFF\_T\ \ \ \ \ "{}ld"{}}}
+\DoxyCodeLine{00100\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_FORMAT\_CURL\_OFF\_TU\ \ \ \ "{}lu"{}}}
+\DoxyCodeLine{00101\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_SUFFIX\_CURL\_OFF\_T\ \ \ \ \ L}}
+\DoxyCodeLine{00102\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_SUFFIX\_CURL\_OFF\_TU\ \ \ \ UL}}
+\DoxyCodeLine{00103\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_TYPEOF\_CURL\_SOCKLEN\_T\ int}}
+\DoxyCodeLine{00104\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{00105\ }
+\DoxyCodeLine{00106\ \textcolor{preprocessor}{\#elif\ defined(macintosh)}}
+\DoxyCodeLine{00107\ \textcolor{preprocessor}{\#\ \ include\ <ConditionalMacros.h>}}
+\DoxyCodeLine{00108\ \textcolor{preprocessor}{\#\ \ if\ TYPE\_LONGLONG}}
+\DoxyCodeLine{00109\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_TYPEOF\_CURL\_OFF\_T\ \ \ \ \ long\ long}}
+\DoxyCodeLine{00110\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_FORMAT\_CURL\_OFF\_T\ \ \ \ \ "{}lld"{}}}
+\DoxyCodeLine{00111\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_FORMAT\_CURL\_OFF\_TU\ \ \ \ "{}llu"{}}}
+\DoxyCodeLine{00112\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_SUFFIX\_CURL\_OFF\_T\ \ \ \ \ LL}}
+\DoxyCodeLine{00113\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_SUFFIX\_CURL\_OFF\_TU\ \ \ \ ULL}}
+\DoxyCodeLine{00114\ \textcolor{preprocessor}{\#\ \ else}}
+\DoxyCodeLine{00115\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_TYPEOF\_CURL\_OFF\_T\ \ \ \ \ long}}
+\DoxyCodeLine{00116\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_FORMAT\_CURL\_OFF\_T\ \ \ \ \ "{}ld"{}}}
+\DoxyCodeLine{00117\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_FORMAT\_CURL\_OFF\_TU\ \ \ \ "{}lu"{}}}
+\DoxyCodeLine{00118\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_SUFFIX\_CURL\_OFF\_T\ \ \ \ \ L}}
+\DoxyCodeLine{00119\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_SUFFIX\_CURL\_OFF\_TU\ \ \ \ UL}}
+\DoxyCodeLine{00120\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{00121\ \textcolor{preprocessor}{\#\ \ define\ CURL\_TYPEOF\_CURL\_SOCKLEN\_T\ unsigned\ int}}
+\DoxyCodeLine{00122\ }
+\DoxyCodeLine{00123\ \textcolor{preprocessor}{\#elif\ defined(\_\_TANDEM)}}
+\DoxyCodeLine{00124\ \textcolor{preprocessor}{\#\ \ if\ !defined(\_\_LP64)}}
+\DoxyCodeLine{00125\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_TYPEOF\_CURL\_OFF\_T\ \ \ \ \ long\ long}}
+\DoxyCodeLine{00126\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_FORMAT\_CURL\_OFF\_T\ \ \ \ \ "{}lld"{}}}
+\DoxyCodeLine{00127\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_FORMAT\_CURL\_OFF\_TU\ \ \ \ "{}llu"{}}}
+\DoxyCodeLine{00128\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_SUFFIX\_CURL\_OFF\_T\ \ \ \ \ LL}}
+\DoxyCodeLine{00129\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_SUFFIX\_CURL\_OFF\_TU\ \ \ \ ULL}}
+\DoxyCodeLine{00130\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_TYPEOF\_CURL\_SOCKLEN\_T\ int}}
+\DoxyCodeLine{00131\ \textcolor{preprocessor}{\#\ \ else}}
+\DoxyCodeLine{00132\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_TYPEOF\_CURL\_OFF\_T\ \ \ \ \ long}}
+\DoxyCodeLine{00133\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_FORMAT\_CURL\_OFF\_T\ \ \ \ \ "{}ld"{}}}
+\DoxyCodeLine{00134\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_FORMAT\_CURL\_OFF\_TU\ \ \ \ "{}lu"{}}}
+\DoxyCodeLine{00135\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_SUFFIX\_CURL\_OFF\_T\ \ \ \ \ L}}
+\DoxyCodeLine{00136\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_SUFFIX\_CURL\_OFF\_TU\ \ \ \ UL}}
+\DoxyCodeLine{00137\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_TYPEOF\_CURL\_SOCKLEN\_T\ unsigned\ int}}
+\DoxyCodeLine{00138\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{00139\ }
+\DoxyCodeLine{00140\ \textcolor{preprocessor}{\#elif\ defined(\_WIN32\_WCE)}}
+\DoxyCodeLine{00141\ \textcolor{preprocessor}{\#\ \ define\ CURL\_TYPEOF\_CURL\_OFF\_T\ \ \ \ \ \_\_int64}}
+\DoxyCodeLine{00142\ \textcolor{preprocessor}{\#\ \ define\ CURL\_FORMAT\_CURL\_OFF\_T\ \ \ \ \ "{}I64d"{}}}
+\DoxyCodeLine{00143\ \textcolor{preprocessor}{\#\ \ define\ CURL\_FORMAT\_CURL\_OFF\_TU\ \ \ \ "{}I64u"{}}}
+\DoxyCodeLine{00144\ \textcolor{preprocessor}{\#\ \ define\ CURL\_SUFFIX\_CURL\_OFF\_T\ \ \ \ \ i64}}
+\DoxyCodeLine{00145\ \textcolor{preprocessor}{\#\ \ define\ CURL\_SUFFIX\_CURL\_OFF\_TU\ \ \ \ ui64}}
+\DoxyCodeLine{00146\ \textcolor{preprocessor}{\#\ \ define\ CURL\_TYPEOF\_CURL\_SOCKLEN\_T\ int}}
+\DoxyCodeLine{00147\ }
+\DoxyCodeLine{00148\ \textcolor{preprocessor}{\#elif\ defined(\_\_MINGW32\_\_)}}
+\DoxyCodeLine{00149\ \textcolor{preprocessor}{\#\ \ include\ <inttypes.h>}}
+\DoxyCodeLine{00150\ \textcolor{preprocessor}{\#\ \ define\ CURL\_TYPEOF\_CURL\_OFF\_T\ \ \ \ \ long\ long}}
+\DoxyCodeLine{00151\ \textcolor{preprocessor}{\#\ \ define\ CURL\_FORMAT\_CURL\_OFF\_T\ \ \ \ \ PRId64}}
+\DoxyCodeLine{00152\ \textcolor{preprocessor}{\#\ \ define\ CURL\_FORMAT\_CURL\_OFF\_TU\ \ \ \ PRIu64}}
+\DoxyCodeLine{00153\ \textcolor{preprocessor}{\#\ \ define\ CURL\_SUFFIX\_CURL\_OFF\_T\ \ \ \ \ LL}}
+\DoxyCodeLine{00154\ \textcolor{preprocessor}{\#\ \ define\ CURL\_SUFFIX\_CURL\_OFF\_TU\ \ \ \ ULL}}
+\DoxyCodeLine{00155\ \textcolor{preprocessor}{\#\ \ define\ CURL\_TYPEOF\_CURL\_SOCKLEN\_T\ int}}
+\DoxyCodeLine{00156\ \textcolor{preprocessor}{\#\ \ define\ CURL\_PULL\_SYS\_TYPES\_H\ \ \ \ \ \ 1}}
+\DoxyCodeLine{00157\ }
+\DoxyCodeLine{00158\ \textcolor{preprocessor}{\#elif\ defined(\_\_VMS)}}
+\DoxyCodeLine{00159\ \textcolor{preprocessor}{\#\ \ if\ defined(\_\_VAX)}}
+\DoxyCodeLine{00160\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_TYPEOF\_CURL\_OFF\_T\ \ \ \ \ long}}
+\DoxyCodeLine{00161\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_FORMAT\_CURL\_OFF\_T\ \ \ \ \ "{}ld"{}}}
+\DoxyCodeLine{00162\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_FORMAT\_CURL\_OFF\_TU\ \ \ \ "{}lu"{}}}
+\DoxyCodeLine{00163\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_SUFFIX\_CURL\_OFF\_T\ \ \ \ \ L}}
+\DoxyCodeLine{00164\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_SUFFIX\_CURL\_OFF\_TU\ \ \ \ UL}}
+\DoxyCodeLine{00165\ \textcolor{preprocessor}{\#\ \ else}}
+\DoxyCodeLine{00166\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_TYPEOF\_CURL\_OFF\_T\ \ \ \ \ long\ long}}
+\DoxyCodeLine{00167\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_FORMAT\_CURL\_OFF\_T\ \ \ \ \ "{}lld"{}}}
+\DoxyCodeLine{00168\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_FORMAT\_CURL\_OFF\_TU\ \ \ \ "{}llu"{}}}
+\DoxyCodeLine{00169\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_SUFFIX\_CURL\_OFF\_T\ \ \ \ \ LL}}
+\DoxyCodeLine{00170\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_SUFFIX\_CURL\_OFF\_TU\ \ \ \ ULL}}
+\DoxyCodeLine{00171\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{00172\ \textcolor{preprocessor}{\#\ \ define\ CURL\_TYPEOF\_CURL\_SOCKLEN\_T\ unsigned\ int}}
+\DoxyCodeLine{00173\ }
+\DoxyCodeLine{00174\ \textcolor{preprocessor}{\#elif\ defined(\_\_OS400\_\_)}}
+\DoxyCodeLine{00175\ \textcolor{preprocessor}{\#\ \ define\ CURL\_TYPEOF\_CURL\_OFF\_T\ \ \ \ \ long\ long}}
+\DoxyCodeLine{00176\ \textcolor{preprocessor}{\#\ \ define\ CURL\_FORMAT\_CURL\_OFF\_T\ \ \ \ \ "{}lld"{}}}
+\DoxyCodeLine{00177\ \textcolor{preprocessor}{\#\ \ define\ CURL\_FORMAT\_CURL\_OFF\_TU\ \ \ \ "{}llu"{}}}
+\DoxyCodeLine{00178\ \textcolor{preprocessor}{\#\ \ define\ CURL\_SUFFIX\_CURL\_OFF\_T\ \ \ \ \ LL}}
+\DoxyCodeLine{00179\ \textcolor{preprocessor}{\#\ \ define\ CURL\_SUFFIX\_CURL\_OFF\_TU\ \ \ \ ULL}}
+\DoxyCodeLine{00180\ \textcolor{preprocessor}{\#\ \ define\ CURL\_TYPEOF\_CURL\_SOCKLEN\_T\ socklen\_t}}
+\DoxyCodeLine{00181\ \textcolor{preprocessor}{\#\ \ define\ CURL\_PULL\_SYS\_TYPES\_H\ \ \ \ \ \ 1}}
+\DoxyCodeLine{00182\ \textcolor{preprocessor}{\#\ \ define\ CURL\_PULL\_SYS\_SOCKET\_H\ \ \ \ \ 1}}
+\DoxyCodeLine{00183\ }
+\DoxyCodeLine{00184\ \textcolor{preprocessor}{\#elif\ defined(\_\_MVS\_\_)}}
+\DoxyCodeLine{00185\ \textcolor{preprocessor}{\#\ \ if\ defined(\_LONG\_LONG)}}
+\DoxyCodeLine{00186\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_TYPEOF\_CURL\_OFF\_T\ \ \ \ \ long\ long}}
+\DoxyCodeLine{00187\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_FORMAT\_CURL\_OFF\_T\ \ \ \ \ "{}lld"{}}}
+\DoxyCodeLine{00188\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_FORMAT\_CURL\_OFF\_TU\ \ \ \ "{}llu"{}}}
+\DoxyCodeLine{00189\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_SUFFIX\_CURL\_OFF\_T\ \ \ \ \ LL}}
+\DoxyCodeLine{00190\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_SUFFIX\_CURL\_OFF\_TU\ \ \ \ ULL}}
+\DoxyCodeLine{00191\ \textcolor{preprocessor}{\#\ \ else\ }\textcolor{comment}{/*\ \_LP64\ and\ default\ */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{00192\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_TYPEOF\_CURL\_OFF\_T\ \ \ \ \ long}}
+\DoxyCodeLine{00193\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_FORMAT\_CURL\_OFF\_T\ \ \ \ \ "{}ld"{}}}
+\DoxyCodeLine{00194\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_FORMAT\_CURL\_OFF\_TU\ \ \ \ "{}lu"{}}}
+\DoxyCodeLine{00195\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_SUFFIX\_CURL\_OFF\_T\ \ \ \ \ L}}
+\DoxyCodeLine{00196\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_SUFFIX\_CURL\_OFF\_TU\ \ \ \ UL}}
+\DoxyCodeLine{00197\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{00198\ \textcolor{preprocessor}{\#\ \ define\ CURL\_TYPEOF\_CURL\_SOCKLEN\_T\ socklen\_t}}
+\DoxyCodeLine{00199\ \textcolor{preprocessor}{\#\ \ define\ CURL\_PULL\_SYS\_TYPES\_H\ \ \ \ \ \ 1}}
+\DoxyCodeLine{00200\ \textcolor{preprocessor}{\#\ \ define\ CURL\_PULL\_SYS\_SOCKET\_H\ \ \ \ \ 1}}
+\DoxyCodeLine{00201\ }
+\DoxyCodeLine{00202\ \textcolor{preprocessor}{\#elif\ defined(\_\_370\_\_)}}
+\DoxyCodeLine{00203\ \textcolor{preprocessor}{\#\ \ if\ defined(\_\_IBMC\_\_)\ ||\ defined(\_\_IBMCPP\_\_)}}
+\DoxyCodeLine{00204\ \textcolor{preprocessor}{\#\ \ \ \ if\ defined(\_LONG\_LONG)}}
+\DoxyCodeLine{00205\ \textcolor{preprocessor}{\#\ \ \ \ \ \ define\ CURL\_TYPEOF\_CURL\_OFF\_T\ \ \ \ \ long\ long}}
+\DoxyCodeLine{00206\ \textcolor{preprocessor}{\#\ \ \ \ \ \ define\ CURL\_FORMAT\_CURL\_OFF\_T\ \ \ \ \ "{}lld"{}}}
+\DoxyCodeLine{00207\ \textcolor{preprocessor}{\#\ \ \ \ \ \ define\ CURL\_FORMAT\_CURL\_OFF\_TU\ \ \ \ "{}llu"{}}}
+\DoxyCodeLine{00208\ \textcolor{preprocessor}{\#\ \ \ \ \ \ define\ CURL\_SUFFIX\_CURL\_OFF\_T\ \ \ \ \ LL}}
+\DoxyCodeLine{00209\ \textcolor{preprocessor}{\#\ \ \ \ \ \ define\ CURL\_SUFFIX\_CURL\_OFF\_TU\ \ \ \ ULL}}
+\DoxyCodeLine{00210\ \textcolor{preprocessor}{\#\ \ \ \ else\ }\textcolor{comment}{/*\ \_LP64\ and\ default\ */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{00211\ \textcolor{preprocessor}{\#\ \ \ \ \ \ define\ CURL\_TYPEOF\_CURL\_OFF\_T\ \ \ \ \ long}}
+\DoxyCodeLine{00212\ \textcolor{preprocessor}{\#\ \ \ \ \ \ define\ CURL\_FORMAT\_CURL\_OFF\_T\ \ \ \ \ "{}ld"{}}}
+\DoxyCodeLine{00213\ \textcolor{preprocessor}{\#\ \ \ \ \ \ define\ CURL\_FORMAT\_CURL\_OFF\_TU\ \ \ \ "{}lu"{}}}
+\DoxyCodeLine{00214\ \textcolor{preprocessor}{\#\ \ \ \ \ \ define\ CURL\_SUFFIX\_CURL\_OFF\_T\ \ \ \ \ L}}
+\DoxyCodeLine{00215\ \textcolor{preprocessor}{\#\ \ \ \ \ \ define\ CURL\_SUFFIX\_CURL\_OFF\_TU\ \ \ \ UL}}
+\DoxyCodeLine{00216\ \textcolor{preprocessor}{\#\ \ \ \ endif}}
+\DoxyCodeLine{00217\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_TYPEOF\_CURL\_SOCKLEN\_T\ socklen\_t}}
+\DoxyCodeLine{00218\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_PULL\_SYS\_TYPES\_H\ \ \ \ \ \ 1}}
+\DoxyCodeLine{00219\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_PULL\_SYS\_SOCKET\_H\ \ \ \ \ 1}}
+\DoxyCodeLine{00220\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{00221\ }
+\DoxyCodeLine{00222\ \textcolor{preprocessor}{\#elif\ defined(TPF)}}
+\DoxyCodeLine{00223\ \textcolor{preprocessor}{\#\ \ define\ CURL\_TYPEOF\_CURL\_OFF\_T\ \ \ \ \ long}}
+\DoxyCodeLine{00224\ \textcolor{preprocessor}{\#\ \ define\ CURL\_FORMAT\_CURL\_OFF\_T\ \ \ \ \ "{}ld"{}}}
+\DoxyCodeLine{00225\ \textcolor{preprocessor}{\#\ \ define\ CURL\_FORMAT\_CURL\_OFF\_TU\ \ \ \ "{}lu"{}}}
+\DoxyCodeLine{00226\ \textcolor{preprocessor}{\#\ \ define\ CURL\_SUFFIX\_CURL\_OFF\_T\ \ \ \ \ L}}
+\DoxyCodeLine{00227\ \textcolor{preprocessor}{\#\ \ define\ CURL\_SUFFIX\_CURL\_OFF\_TU\ \ \ \ UL}}
+\DoxyCodeLine{00228\ \textcolor{preprocessor}{\#\ \ define\ CURL\_TYPEOF\_CURL\_SOCKLEN\_T\ int}}
+\DoxyCodeLine{00229\ }
+\DoxyCodeLine{00230\ \textcolor{preprocessor}{\#elif\ defined(\_\_TINYC\_\_)\ }\textcolor{comment}{/*\ also\ known\ as\ tcc\ */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{00231\ \textcolor{preprocessor}{\#\ \ define\ CURL\_TYPEOF\_CURL\_OFF\_T\ \ \ \ \ long\ long}}
+\DoxyCodeLine{00232\ \textcolor{preprocessor}{\#\ \ define\ CURL\_FORMAT\_CURL\_OFF\_T\ \ \ \ \ "{}lld"{}}}
+\DoxyCodeLine{00233\ \textcolor{preprocessor}{\#\ \ define\ CURL\_FORMAT\_CURL\_OFF\_TU\ \ \ \ "{}llu"{}}}
+\DoxyCodeLine{00234\ \textcolor{preprocessor}{\#\ \ define\ CURL\_SUFFIX\_CURL\_OFF\_T\ \ \ \ \ LL}}
+\DoxyCodeLine{00235\ \textcolor{preprocessor}{\#\ \ define\ CURL\_SUFFIX\_CURL\_OFF\_TU\ \ \ \ ULL}}
+\DoxyCodeLine{00236\ \textcolor{preprocessor}{\#\ \ define\ CURL\_TYPEOF\_CURL\_SOCKLEN\_T\ socklen\_t}}
+\DoxyCodeLine{00237\ \textcolor{preprocessor}{\#\ \ define\ CURL\_PULL\_SYS\_TYPES\_H\ \ \ \ \ \ 1}}
+\DoxyCodeLine{00238\ \textcolor{preprocessor}{\#\ \ define\ CURL\_PULL\_SYS\_SOCKET\_H\ \ \ \ \ 1}}
+\DoxyCodeLine{00239\ }
+\DoxyCodeLine{00240\ \textcolor{preprocessor}{\#elif\ defined(\_\_SUNPRO\_C)\ ||\ defined(\_\_SUNPRO\_CC)\ }\textcolor{comment}{/*\ Oracle\ Solaris\ Studio\ */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{00241\ \textcolor{preprocessor}{\#\ \ if\ !defined(\_\_LP64)\ \&\&\ (defined(\_\_ILP32)\ ||\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00242\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ defined(\_\_i386)\ ||\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00243\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ defined(\_\_sparcv8)\ ||\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00244\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ defined(\_\_sparcv8plus))}}
+\DoxyCodeLine{00245\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_TYPEOF\_CURL\_OFF\_T\ \ \ \ \ long\ long}}
+\DoxyCodeLine{00246\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_FORMAT\_CURL\_OFF\_T\ \ \ \ \ "{}lld"{}}}
+\DoxyCodeLine{00247\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_FORMAT\_CURL\_OFF\_TU\ \ \ \ "{}llu"{}}}
+\DoxyCodeLine{00248\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_SUFFIX\_CURL\_OFF\_T\ \ \ \ \ LL}}
+\DoxyCodeLine{00249\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_SUFFIX\_CURL\_OFF\_TU\ \ \ \ ULL}}
+\DoxyCodeLine{00250\ \textcolor{preprocessor}{\#\ \ elif\ defined(\_\_LP64)\ ||\ \(\backslash\)}}
+\DoxyCodeLine{00251\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ defined(\_\_amd64)\ ||\ defined(\_\_sparcv9)}}
+\DoxyCodeLine{00252\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_TYPEOF\_CURL\_OFF\_T\ \ \ \ \ long}}
+\DoxyCodeLine{00253\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_FORMAT\_CURL\_OFF\_T\ \ \ \ \ "{}ld"{}}}
+\DoxyCodeLine{00254\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_FORMAT\_CURL\_OFF\_TU\ \ \ \ "{}lu"{}}}
+\DoxyCodeLine{00255\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_SUFFIX\_CURL\_OFF\_T\ \ \ \ \ L}}
+\DoxyCodeLine{00256\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_SUFFIX\_CURL\_OFF\_TU\ \ \ \ UL}}
+\DoxyCodeLine{00257\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{00258\ \textcolor{preprocessor}{\#\ \ define\ CURL\_TYPEOF\_CURL\_SOCKLEN\_T\ socklen\_t}}
+\DoxyCodeLine{00259\ \textcolor{preprocessor}{\#\ \ define\ CURL\_PULL\_SYS\_TYPES\_H\ \ \ \ \ \ 1}}
+\DoxyCodeLine{00260\ \textcolor{preprocessor}{\#\ \ define\ CURL\_PULL\_SYS\_SOCKET\_H\ \ \ \ \ 1}}
+\DoxyCodeLine{00261\ }
+\DoxyCodeLine{00262\ \textcolor{preprocessor}{\#elif\ defined(\_\_xlc\_\_)\ }\textcolor{comment}{/*\ IBM\ xlc\ compiler\ */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{00263\ \textcolor{preprocessor}{\#\ \ if\ !defined(\_LP64)}}
+\DoxyCodeLine{00264\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_TYPEOF\_CURL\_OFF\_T\ \ \ \ \ long\ long}}
+\DoxyCodeLine{00265\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_FORMAT\_CURL\_OFF\_T\ \ \ \ \ "{}lld"{}}}
+\DoxyCodeLine{00266\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_FORMAT\_CURL\_OFF\_TU\ \ \ \ "{}llu"{}}}
+\DoxyCodeLine{00267\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_SUFFIX\_CURL\_OFF\_T\ \ \ \ \ LL}}
+\DoxyCodeLine{00268\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_SUFFIX\_CURL\_OFF\_TU\ \ \ \ ULL}}
+\DoxyCodeLine{00269\ \textcolor{preprocessor}{\#\ \ else}}
+\DoxyCodeLine{00270\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_TYPEOF\_CURL\_OFF\_T\ \ \ \ \ long}}
+\DoxyCodeLine{00271\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_FORMAT\_CURL\_OFF\_T\ \ \ \ \ "{}ld"{}}}
+\DoxyCodeLine{00272\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_FORMAT\_CURL\_OFF\_TU\ \ \ \ "{}lu"{}}}
+\DoxyCodeLine{00273\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_SUFFIX\_CURL\_OFF\_T\ \ \ \ \ L}}
+\DoxyCodeLine{00274\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_SUFFIX\_CURL\_OFF\_TU\ \ \ \ UL}}
+\DoxyCodeLine{00275\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{00276\ \textcolor{preprocessor}{\#\ \ define\ CURL\_TYPEOF\_CURL\_SOCKLEN\_T\ socklen\_t}}
+\DoxyCodeLine{00277\ \textcolor{preprocessor}{\#\ \ define\ CURL\_PULL\_SYS\_TYPES\_H\ \ \ \ \ \ 1}}
+\DoxyCodeLine{00278\ \textcolor{preprocessor}{\#\ \ define\ CURL\_PULL\_SYS\_SOCKET\_H\ \ \ \ \ 1}}
+\DoxyCodeLine{00279\ }
+\DoxyCodeLine{00280\ \textcolor{preprocessor}{\#elif\ defined(\_\_hpux)\ }\textcolor{comment}{/*\ HP\ aCC\ compiler\ */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{00281\ \textcolor{preprocessor}{\#\ \ if\ !defined(\_LP64)}}
+\DoxyCodeLine{00282\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_TYPEOF\_CURL\_OFF\_T\ \ \ \ \ long\ long}}
+\DoxyCodeLine{00283\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_FORMAT\_CURL\_OFF\_T\ \ \ \ \ "{}lld"{}}}
+\DoxyCodeLine{00284\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_FORMAT\_CURL\_OFF\_TU\ \ \ \ "{}llu"{}}}
+\DoxyCodeLine{00285\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_SUFFIX\_CURL\_OFF\_T\ \ \ \ \ LL}}
+\DoxyCodeLine{00286\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_SUFFIX\_CURL\_OFF\_TU\ \ \ \ ULL}}
+\DoxyCodeLine{00287\ \textcolor{preprocessor}{\#\ \ else}}
+\DoxyCodeLine{00288\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_TYPEOF\_CURL\_OFF\_T\ \ \ \ \ long}}
+\DoxyCodeLine{00289\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_FORMAT\_CURL\_OFF\_T\ \ \ \ \ "{}ld"{}}}
+\DoxyCodeLine{00290\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_FORMAT\_CURL\_OFF\_TU\ \ \ \ "{}lu"{}}}
+\DoxyCodeLine{00291\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_SUFFIX\_CURL\_OFF\_T\ \ \ \ \ L}}
+\DoxyCodeLine{00292\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_SUFFIX\_CURL\_OFF\_TU\ \ \ \ UL}}
+\DoxyCodeLine{00293\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{00294\ \textcolor{preprocessor}{\#\ \ define\ CURL\_TYPEOF\_CURL\_SOCKLEN\_T\ socklen\_t}}
+\DoxyCodeLine{00295\ \textcolor{preprocessor}{\#\ \ define\ CURL\_PULL\_SYS\_TYPES\_H\ \ \ \ \ \ 1}}
+\DoxyCodeLine{00296\ \textcolor{preprocessor}{\#\ \ define\ CURL\_PULL\_SYS\_SOCKET\_H\ \ \ \ \ 1}}
+\DoxyCodeLine{00297\ }
+\DoxyCodeLine{00298\ \textcolor{comment}{/*\ =====================================\ */}}
+\DoxyCodeLine{00299\ \textcolor{comment}{/*\ \ \ \ KEEP\ MSVC\ THE\ PENULTIMATE\ ENTRY\ \ \ \ */}}
+\DoxyCodeLine{00300\ \textcolor{comment}{/*\ =====================================\ */}}
+\DoxyCodeLine{00301\ }
+\DoxyCodeLine{00302\ \textcolor{preprocessor}{\#elif\ defined(\_MSC\_VER)}}
+\DoxyCodeLine{00303\ \textcolor{preprocessor}{\#\ \ if\ (\_MSC\_VER\ >=\ 1800)}}
+\DoxyCodeLine{00304\ \textcolor{preprocessor}{\#\ \ \ \ include\ <inttypes.h>}}
+\DoxyCodeLine{00305\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_FORMAT\_CURL\_OFF\_T\ \ \ \ \ PRId64}}
+\DoxyCodeLine{00306\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_FORMAT\_CURL\_OFF\_TU\ \ \ \ PRIu64}}
+\DoxyCodeLine{00307\ \textcolor{preprocessor}{\#\ \ else}}
+\DoxyCodeLine{00308\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_FORMAT\_CURL\_OFF\_T\ \ \ \ \ "{}I64d"{}}}
+\DoxyCodeLine{00309\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_FORMAT\_CURL\_OFF\_TU\ \ \ \ "{}I64u"{}}}
+\DoxyCodeLine{00310\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{00311\ \textcolor{preprocessor}{\#\ \ define\ CURL\_TYPEOF\_CURL\_OFF\_T\ \ \ \ \ \_\_int64}}
+\DoxyCodeLine{00312\ \textcolor{preprocessor}{\#\ \ define\ CURL\_SUFFIX\_CURL\_OFF\_T\ \ \ \ \ i64}}
+\DoxyCodeLine{00313\ \textcolor{preprocessor}{\#\ \ define\ CURL\_SUFFIX\_CURL\_OFF\_TU\ \ \ \ ui64}}
+\DoxyCodeLine{00314\ \textcolor{preprocessor}{\#\ \ define\ CURL\_TYPEOF\_CURL\_SOCKLEN\_T\ int}}
+\DoxyCodeLine{00315\ }
+\DoxyCodeLine{00316\ \textcolor{comment}{/*\ =====================================\ */}}
+\DoxyCodeLine{00317\ \textcolor{comment}{/*\ \ \ \ KEEP\ GENERIC\ GCC\ THE\ LAST\ ENTRY\ \ \ \ */}}
+\DoxyCodeLine{00318\ \textcolor{comment}{/*\ =====================================\ */}}
+\DoxyCodeLine{00319\ }
+\DoxyCodeLine{00320\ \textcolor{preprocessor}{\#elif\ defined(\_\_GNUC\_\_)\ \&\&\ !defined(\_SCO\_DS)}}
+\DoxyCodeLine{00321\ \textcolor{preprocessor}{\#\ \ if\ !defined(\_\_LP64\_\_)\ \&\&\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00322\ \textcolor{preprocessor}{\ \ (defined(\_\_ILP32\_\_)\ ||\ defined(\_\_i386\_\_)\ ||\ defined(\_\_hppa\_\_)\ ||\ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00323\ \textcolor{preprocessor}{\ \ \ defined(\_\_ppc\_\_)\ ||\ defined(\_\_powerpc\_\_)\ ||\ defined(\_\_arm\_\_)\ ||\ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00324\ \textcolor{preprocessor}{\ \ \ defined(\_\_sparc\_\_)\ ||\ defined(\_\_mips\_\_)\ ||\ defined(\_\_sh\_\_)\ ||\ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00325\ \textcolor{preprocessor}{\ \ \ defined(\_\_XTENSA\_\_)\ ||\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00326\ \textcolor{preprocessor}{\ \ \ (defined(\_\_SIZEOF\_LONG\_\_)\ \&\&\ \_\_SIZEOF\_LONG\_\_\ ==\ 4)\ \ ||\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00327\ \textcolor{preprocessor}{\ \ \ (defined(\_\_LONG\_MAX\_\_)\ \&\&\ \_\_LONG\_MAX\_\_\ ==\ 2147483647L))}}
+\DoxyCodeLine{00328\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_TYPEOF\_CURL\_OFF\_T\ \ \ \ \ long\ long}}
+\DoxyCodeLine{00329\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_FORMAT\_CURL\_OFF\_T\ \ \ \ \ "{}lld"{}}}
+\DoxyCodeLine{00330\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_FORMAT\_CURL\_OFF\_TU\ \ \ \ "{}llu"{}}}
+\DoxyCodeLine{00331\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_SUFFIX\_CURL\_OFF\_T\ \ \ \ \ LL}}
+\DoxyCodeLine{00332\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_SUFFIX\_CURL\_OFF\_TU\ \ \ \ ULL}}
+\DoxyCodeLine{00333\ \textcolor{preprocessor}{\#\ \ elif\ defined(\_\_LP64\_\_)\ ||\ \(\backslash\)}}
+\DoxyCodeLine{00334\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ defined(\_\_x86\_64\_\_)\ ||\ defined(\_\_ppc64\_\_)\ ||\ defined(\_\_sparc64\_\_)\ ||\ \(\backslash\)}}
+\DoxyCodeLine{00335\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ defined(\_\_e2k\_\_)\ ||\ \(\backslash\)}}
+\DoxyCodeLine{00336\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ (defined(\_\_SIZEOF\_LONG\_\_)\ \&\&\ \_\_SIZEOF\_LONG\_\_\ ==\ 8)\ ||\ \(\backslash\)}}
+\DoxyCodeLine{00337\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ (defined(\_\_LONG\_MAX\_\_)\ \&\&\ \_\_LONG\_MAX\_\_\ ==\ 9223372036854775807L)}}
+\DoxyCodeLine{00338\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_TYPEOF\_CURL\_OFF\_T\ \ \ \ \ long}}
+\DoxyCodeLine{00339\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_FORMAT\_CURL\_OFF\_T\ \ \ \ \ "{}ld"{}}}
+\DoxyCodeLine{00340\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_FORMAT\_CURL\_OFF\_TU\ \ \ \ "{}lu"{}}}
+\DoxyCodeLine{00341\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_SUFFIX\_CURL\_OFF\_T\ \ \ \ \ L}}
+\DoxyCodeLine{00342\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURL\_SUFFIX\_CURL\_OFF\_TU\ \ \ \ UL}}
+\DoxyCodeLine{00343\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{00344\ \textcolor{preprocessor}{\#\ \ define\ CURL\_TYPEOF\_CURL\_SOCKLEN\_T\ socklen\_t}}
+\DoxyCodeLine{00345\ \textcolor{preprocessor}{\#\ \ define\ CURL\_PULL\_SYS\_TYPES\_H\ \ \ \ \ \ 1}}
+\DoxyCodeLine{00346\ \textcolor{preprocessor}{\#\ \ define\ CURL\_PULL\_SYS\_SOCKET\_H\ \ \ \ \ 1}}
+\DoxyCodeLine{00347\ }
+\DoxyCodeLine{00348\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00349\ \textcolor{comment}{/*\ generic\ "{}safe\ guess"{}\ on\ old\ 32-\/bit\ style\ */}}
+\DoxyCodeLine{00350\ \textcolor{preprocessor}{\#\ \ define\ CURL\_TYPEOF\_CURL\_OFF\_T\ \ \ \ \ long}}
+\DoxyCodeLine{00351\ \textcolor{preprocessor}{\#\ \ define\ CURL\_FORMAT\_CURL\_OFF\_T\ \ \ \ \ "{}ld"{}}}
+\DoxyCodeLine{00352\ \textcolor{preprocessor}{\#\ \ define\ CURL\_FORMAT\_CURL\_OFF\_TU\ \ \ \ "{}lu"{}}}
+\DoxyCodeLine{00353\ \textcolor{preprocessor}{\#\ \ define\ CURL\_SUFFIX\_CURL\_OFF\_T\ \ \ \ \ L}}
+\DoxyCodeLine{00354\ \textcolor{preprocessor}{\#\ \ define\ CURL\_SUFFIX\_CURL\_OFF\_TU\ \ \ \ UL}}
+\DoxyCodeLine{00355\ \textcolor{preprocessor}{\#\ \ define\ CURL\_TYPEOF\_CURL\_SOCKLEN\_T\ int}}
+\DoxyCodeLine{00356\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00357\ }
+\DoxyCodeLine{00358\ \textcolor{preprocessor}{\#ifdef\ \_AIX}}
+\DoxyCodeLine{00359\ \textcolor{comment}{/*\ AIX\ needs\ <sys/poll.h>\ */}}
+\DoxyCodeLine{00360\ \textcolor{preprocessor}{\#define\ CURL\_PULL\_SYS\_POLL\_H}}
+\DoxyCodeLine{00361\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00362\ }
+\DoxyCodeLine{00363\ \textcolor{comment}{/*\ CURL\_PULL\_SYS\_TYPES\_H\ is\ defined\ above\ when\ inclusion\ of\ header\ file\ \ */}}
+\DoxyCodeLine{00364\ \textcolor{comment}{/*\ sys/types.h\ is\ required\ here\ to\ properly\ make\ type\ definitions\ below.\ */}}
+\DoxyCodeLine{00365\ \textcolor{preprocessor}{\#ifdef\ CURL\_PULL\_SYS\_TYPES\_H}}
+\DoxyCodeLine{00366\ \textcolor{preprocessor}{\#\ \ include\ <sys/types.h>}}
+\DoxyCodeLine{00367\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00368\ }
+\DoxyCodeLine{00369\ \textcolor{comment}{/*\ CURL\_PULL\_SYS\_SOCKET\_H\ is\ defined\ above\ when\ inclusion\ of\ header\ file\ \ */}}
+\DoxyCodeLine{00370\ \textcolor{comment}{/*\ sys/socket.h\ is\ required\ here\ to\ properly\ make\ type\ definitions\ below.\ */}}
+\DoxyCodeLine{00371\ \textcolor{preprocessor}{\#ifdef\ CURL\_PULL\_SYS\_SOCKET\_H}}
+\DoxyCodeLine{00372\ \textcolor{preprocessor}{\#\ \ include\ <sys/socket.h>}}
+\DoxyCodeLine{00373\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00374\ }
+\DoxyCodeLine{00375\ \textcolor{comment}{/*\ CURL\_PULL\_SYS\_POLL\_H\ is\ defined\ above\ when\ inclusion\ of\ header\ file\ \ \ \ */}}
+\DoxyCodeLine{00376\ \textcolor{comment}{/*\ sys/poll.h\ is\ required\ here\ to\ properly\ make\ type\ definitions\ below.\ \ \ */}}
+\DoxyCodeLine{00377\ \textcolor{preprocessor}{\#ifdef\ CURL\_PULL\_SYS\_POLL\_H}}
+\DoxyCodeLine{00378\ \textcolor{preprocessor}{\#\ \ include\ <sys/poll.h>}}
+\DoxyCodeLine{00379\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00380\ }
+\DoxyCodeLine{00381\ \textcolor{comment}{/*\ Data\ type\ definition\ of\ curl\_socklen\_t.\ */}}
+\DoxyCodeLine{00382\ \textcolor{preprocessor}{\#ifdef\ CURL\_TYPEOF\_CURL\_SOCKLEN\_T}}
+\DoxyCodeLine{00383\ \ \ \textcolor{keyword}{typedef}\ CURL\_TYPEOF\_CURL\_SOCKLEN\_T\ curl\_socklen\_t;}
+\DoxyCodeLine{00384\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00385\ }
+\DoxyCodeLine{00386\ \textcolor{comment}{/*\ Data\ type\ definition\ of\ curl\_off\_t.\ */}}
+\DoxyCodeLine{00387\ }
+\DoxyCodeLine{00388\ \textcolor{preprocessor}{\#ifdef\ CURL\_TYPEOF\_CURL\_OFF\_T}}
+\DoxyCodeLine{00389\ \ \ \textcolor{keyword}{typedef}\ CURL\_TYPEOF\_CURL\_OFF\_T\ curl\_off\_t;}
+\DoxyCodeLine{00390\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00391\ }
+\DoxyCodeLine{00392\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00393\ \textcolor{comment}{\ *\ CURL\_ISOCPP\ and\ CURL\_OFF\_T\_C\ definitions\ are\ done\ here\ in\ order\ to\ allow}}
+\DoxyCodeLine{00394\ \textcolor{comment}{\ *\ these\ to\ be\ visible\ and\ exported\ by\ the\ external\ libcurl\ interface\ API,}}
+\DoxyCodeLine{00395\ \textcolor{comment}{\ *\ while\ also\ making\ them\ visible\ to\ the\ library\ internals,\ simply\ including}}
+\DoxyCodeLine{00396\ \textcolor{comment}{\ *\ curl\_setup.h,\ without\ actually\ needing\ to\ include\ curl.h\ internally.}}
+\DoxyCodeLine{00397\ \textcolor{comment}{\ *\ If\ some\ day\ this\ section\ would\ grow\ big\ enough,\ all\ this\ should\ be\ moved}}
+\DoxyCodeLine{00398\ \textcolor{comment}{\ *\ to\ its\ own\ header\ file.}}
+\DoxyCodeLine{00399\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00400\ }
+\DoxyCodeLine{00401\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00402\ \textcolor{comment}{\ *\ Figure\ out\ if\ we\ can\ use\ the\ \#\#\ preprocessor\ operator,\ which\ is\ supported}}
+\DoxyCodeLine{00403\ \textcolor{comment}{\ *\ by\ ISO/ANSI\ C\ and\ C++.\ Some\ compilers\ support\ it\ without\ setting\ \_\_STDC\_\_}}
+\DoxyCodeLine{00404\ \textcolor{comment}{\ *\ or\ \ \_\_cplusplus\ so\ we\ need\ to\ carefully\ check\ for\ them\ too.}}
+\DoxyCodeLine{00405\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00406\ }
+\DoxyCodeLine{00407\ \textcolor{preprocessor}{\#if\ defined(\_\_STDC\_\_)\ ||\ defined(\_MSC\_VER)\ ||\ defined(\_\_cplusplus)\ ||\ \(\backslash\)}}
+\DoxyCodeLine{00408\ \textcolor{preprocessor}{\ \ defined(\_\_HP\_aCC)\ ||\ defined(\_\_BORLANDC\_\_)\ ||\ defined(\_\_LCC\_\_)\ ||\ \(\backslash\)}}
+\DoxyCodeLine{00409\ \textcolor{preprocessor}{\ \ defined(\_\_POCC\_\_)\ ||\ defined(\_\_HIGHC\_\_)\ ||\ \(\backslash\)}}
+\DoxyCodeLine{00410\ \textcolor{preprocessor}{\ \ defined(\_\_ILEC400\_\_)}}
+\DoxyCodeLine{00411\ \ \ \textcolor{comment}{/*\ This\ compiler\ is\ believed\ to\ have\ an\ ISO\ compatible\ preprocessor\ */}}
+\DoxyCodeLine{00412\ \textcolor{preprocessor}{\#define\ CURL\_ISOCPP}}
+\DoxyCodeLine{00413\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00414\ \ \ \textcolor{comment}{/*\ This\ compiler\ is\ believed\ NOT\ to\ have\ an\ ISO\ compatible\ preprocessor\ */}}
+\DoxyCodeLine{00415\ \textcolor{preprocessor}{\#undef\ CURL\_ISOCPP}}
+\DoxyCodeLine{00416\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00417\ }
+\DoxyCodeLine{00418\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00419\ \textcolor{comment}{\ *\ Macros\ for\ minimum-\/width\ signed\ and\ unsigned\ curl\_off\_t\ integer\ constants.}}
+\DoxyCodeLine{00420\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00421\ }
+\DoxyCodeLine{00422\ \textcolor{preprocessor}{\#if\ defined(\_\_BORLANDC\_\_)\ \&\&\ (\_\_BORLANDC\_\_\ ==\ 0x0551)}}
+\DoxyCodeLine{00423\ \textcolor{preprocessor}{\#\ \ define\ CURLINC\_OFF\_T\_C\_HLPR2(x)\ x}}
+\DoxyCodeLine{00424\ \textcolor{preprocessor}{\#\ \ define\ CURLINC\_OFF\_T\_C\_HLPR1(x)\ CURLINC\_OFF\_T\_C\_HLPR2(x)}}
+\DoxyCodeLine{00425\ \textcolor{preprocessor}{\#\ \ define\ CURL\_OFF\_T\_C(Val)\ \ CURLINC\_OFF\_T\_C\_HLPR1(Val)\ \#\#\ \(\backslash\)}}
+\DoxyCodeLine{00426\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ CURLINC\_OFF\_T\_C\_HLPR1(CURL\_SUFFIX\_CURL\_OFF\_T)}}
+\DoxyCodeLine{00427\ \textcolor{preprocessor}{\#\ \ define\ CURL\_OFF\_TU\_C(Val)\ CURLINC\_OFF\_T\_C\_HLPR1(Val)\ \#\#\ \(\backslash\)}}
+\DoxyCodeLine{00428\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ CURLINC\_OFF\_T\_C\_HLPR1(CURL\_SUFFIX\_CURL\_OFF\_TU)}}
+\DoxyCodeLine{00429\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00430\ \textcolor{preprocessor}{\#\ \ ifdef\ CURL\_ISOCPP}}
+\DoxyCodeLine{00431\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURLINC\_OFF\_T\_C\_HLPR2(Val,Suffix)\ Val\ \#\#\ Suffix}}
+\DoxyCodeLine{00432\ \textcolor{preprocessor}{\#\ \ else}}
+\DoxyCodeLine{00433\ \textcolor{preprocessor}{\#\ \ \ \ define\ CURLINC\_OFF\_T\_C\_HLPR2(Val,Suffix)\ Val}\textcolor{comment}{/**/}Suffix}
+\DoxyCodeLine{00434\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{00435\ \textcolor{preprocessor}{\#\ \ define\ CURLINC\_OFF\_T\_C\_HLPR1(Val,Suffix)\ CURLINC\_OFF\_T\_C\_HLPR2(Val,Suffix)}}
+\DoxyCodeLine{00436\ \textcolor{preprocessor}{\#\ \ define\ CURL\_OFF\_T\_C(Val)\ \ CURLINC\_OFF\_T\_C\_HLPR1(Val,CURL\_SUFFIX\_CURL\_OFF\_T)}}
+\DoxyCodeLine{00437\ \textcolor{preprocessor}{\#\ \ define\ CURL\_OFF\_TU\_C(Val)\ CURLINC\_OFF\_T\_C\_HLPR1(Val,CURL\_SUFFIX\_CURL\_OFF\_TU)}}
+\DoxyCodeLine{00438\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00439\ }
+\DoxyCodeLine{00440\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{/*\ CURLINC\_SYSTEM\_H\ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

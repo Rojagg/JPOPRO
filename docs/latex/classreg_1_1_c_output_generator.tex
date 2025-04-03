@@ -1,0 +1,163 @@
+\doxysection{reg.\+COutput\+Generator Class Reference}
+\hypertarget{classreg_1_1_c_output_generator}{}\label{classreg_1_1_c_output_generator}\index{reg.COutputGenerator@{reg.COutputGenerator}}
+Inheritance diagram for reg.\+COutput\+Generator\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classreg_1_1_c_output_generator}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classreg_1_1_c_output_generator_a996bea413b94068f807a3a473ddeabb6}\label{classreg_1_1_c_output_generator_a996bea413b94068f807a3a473ddeabb6} 
+{\bfseries \+\_\+\+\_\+init\+\_\+\+\_\+} (self, err\+File=sys.\+stderr, warn\+File=sys.\+stderr, diag\+File=sys.\+stdout)
+\item 
+\mbox{\hyperlink{classreg_1_1_c_output_generator_a26d9df15ab0e8b9fcd57a7b830b9362e}{make\+CDecls}} (self, cmd)
+\item 
+\Hypertarget{classreg_1_1_c_output_generator_a467de7ef2c2de248ac0fad2c3b4c6be4}\label{classreg_1_1_c_output_generator_a467de7ef2c2de248ac0fad2c3b4c6be4} 
+{\bfseries newline} (self)
+\item 
+\mbox{\hyperlink{classreg_1_1_c_output_generator_a1ea905e183f2b94aa78fbd679f6007f4}{begin\+File}} (self, gen\+Opts)
+\item 
+\mbox{\hyperlink{classreg_1_1_c_output_generator_a38a3806519bfd94a01da08e9422aee47}{end\+File}} (self)
+\item 
+\mbox{\hyperlink{classreg_1_1_c_output_generator_ad549e3938d76cd3a888ed1bfcfceb035}{begin\+Feature}} (self, interface, emit)
+\item 
+\mbox{\hyperlink{classreg_1_1_c_output_generator_ac05bb7205513370374cf9a5aa0c8c108}{end\+Feature}} (self)
+\item 
+\mbox{\hyperlink{classreg_1_1_c_output_generator_ac8d8e04e9e3e7c1e638e67827783f252}{gen\+Type}} (self, typeinfo, name)
+\item 
+\mbox{\hyperlink{classreg_1_1_c_output_generator_ac62c1cb01b2710c48c8ee6a81db8089e}{gen\+Enum}} (self, enuminfo, name)
+\item 
+\mbox{\hyperlink{classreg_1_1_c_output_generator_ab33f045f5f750d0d1bf84b6cae94c889}{gen\+Cmd}} (self, cmdinfo, name)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classreg_1_1_output_generator}{reg.\+Output\+Generator}}}
+\begin{DoxyCompactItemize}
+\item 
+{\bfseries \+\_\+\+\_\+init\+\_\+\+\_\+} (self, err\+File=sys.\+stderr, warn\+File=sys.\+stderr, diag\+File=sys.\+stdout)
+\item 
+\mbox{\hyperlink{classreg_1_1_output_generator_a915f68569d79cc3194eca3940415f849}{log\+Msg}} (self, level, \texorpdfstring{$\ast$}{*}args)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classreg_1_1_c_output_generator_a6f684e34e6a1dfd89efbed596127a94a}\label{classreg_1_1_c_output_generator_a6f684e34e6a1dfd89efbed596127a94a} 
+str {\bfseries type\+Body} = \textquotesingle{}\textquotesingle{}
+\item 
+\Hypertarget{classreg_1_1_c_output_generator_a0ea9f293d7550423734f6e6e6032278f}\label{classreg_1_1_c_output_generator_a0ea9f293d7550423734f6e6e6032278f} 
+str {\bfseries enum\+Body} = \textquotesingle{}\textquotesingle{}
+\item 
+\Hypertarget{classreg_1_1_c_output_generator_aef3298efbb260cc0cccba74abd37cfa7}\label{classreg_1_1_c_output_generator_aef3298efbb260cc0cccba74abd37cfa7} 
+str {\bfseries cmd\+Body} = \textquotesingle{}\textquotesingle{}
+\item 
+\Hypertarget{classreg_1_1_c_output_generator_aa4acc05585bc6b768f83dacddd61830b}\label{classreg_1_1_c_output_generator_aa4acc05585bc6b768f83dacddd61830b} 
+str {\bfseries cmd\+Pointer\+Body} = \textquotesingle{}\textquotesingle{}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes inherited from \mbox{\hyperlink{classreg_1_1_output_generator}{reg.\+Output\+Generator}}}
+\begin{DoxyCompactItemize}
+\item 
+{\bfseries out\+File} = None
+\item 
+{\bfseries err\+File} = err\+File
+\item 
+{\bfseries warn\+File} = warn\+File
+\item 
+{\bfseries diag\+File} = diag\+File
+\item 
+{\bfseries feature\+Name} = None
+\item 
+{\bfseries gen\+Opts} = None
+\item 
+{\bfseries emit} = emit
+\item 
+{\bfseries feature\+Extra\+Protect} = interface.\+get(\textquotesingle{}protect\textquotesingle{})
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyVerb}Generate specified API interfaces in a specific style, such as a C header\end{DoxyVerb}
+ 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classreg_1_1_c_output_generator_ad549e3938d76cd3a888ed1bfcfceb035}\index{reg.COutputGenerator@{reg.COutputGenerator}!beginFeature@{beginFeature}}
+\index{beginFeature@{beginFeature}!reg.COutputGenerator@{reg.COutputGenerator}}
+\doxysubsubsection{\texorpdfstring{beginFeature()}{beginFeature()}}
+{\footnotesize\ttfamily \label{classreg_1_1_c_output_generator_ad549e3938d76cd3a888ed1bfcfceb035} 
+reg.\+COutput\+Generator.\+begin\+Feature (\begin{DoxyParamCaption}\item[{}]{self}{, }\item[{}]{interface}{, }\item[{}]{emit}{}\end{DoxyParamCaption})}
+
+
+
+Reimplemented from \mbox{\hyperlink{classreg_1_1_output_generator}{reg.\+Output\+Generator}}.
+
+\Hypertarget{classreg_1_1_c_output_generator_a1ea905e183f2b94aa78fbd679f6007f4}\index{reg.COutputGenerator@{reg.COutputGenerator}!beginFile@{beginFile}}
+\index{beginFile@{beginFile}!reg.COutputGenerator@{reg.COutputGenerator}}
+\doxysubsubsection{\texorpdfstring{beginFile()}{beginFile()}}
+{\footnotesize\ttfamily \label{classreg_1_1_c_output_generator_a1ea905e183f2b94aa78fbd679f6007f4} 
+reg.\+COutput\+Generator.\+begin\+File (\begin{DoxyParamCaption}\item[{}]{self}{, }\item[{}]{gen\+Opts}{}\end{DoxyParamCaption})}
+
+
+
+Reimplemented from \mbox{\hyperlink{classreg_1_1_output_generator}{reg.\+Output\+Generator}}.
+
+\Hypertarget{classreg_1_1_c_output_generator_ac05bb7205513370374cf9a5aa0c8c108}\index{reg.COutputGenerator@{reg.COutputGenerator}!endFeature@{endFeature}}
+\index{endFeature@{endFeature}!reg.COutputGenerator@{reg.COutputGenerator}}
+\doxysubsubsection{\texorpdfstring{endFeature()}{endFeature()}}
+{\footnotesize\ttfamily \label{classreg_1_1_c_output_generator_ac05bb7205513370374cf9a5aa0c8c108} 
+reg.\+COutput\+Generator.\+end\+Feature (\begin{DoxyParamCaption}\item[{}]{self}{}\end{DoxyParamCaption})}
+
+
+
+Reimplemented from \mbox{\hyperlink{classreg_1_1_output_generator}{reg.\+Output\+Generator}}.
+
+\Hypertarget{classreg_1_1_c_output_generator_a38a3806519bfd94a01da08e9422aee47}\index{reg.COutputGenerator@{reg.COutputGenerator}!endFile@{endFile}}
+\index{endFile@{endFile}!reg.COutputGenerator@{reg.COutputGenerator}}
+\doxysubsubsection{\texorpdfstring{endFile()}{endFile()}}
+{\footnotesize\ttfamily \label{classreg_1_1_c_output_generator_a38a3806519bfd94a01da08e9422aee47} 
+reg.\+COutput\+Generator.\+end\+File (\begin{DoxyParamCaption}\item[{}]{self}{}\end{DoxyParamCaption})}
+
+
+
+Reimplemented from \mbox{\hyperlink{classreg_1_1_output_generator}{reg.\+Output\+Generator}}.
+
+\Hypertarget{classreg_1_1_c_output_generator_ab33f045f5f750d0d1bf84b6cae94c889}\index{reg.COutputGenerator@{reg.COutputGenerator}!genCmd@{genCmd}}
+\index{genCmd@{genCmd}!reg.COutputGenerator@{reg.COutputGenerator}}
+\doxysubsubsection{\texorpdfstring{genCmd()}{genCmd()}}
+{\footnotesize\ttfamily \label{classreg_1_1_c_output_generator_ab33f045f5f750d0d1bf84b6cae94c889} 
+reg.\+COutput\+Generator.\+gen\+Cmd (\begin{DoxyParamCaption}\item[{}]{self}{, }\item[{}]{cmdinfo}{, }\item[{}]{name}{}\end{DoxyParamCaption})}
+
+
+
+Reimplemented from \mbox{\hyperlink{classreg_1_1_output_generator}{reg.\+Output\+Generator}}.
+
+\Hypertarget{classreg_1_1_c_output_generator_ac62c1cb01b2710c48c8ee6a81db8089e}\index{reg.COutputGenerator@{reg.COutputGenerator}!genEnum@{genEnum}}
+\index{genEnum@{genEnum}!reg.COutputGenerator@{reg.COutputGenerator}}
+\doxysubsubsection{\texorpdfstring{genEnum()}{genEnum()}}
+{\footnotesize\ttfamily \label{classreg_1_1_c_output_generator_ac62c1cb01b2710c48c8ee6a81db8089e} 
+reg.\+COutput\+Generator.\+gen\+Enum (\begin{DoxyParamCaption}\item[{}]{self}{, }\item[{}]{enuminfo}{, }\item[{}]{name}{}\end{DoxyParamCaption})}
+
+
+
+Reimplemented from \mbox{\hyperlink{classreg_1_1_output_generator}{reg.\+Output\+Generator}}.
+
+\Hypertarget{classreg_1_1_c_output_generator_ac8d8e04e9e3e7c1e638e67827783f252}\index{reg.COutputGenerator@{reg.COutputGenerator}!genType@{genType}}
+\index{genType@{genType}!reg.COutputGenerator@{reg.COutputGenerator}}
+\doxysubsubsection{\texorpdfstring{genType()}{genType()}}
+{\footnotesize\ttfamily \label{classreg_1_1_c_output_generator_ac8d8e04e9e3e7c1e638e67827783f252} 
+reg.\+COutput\+Generator.\+gen\+Type (\begin{DoxyParamCaption}\item[{}]{self}{, }\item[{}]{typeinfo}{, }\item[{}]{name}{}\end{DoxyParamCaption})}
+
+
+
+Reimplemented from \mbox{\hyperlink{classreg_1_1_output_generator}{reg.\+Output\+Generator}}.
+
+\Hypertarget{classreg_1_1_c_output_generator_a26d9df15ab0e8b9fcd57a7b830b9362e}\index{reg.COutputGenerator@{reg.COutputGenerator}!makeCDecls@{makeCDecls}}
+\index{makeCDecls@{makeCDecls}!reg.COutputGenerator@{reg.COutputGenerator}}
+\doxysubsubsection{\texorpdfstring{makeCDecls()}{makeCDecls()}}
+{\footnotesize\ttfamily \label{classreg_1_1_c_output_generator_a26d9df15ab0e8b9fcd57a7b830b9362e} 
+reg.\+COutput\+Generator.\+make\+CDecls (\begin{DoxyParamCaption}\item[{}]{self}{, }\item[{}]{cmd}{}\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Generate C function pointer typedef for <command> Element\end{DoxyVerb}
+ 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/xroja/\+Desktop/\+JPO projekt/\+Projekt\+Jezyki\+Programowania\+Obiektowego/build/vcpkg\+\_\+installed/x64-\/windows/share/opengl/reg.\+py\end{DoxyCompactItemize}

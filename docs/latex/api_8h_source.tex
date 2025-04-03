@@ -1,0 +1,29 @@
+\doxysection{api.\+h}
+\hypertarget{api_8h_source}{}\label{api_8h_source}\index{C:/Users/xroja/Desktop/JPO projekt/ProjektJezykiProgramowaniaObiektowego/header/api.h@{C:/Users/xroja/Desktop/JPO projekt/ProjektJezykiProgramowaniaObiektowego/header/api.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ API\_H}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ API\_H}}
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ <iostream>}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <curl/curl.h>}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ <fstream>}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <nlohmann/json.hpp>}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{keyword}{using\ }json\ =\ nlohmann::json;}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{comment}{//\ Deklaracja\ funkcji\ callback\ do\ zapisywania\ danych}}
+\DoxyCodeLine{00013\ \textcolor{keywordtype}{size\_t}\ write\_callback(\textcolor{keywordtype}{void}*\ contents,\ \textcolor{keywordtype}{size\_t}\ size,\ \textcolor{keywordtype}{size\_t}\ amount,\ std::string*\ output);}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{comment}{//\ Deklaracja\ funkcji\ do\ pobierania\ danych\ z\ API}}
+\DoxyCodeLine{00016\ \textcolor{keywordtype}{int}\ getData();}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ \textcolor{keywordtype}{void}\ getSensorData(\textcolor{keywordtype}{int}\ \textcolor{keywordtype}{id});}
+\DoxyCodeLine{00019\ \textcolor{keywordtype}{void}\ getStationData(\textcolor{keywordtype}{int}\ \textcolor{keywordtype}{id});}
+\DoxyCodeLine{00020\ \textcolor{keywordtype}{void}\ getLocalization(std::string\ city,\ std::string\ street,\ std::string\ number);}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ API\_HANDLER\_H}}
+
+\end{DoxyCode}

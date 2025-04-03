@@ -1,0 +1,91 @@
+\doxysection{mprintf.\+h}
+\hypertarget{mprintf_8h_source}{}\label{mprintf_8h_source}\index{C:/Users/xroja/Desktop/JPO projekt/ProjektJezykiProgramowaniaObiektowego/build/vcpkg\_installed/x64-\/windows/include/curl/mprintf.h@{C:/Users/xroja/Desktop/JPO projekt/ProjektJezykiProgramowaniaObiektowego/build/vcpkg\_installed/x64-\/windows/include/curl/mprintf.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ CURLINC\_MPRINTF\_H}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ CURLINC\_MPRINTF\_H}}
+\DoxyCodeLine{00003\ \textcolor{comment}{/***************************************************************************}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \_\ \ \ \_\ \_\_\_\_\ \ \_}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ *\ \ Project\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \_\_\_|\ |\ |\ |\ \ \_\ \(\backslash\)|\ |}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ /\ \_\_|\ |\ |\ |\ |\_)\ |\ |}}
+\DoxyCodeLine{00007\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ |\ (\_\_|\ |\_|\ |\ \ \_\ <|\ |\_\_\_}}
+\DoxyCodeLine{00008\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)\_\_\_|\(\backslash\)\_\_\_/|\_|\ \(\backslash\)\_\(\backslash\)\_\_\_\_\_|}}
+\DoxyCodeLine{00009\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00010\ \textcolor{comment}{\ *\ Copyright\ (C)\ Daniel\ Stenberg,\ <daniel@haxx.se>,\ et\ al.}}
+\DoxyCodeLine{00011\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00012\ \textcolor{comment}{\ *\ This\ software\ is\ licensed\ as\ described\ in\ the\ file\ COPYING,\ which}}
+\DoxyCodeLine{00013\ \textcolor{comment}{\ *\ you\ should\ have\ received\ as\ part\ of\ this\ distribution.\ The\ terms}}
+\DoxyCodeLine{00014\ \textcolor{comment}{\ *\ are\ also\ available\ at\ https://curl.se/docs/copyright.html.}}
+\DoxyCodeLine{00015\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00016\ \textcolor{comment}{\ *\ You\ may\ opt\ to\ use,\ copy,\ modify,\ merge,\ publish,\ distribute\ and/or\ sell}}
+\DoxyCodeLine{00017\ \textcolor{comment}{\ *\ copies\ of\ the\ Software,\ and\ permit\ persons\ to\ whom\ the\ Software\ is}}
+\DoxyCodeLine{00018\ \textcolor{comment}{\ *\ furnished\ to\ do\ so,\ under\ the\ terms\ of\ the\ COPYING\ file.}}
+\DoxyCodeLine{00019\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00020\ \textcolor{comment}{\ *\ This\ software\ is\ distributed\ on\ an\ "{}AS\ IS"{}\ basis,\ WITHOUT\ WARRANTY\ OF\ ANY}}
+\DoxyCodeLine{00021\ \textcolor{comment}{\ *\ KIND,\ either\ express\ or\ implied.}}
+\DoxyCodeLine{00022\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00023\ \textcolor{comment}{\ *\ SPDX-\/License-\/Identifier:\ curl}}
+\DoxyCodeLine{00024\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00025\ \textcolor{comment}{\ ***************************************************************************/}}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \textcolor{preprocessor}{\#include\ <stdarg.h>}}
+\DoxyCodeLine{00028\ \textcolor{preprocessor}{\#include\ <stdio.h>}\ \textcolor{comment}{/*\ needed\ for\ FILE\ */}}
+\DoxyCodeLine{00029\ \textcolor{preprocessor}{\#include\ "{}curl.h"{}}\ \ \textcolor{comment}{/*\ for\ CURL\_EXTERN\ */}}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \textcolor{preprocessor}{\#ifdef\ \ \_\_cplusplus}}
+\DoxyCodeLine{00032\ \textcolor{keyword}{extern}\ \textcolor{stringliteral}{"{}C"{}}\ \{}
+\DoxyCodeLine{00033\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \textcolor{preprocessor}{\#ifndef\ CURL\_TEMP\_PRINTF}}
+\DoxyCodeLine{00036\ \textcolor{preprocessor}{\#if\ (defined(\_\_GNUC\_\_)\ ||\ defined(\_\_clang\_\_)\ ||\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00037\ \textcolor{preprocessor}{\ \ defined(\_\_IAR\_SYSTEMS\_ICC\_\_))\ \&\&\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00038\ \textcolor{preprocessor}{\ \ defined(\_\_STDC\_VERSION\_\_)\ \&\&\ (\_\_STDC\_VERSION\_\_\ >=\ 199901L)\ \&\&\ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00039\ \textcolor{preprocessor}{\ \ !defined(CURL\_NO\_FMT\_CHECKS)}}
+\DoxyCodeLine{00040\ \textcolor{preprocessor}{\#if\ defined(\_\_MINGW32\_\_)\ \&\&\ !defined(\_\_clang\_\_)}}
+\DoxyCodeLine{00041\ \textcolor{preprocessor}{\#if\ defined(\_\_MINGW\_PRINTF\_FORMAT)\ \ }\textcolor{comment}{/*\ mingw-\/w64\ 3.0.0+.\ Needs\ stdio.h.\ */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{00042\ \textcolor{preprocessor}{\#define\ CURL\_TEMP\_PRINTF(fmt,\ arg)\ \(\backslash\)}}
+\DoxyCodeLine{00043\ \textcolor{preprocessor}{\ \ \_\_attribute\_\_((format(\_\_MINGW\_PRINTF\_FORMAT,\ fmt,\ arg)))}}
+\DoxyCodeLine{00044\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00045\ \textcolor{preprocessor}{\#define\ CURL\_TEMP\_PRINTF(fmt,\ arg)}}
+\DoxyCodeLine{00046\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00047\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00048\ \textcolor{preprocessor}{\#define\ CURL\_TEMP\_PRINTF(fmt,\ arg)\ \(\backslash\)}}
+\DoxyCodeLine{00049\ \textcolor{preprocessor}{\ \ \_\_attribute\_\_((format(printf,\ fmt,\ arg)))}}
+\DoxyCodeLine{00050\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00051\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00052\ \textcolor{preprocessor}{\#define\ CURL\_TEMP\_PRINTF(fmt,\ arg)}}
+\DoxyCodeLine{00053\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00054\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00056\ CURL\_EXTERN\ \textcolor{keywordtype}{int}\ curl\_mprintf(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *format,\ ...)}
+\DoxyCodeLine{00057\ \ \ CURL\_TEMP\_PRINTF(1,\ 2);}
+\DoxyCodeLine{00058\ CURL\_EXTERN\ \textcolor{keywordtype}{int}\ curl\_mfprintf(FILE\ *fd,\ const\ \textcolor{keywordtype}{char}\ *format,\ ...)}
+\DoxyCodeLine{00059\ \ \ CURL\_TEMP\_PRINTF(2,\ 3);}
+\DoxyCodeLine{00060\ CURL\_EXTERN\ \textcolor{keywordtype}{int}\ curl\_msprintf(\textcolor{keywordtype}{char}\ *buffer,\ const\ \textcolor{keywordtype}{char}\ *format,\ ...)}
+\DoxyCodeLine{00061\ \ \ CURL\_TEMP\_PRINTF(2,\ 3);}
+\DoxyCodeLine{00062\ CURL\_EXTERN\ \textcolor{keywordtype}{int}\ curl\_msnprintf(\textcolor{keywordtype}{char}\ *buffer,\ \textcolor{keywordtype}{size\_t}\ maxlength,}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ const\ \textcolor{keywordtype}{char}\ *format,\ ...)}
+\DoxyCodeLine{00064\ \ \ CURL\_TEMP\_PRINTF(3,\ 4);}
+\DoxyCodeLine{00065\ CURL\_EXTERN\ \textcolor{keywordtype}{int}\ curl\_mvprintf(const\ \textcolor{keywordtype}{char}\ *format,\ va\_list\ args)}
+\DoxyCodeLine{00066\ \ \ CURL\_TEMP\_PRINTF(1,\ 0);}
+\DoxyCodeLine{00067\ CURL\_EXTERN\ \textcolor{keywordtype}{int}\ curl\_mvfprintf(FILE\ *fd,\ const\ \textcolor{keywordtype}{char}\ *format,\ va\_list\ args)}
+\DoxyCodeLine{00068\ \ \ CURL\_TEMP\_PRINTF(2,\ 0);}
+\DoxyCodeLine{00069\ CURL\_EXTERN\ \textcolor{keywordtype}{int}\ curl\_mvsprintf(\textcolor{keywordtype}{char}\ *buffer,\ const\ \textcolor{keywordtype}{char}\ *format,\ va\_list\ args)}
+\DoxyCodeLine{00070\ \ \ CURL\_TEMP\_PRINTF(2,\ 0);}
+\DoxyCodeLine{00071\ CURL\_EXTERN\ \textcolor{keywordtype}{int}\ curl\_mvsnprintf(\textcolor{keywordtype}{char}\ *buffer,\ \textcolor{keywordtype}{size\_t}\ maxlength,}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ const\ \textcolor{keywordtype}{char}\ *format,\ va\_list\ args)}
+\DoxyCodeLine{00073\ \ \ CURL\_TEMP\_PRINTF(3,\ 0);}
+\DoxyCodeLine{00074\ CURL\_EXTERN\ \textcolor{keywordtype}{char}\ *curl\_maprintf(const\ \textcolor{keywordtype}{char}\ *format,\ ...)}
+\DoxyCodeLine{00075\ \ \ CURL\_TEMP\_PRINTF(1,\ 2);}
+\DoxyCodeLine{00076\ CURL\_EXTERN\ \textcolor{keywordtype}{char}\ *curl\_mvaprintf(const\ \textcolor{keywordtype}{char}\ *format,\ va\_list\ args)}
+\DoxyCodeLine{00077\ \ \ CURL\_TEMP\_PRINTF(1,\ 0);}
+\DoxyCodeLine{00078\ }
+\DoxyCodeLine{00079\ \textcolor{preprocessor}{\#undef\ CURL\_TEMP\_PRINTF}}
+\DoxyCodeLine{00080\ }
+\DoxyCodeLine{00081\ \textcolor{preprocessor}{\#ifdef\ \ \_\_cplusplus}}
+\DoxyCodeLine{00082\ \}\ \textcolor{comment}{/*\ end\ of\ extern\ "{}C"{}\ */}}
+\DoxyCodeLine{00083\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00084\ }
+\DoxyCodeLine{00085\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{/*\ CURLINC\_MPRINTF\_H\ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

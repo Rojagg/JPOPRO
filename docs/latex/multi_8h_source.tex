@@ -1,0 +1,487 @@
+\doxysection{multi.\+h}
+\hypertarget{multi_8h_source}{}\label{multi_8h_source}\index{C:/Users/xroja/Desktop/JPO projekt/ProjektJezykiProgramowaniaObiektowego/build/vcpkg\_installed/x64-\/windows/include/curl/multi.h@{C:/Users/xroja/Desktop/JPO projekt/ProjektJezykiProgramowaniaObiektowego/build/vcpkg\_installed/x64-\/windows/include/curl/multi.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ CURLINC\_MULTI\_H}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ CURLINC\_MULTI\_H}}
+\DoxyCodeLine{00003\ \textcolor{comment}{/***************************************************************************}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \_\ \ \ \_\ \_\_\_\_\ \ \_}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ *\ \ Project\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \_\_\_|\ |\ |\ |\ \ \_\ \(\backslash\)|\ |}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ /\ \_\_|\ |\ |\ |\ |\_)\ |\ |}}
+\DoxyCodeLine{00007\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ |\ (\_\_|\ |\_|\ |\ \ \_\ <|\ |\_\_\_}}
+\DoxyCodeLine{00008\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)\_\_\_|\(\backslash\)\_\_\_/|\_|\ \(\backslash\)\_\(\backslash\)\_\_\_\_\_|}}
+\DoxyCodeLine{00009\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00010\ \textcolor{comment}{\ *\ Copyright\ (C)\ Daniel\ Stenberg,\ <daniel@haxx.se>,\ et\ al.}}
+\DoxyCodeLine{00011\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00012\ \textcolor{comment}{\ *\ This\ software\ is\ licensed\ as\ described\ in\ the\ file\ COPYING,\ which}}
+\DoxyCodeLine{00013\ \textcolor{comment}{\ *\ you\ should\ have\ received\ as\ part\ of\ this\ distribution.\ The\ terms}}
+\DoxyCodeLine{00014\ \textcolor{comment}{\ *\ are\ also\ available\ at\ https://curl.se/docs/copyright.html.}}
+\DoxyCodeLine{00015\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00016\ \textcolor{comment}{\ *\ You\ may\ opt\ to\ use,\ copy,\ modify,\ merge,\ publish,\ distribute\ and/or\ sell}}
+\DoxyCodeLine{00017\ \textcolor{comment}{\ *\ copies\ of\ the\ Software,\ and\ permit\ persons\ to\ whom\ the\ Software\ is}}
+\DoxyCodeLine{00018\ \textcolor{comment}{\ *\ furnished\ to\ do\ so,\ under\ the\ terms\ of\ the\ COPYING\ file.}}
+\DoxyCodeLine{00019\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00020\ \textcolor{comment}{\ *\ This\ software\ is\ distributed\ on\ an\ "{}AS\ IS"{}\ basis,\ WITHOUT\ WARRANTY\ OF\ ANY}}
+\DoxyCodeLine{00021\ \textcolor{comment}{\ *\ KIND,\ either\ express\ or\ implied.}}
+\DoxyCodeLine{00022\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00023\ \textcolor{comment}{\ *\ SPDX-\/License-\/Identifier:\ curl}}
+\DoxyCodeLine{00024\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00025\ \textcolor{comment}{\ ***************************************************************************/}}
+\DoxyCodeLine{00026\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00027\ \textcolor{comment}{\ \ This\ is\ an\ "{}external"{}\ header\ file.\ Do\ not\ give\ away\ any\ internals\ here!}}
+\DoxyCodeLine{00028\ \textcolor{comment}{}}
+\DoxyCodeLine{00029\ \textcolor{comment}{\ \ GOALS}}
+\DoxyCodeLine{00030\ \textcolor{comment}{}}
+\DoxyCodeLine{00031\ \textcolor{comment}{\ \ o\ Enable\ a\ "{}pull"{}\ interface.\ The\ application\ that\ uses\ libcurl\ decides\ where}}
+\DoxyCodeLine{00032\ \textcolor{comment}{\ \ \ \ and\ when\ to\ ask\ libcurl\ to\ get/send\ data.}}
+\DoxyCodeLine{00033\ \textcolor{comment}{}}
+\DoxyCodeLine{00034\ \textcolor{comment}{\ \ o\ Enable\ multiple\ simultaneous\ transfers\ in\ the\ same\ thread\ without\ making\ it}}
+\DoxyCodeLine{00035\ \textcolor{comment}{\ \ \ \ complicated\ for\ the\ application.}}
+\DoxyCodeLine{00036\ \textcolor{comment}{}}
+\DoxyCodeLine{00037\ \textcolor{comment}{\ \ o\ Enable\ the\ application\ to\ select()\ on\ its\ own\ file\ descriptors\ and\ curl's}}
+\DoxyCodeLine{00038\ \textcolor{comment}{\ \ \ \ file\ descriptors\ simultaneous\ easily.}}
+\DoxyCodeLine{00039\ \textcolor{comment}{}}
+\DoxyCodeLine{00040\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00043\ \textcolor{comment}{\ *\ This\ header\ file\ should\ not\ really\ need\ to\ include\ "{}curl.h"{}\ since\ curl.h}}
+\DoxyCodeLine{00044\ \textcolor{comment}{\ *\ itself\ includes\ this\ file\ and\ we\ expect\ user\ applications\ to\ do\ \#include}}
+\DoxyCodeLine{00045\ \textcolor{comment}{\ *\ <curl/curl.h>\ without\ the\ need\ for\ especially\ including\ multi.h.}}
+\DoxyCodeLine{00046\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00047\ \textcolor{comment}{\ *\ For\ some\ reason\ we\ added\ this\ include\ here\ at\ one\ point,\ and\ rather\ than\ to}}
+\DoxyCodeLine{00048\ \textcolor{comment}{\ *\ break\ existing\ (wrongly\ written)\ libcurl\ applications,\ we\ leave\ it\ as-\/is}}
+\DoxyCodeLine{00049\ \textcolor{comment}{\ *\ but\ with\ this\ warning\ attached.}}
+\DoxyCodeLine{00050\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00051\ \textcolor{preprocessor}{\#include\ "{}curl.h"{}}}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \textcolor{preprocessor}{\#ifdef\ \ \_\_cplusplus}}
+\DoxyCodeLine{00054\ \textcolor{keyword}{extern}\ \textcolor{stringliteral}{"{}C"{}}\ \{}
+\DoxyCodeLine{00055\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00056\ }
+\DoxyCodeLine{00057\ \textcolor{keyword}{typedef}\ \textcolor{keywordtype}{void}\ CURLM;}
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00059\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00060\ \ \ CURLM\_CALL\_MULTI\_PERFORM\ =\ -\/1,\ \textcolor{comment}{/*\ please\ call\ curl\_multi\_perform()\ or}}
+\DoxyCodeLine{00061\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ curl\_multi\_socket*()\ soon\ */}}
+\DoxyCodeLine{00062\ \ \ CURLM\_OK,}
+\DoxyCodeLine{00063\ \ \ CURLM\_BAD\_HANDLE,\ \ \ \ \ \ \textcolor{comment}{/*\ the\ passed-\/in\ handle\ is\ not\ a\ valid\ CURLM\ handle\ */}}
+\DoxyCodeLine{00064\ \ \ CURLM\_BAD\_EASY\_HANDLE,\ \textcolor{comment}{/*\ an\ easy\ handle\ was\ not\ good/valid\ */}}
+\DoxyCodeLine{00065\ \ \ CURLM\_OUT\_OF\_MEMORY,\ \ \ \textcolor{comment}{/*\ if\ you\ ever\ get\ this,\ you\ are\ in\ deep\ sh*t\ */}}
+\DoxyCodeLine{00066\ \ \ CURLM\_INTERNAL\_ERROR,\ \ \textcolor{comment}{/*\ this\ is\ a\ libcurl\ bug\ */}}
+\DoxyCodeLine{00067\ \ \ CURLM\_BAD\_SOCKET,\ \ \ \ \ \ \textcolor{comment}{/*\ the\ passed\ in\ socket\ argument\ did\ not\ match\ */}}
+\DoxyCodeLine{00068\ \ \ CURLM\_UNKNOWN\_OPTION,\ \ \textcolor{comment}{/*\ curl\_multi\_setopt()\ with\ unsupported\ option\ */}}
+\DoxyCodeLine{00069\ \ \ CURLM\_ADDED\_ALREADY,\ \ \ \textcolor{comment}{/*\ an\ easy\ handle\ already\ added\ to\ a\ multi\ handle\ was}}
+\DoxyCodeLine{00070\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ attempted\ to\ get\ added\ -\/\ again\ */}}
+\DoxyCodeLine{00071\ \ \ CURLM\_RECURSIVE\_API\_CALL,\ \textcolor{comment}{/*\ an\ api\ function\ was\ called\ from\ inside\ a}}
+\DoxyCodeLine{00072\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ callback\ */}}
+\DoxyCodeLine{00073\ \ \ CURLM\_WAKEUP\_FAILURE,\ \ \textcolor{comment}{/*\ wakeup\ is\ unavailable\ or\ failed\ */}}
+\DoxyCodeLine{00074\ \ \ CURLM\_BAD\_FUNCTION\_ARGUMENT,\ \textcolor{comment}{/*\ function\ called\ with\ a\ bad\ parameter\ */}}
+\DoxyCodeLine{00075\ \ \ CURLM\_ABORTED\_BY\_CALLBACK,}
+\DoxyCodeLine{00076\ \ \ CURLM\_UNRECOVERABLE\_POLL,}
+\DoxyCodeLine{00077\ \ \ CURLM\_LAST}
+\DoxyCodeLine{00078\ \}\ CURLMcode;}
+\DoxyCodeLine{00079\ }
+\DoxyCodeLine{00080\ \textcolor{comment}{/*\ just\ to\ make\ code\ nicer\ when\ using\ curl\_multi\_socket()\ you\ can\ now\ check}}
+\DoxyCodeLine{00081\ \textcolor{comment}{\ \ \ for\ CURLM\_CALL\_MULTI\_SOCKET\ too\ in\ the\ same\ style\ it\ works\ for}}
+\DoxyCodeLine{00082\ \textcolor{comment}{\ \ \ curl\_multi\_perform()\ and\ CURLM\_CALL\_MULTI\_PERFORM\ */}}
+\DoxyCodeLine{00083\ \textcolor{preprocessor}{\#define\ CURLM\_CALL\_MULTI\_SOCKET\ CURLM\_CALL\_MULTI\_PERFORM}}
+\DoxyCodeLine{00084\ }
+\DoxyCodeLine{00085\ \textcolor{comment}{/*\ bitmask\ bits\ for\ CURLMOPT\_PIPELINING\ */}}
+\DoxyCodeLine{00086\ \textcolor{preprocessor}{\#define\ CURLPIPE\_NOTHING\ \ \ 0L}}
+\DoxyCodeLine{00087\ \textcolor{preprocessor}{\#define\ CURLPIPE\_HTTP1\ \ \ \ \ 1L}}
+\DoxyCodeLine{00088\ \textcolor{preprocessor}{\#define\ CURLPIPE\_MULTIPLEX\ 2L}}
+\DoxyCodeLine{00089\ }
+\DoxyCodeLine{00090\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00091\ \ \ CURLMSG\_NONE,\ \textcolor{comment}{/*\ first,\ not\ used\ */}}
+\DoxyCodeLine{00092\ \ \ CURLMSG\_DONE,\ \textcolor{comment}{/*\ This\ easy\ handle\ has\ completed.\ 'result'\ contains}}
+\DoxyCodeLine{00093\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ the\ CURLcode\ of\ the\ transfer\ */}}
+\DoxyCodeLine{00094\ \ \ CURLMSG\_LAST\ \textcolor{comment}{/*\ last,\ not\ used\ */}}
+\DoxyCodeLine{00095\ \}\ CURLMSG;}
+\DoxyCodeLine{00096\ }
+\DoxyCodeLine{00097\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_c_u_r_l_msg}{CURLMsg}}\ \{}
+\DoxyCodeLine{00098\ \ \ CURLMSG\ msg;\ \ \ \ \ \ \ \textcolor{comment}{/*\ what\ this\ message\ means\ */}}
+\DoxyCodeLine{00099\ \ \ CURL\ *easy\_handle;\ \textcolor{comment}{/*\ the\ handle\ it\ concerns\ */}}
+\DoxyCodeLine{00100\ \ \ \textcolor{keyword}{union\ }\{}
+\DoxyCodeLine{00101\ \ \ \ \ \textcolor{keywordtype}{void}\ *whatever;\ \ \ \ \textcolor{comment}{/*\ message-\/specific\ data\ */}}
+\DoxyCodeLine{00102\ \ \ \ \ CURLcode\ result;\ \ \ \textcolor{comment}{/*\ return\ code\ for\ transfer\ */}}
+\DoxyCodeLine{00103\ \ \ \}\ data;}
+\DoxyCodeLine{00104\ \};}
+\DoxyCodeLine{00105\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_c_u_r_l_msg}{CURLMsg}}\ \mbox{\hyperlink{struct_c_u_r_l_msg}{CURLMsg}};}
+\DoxyCodeLine{00106\ }
+\DoxyCodeLine{00107\ \textcolor{comment}{/*\ Based\ on\ poll(2)\ structure\ and\ values.}}
+\DoxyCodeLine{00108\ \textcolor{comment}{\ *\ We\ do\ not\ use\ pollfd\ and\ POLL*\ constants\ explicitly}}
+\DoxyCodeLine{00109\ \textcolor{comment}{\ *\ to\ cover\ platforms\ without\ poll().\ */}}
+\DoxyCodeLine{00110\ \textcolor{preprocessor}{\#define\ CURL\_WAIT\_POLLIN\ \ \ \ 0x0001}}
+\DoxyCodeLine{00111\ \textcolor{preprocessor}{\#define\ CURL\_WAIT\_POLLPRI\ \ \ 0x0002}}
+\DoxyCodeLine{00112\ \textcolor{preprocessor}{\#define\ CURL\_WAIT\_POLLOUT\ \ \ 0x0004}}
+\DoxyCodeLine{00113\ }
+\DoxyCodeLine{00114\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structcurl__waitfd}{curl\_waitfd}}\ \{}
+\DoxyCodeLine{00115\ \ \ curl\_socket\_t\ fd;}
+\DoxyCodeLine{00116\ \ \ \textcolor{keywordtype}{short}\ events;}
+\DoxyCodeLine{00117\ \ \ \textcolor{keywordtype}{short}\ revents;}
+\DoxyCodeLine{00118\ \};}
+\DoxyCodeLine{00119\ }
+\DoxyCodeLine{00120\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00121\ \textcolor{comment}{\ *\ Name:\ \ \ \ curl\_multi\_init()}}
+\DoxyCodeLine{00122\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00123\ \textcolor{comment}{\ *\ Desc:\ \ \ \ initialize\ multi-\/style\ curl\ usage}}
+\DoxyCodeLine{00124\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00125\ \textcolor{comment}{\ *\ Returns:\ a\ new\ CURLM\ handle\ to\ use\ in\ all\ 'curl\_multi'\ functions.}}
+\DoxyCodeLine{00126\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00127\ CURL\_EXTERN\ CURLM\ *curl\_multi\_init(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{00128\ }
+\DoxyCodeLine{00129\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00130\ \textcolor{comment}{\ *\ Name:\ \ \ \ curl\_multi\_add\_handle()}}
+\DoxyCodeLine{00131\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00132\ \textcolor{comment}{\ *\ Desc:\ \ \ \ add\ a\ standard\ curl\ handle\ to\ the\ multi\ stack}}
+\DoxyCodeLine{00133\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00134\ \textcolor{comment}{\ *\ Returns:\ CURLMcode\ type,\ general\ multi\ error\ code.}}
+\DoxyCodeLine{00135\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00136\ CURL\_EXTERN\ CURLMcode\ curl\_multi\_add\_handle(CURLM\ *multi\_handle,}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ CURL\ *curl\_handle);}
+\DoxyCodeLine{00138\ }
+\DoxyCodeLine{00139\ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00140\ \textcolor{comment}{\ \ *\ Name:\ \ \ \ curl\_multi\_remove\_handle()}}
+\DoxyCodeLine{00141\ \textcolor{comment}{\ \ *}}
+\DoxyCodeLine{00142\ \textcolor{comment}{\ \ *\ Desc:\ \ \ \ removes\ a\ curl\ handle\ from\ the\ multi\ stack\ again}}
+\DoxyCodeLine{00143\ \textcolor{comment}{\ \ *}}
+\DoxyCodeLine{00144\ \textcolor{comment}{\ \ *\ Returns:\ CURLMcode\ type,\ general\ multi\ error\ code.}}
+\DoxyCodeLine{00145\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00146\ CURL\_EXTERN\ CURLMcode\ curl\_multi\_remove\_handle(CURLM\ *multi\_handle,}
+\DoxyCodeLine{00147\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ CURL\ *curl\_handle);}
+\DoxyCodeLine{00148\ }
+\DoxyCodeLine{00149\ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00150\ \textcolor{comment}{\ \ *\ Name:\ \ \ \ curl\_multi\_fdset()}}
+\DoxyCodeLine{00151\ \textcolor{comment}{\ \ *}}
+\DoxyCodeLine{00152\ \textcolor{comment}{\ \ *\ Desc:\ \ \ \ Ask\ curl\ for\ its\ fd\_set\ sets.\ The\ app\ can\ use\ these\ to\ select()\ or}}
+\DoxyCodeLine{00153\ \textcolor{comment}{\ \ *\ \ \ \ \ \ \ \ \ \ poll()\ on.\ We\ want\ curl\_multi\_perform()\ called\ as\ soon\ as\ one\ of}}
+\DoxyCodeLine{00154\ \textcolor{comment}{\ \ *\ \ \ \ \ \ \ \ \ \ them\ are\ ready.}}
+\DoxyCodeLine{00155\ \textcolor{comment}{\ \ *}}
+\DoxyCodeLine{00156\ \textcolor{comment}{\ \ *\ Returns:\ CURLMcode\ type,\ general\ multi\ error\ code.}}
+\DoxyCodeLine{00157\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00158\ CURL\_EXTERN\ CURLMcode\ curl\_multi\_fdset(CURLM\ *multi\_handle,}
+\DoxyCodeLine{00159\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ fd\_set\ *read\_fd\_set,}
+\DoxyCodeLine{00160\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ fd\_set\ *write\_fd\_set,}
+\DoxyCodeLine{00161\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ fd\_set\ *exc\_fd\_set,}
+\DoxyCodeLine{00162\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ *max\_fd);}
+\DoxyCodeLine{00163\ }
+\DoxyCodeLine{00164\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00165\ \textcolor{comment}{\ *\ Name:\ \ \ \ \ curl\_multi\_wait()}}
+\DoxyCodeLine{00166\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00167\ \textcolor{comment}{\ *\ Desc:\ \ \ \ \ Poll\ on\ all\ fds\ within\ a\ CURLM\ set\ as\ well\ as\ any}}
+\DoxyCodeLine{00168\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ additional\ fds\ passed\ to\ the\ function.}}
+\DoxyCodeLine{00169\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00170\ \textcolor{comment}{\ *\ Returns:\ \ CURLMcode\ type,\ general\ multi\ error\ code.}}
+\DoxyCodeLine{00171\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00172\ CURL\_EXTERN\ CURLMcode\ curl\_multi\_wait(CURLM\ *multi\_handle,}
+\DoxyCodeLine{00173\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{struct}\ \mbox{\hyperlink{structcurl__waitfd}{curl\_waitfd}}\ extra\_fds[],}
+\DoxyCodeLine{00174\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ extra\_nfds,}
+\DoxyCodeLine{00175\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ timeout\_ms,}
+\DoxyCodeLine{00176\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ *ret);}
+\DoxyCodeLine{00177\ }
+\DoxyCodeLine{00178\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00179\ \textcolor{comment}{\ *\ Name:\ \ \ \ \ curl\_multi\_poll()}}
+\DoxyCodeLine{00180\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00181\ \textcolor{comment}{\ *\ Desc:\ \ \ \ \ Poll\ on\ all\ fds\ within\ a\ CURLM\ set\ as\ well\ as\ any}}
+\DoxyCodeLine{00182\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ additional\ fds\ passed\ to\ the\ function.}}
+\DoxyCodeLine{00183\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00184\ \textcolor{comment}{\ *\ Returns:\ \ CURLMcode\ type,\ general\ multi\ error\ code.}}
+\DoxyCodeLine{00185\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00186\ CURL\_EXTERN\ CURLMcode\ curl\_multi\_poll(CURLM\ *multi\_handle,}
+\DoxyCodeLine{00187\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{struct}\ \mbox{\hyperlink{structcurl__waitfd}{curl\_waitfd}}\ extra\_fds[],}
+\DoxyCodeLine{00188\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ extra\_nfds,}
+\DoxyCodeLine{00189\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ timeout\_ms,}
+\DoxyCodeLine{00190\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ *ret);}
+\DoxyCodeLine{00191\ }
+\DoxyCodeLine{00192\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00193\ \textcolor{comment}{\ *\ Name:\ \ \ \ \ curl\_multi\_wakeup()}}
+\DoxyCodeLine{00194\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00195\ \textcolor{comment}{\ *\ Desc:\ \ \ \ \ wakes\ up\ a\ sleeping\ curl\_multi\_poll\ call.}}
+\DoxyCodeLine{00196\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00197\ \textcolor{comment}{\ *\ Returns:\ \ CURLMcode\ type,\ general\ multi\ error\ code.}}
+\DoxyCodeLine{00198\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00199\ CURL\_EXTERN\ CURLMcode\ curl\_multi\_wakeup(CURLM\ *multi\_handle);}
+\DoxyCodeLine{00200\ }
+\DoxyCodeLine{00201\ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00202\ \textcolor{comment}{\ \ *\ Name:\ \ \ \ curl\_multi\_perform()}}
+\DoxyCodeLine{00203\ \textcolor{comment}{\ \ *}}
+\DoxyCodeLine{00204\ \textcolor{comment}{\ \ *\ Desc:\ \ \ \ When\ the\ app\ thinks\ there\ is\ data\ available\ for\ curl\ it\ calls\ this}}
+\DoxyCodeLine{00205\ \textcolor{comment}{\ \ *\ \ \ \ \ \ \ \ \ \ function\ to\ read/write\ whatever\ there\ is\ right\ now.\ This\ returns}}
+\DoxyCodeLine{00206\ \textcolor{comment}{\ \ *\ \ \ \ \ \ \ \ \ \ as\ soon\ as\ the\ reads\ and\ writes\ are\ done.\ This\ function\ does\ not}}
+\DoxyCodeLine{00207\ \textcolor{comment}{\ \ *\ \ \ \ \ \ \ \ \ \ require\ that\ there\ actually\ is\ data\ available\ for\ reading\ or\ that}}
+\DoxyCodeLine{00208\ \textcolor{comment}{\ \ *\ \ \ \ \ \ \ \ \ \ data\ can\ be\ written,\ it\ can\ be\ called\ just\ in\ case.\ It\ returns}}
+\DoxyCodeLine{00209\ \textcolor{comment}{\ \ *\ \ \ \ \ \ \ \ \ \ the\ number\ of\ handles\ that\ still\ transfer\ data\ in\ the\ second}}
+\DoxyCodeLine{00210\ \textcolor{comment}{\ \ *\ \ \ \ \ \ \ \ \ \ argument's\ integer-\/pointer.}}
+\DoxyCodeLine{00211\ \textcolor{comment}{\ \ *}}
+\DoxyCodeLine{00212\ \textcolor{comment}{\ \ *\ Returns:\ CURLMcode\ type,\ general\ multi\ error\ code.\ *NOTE*\ that\ this\ only}}
+\DoxyCodeLine{00213\ \textcolor{comment}{\ \ *\ \ \ \ \ \ \ \ \ \ returns\ errors\ etc\ regarding\ the\ whole\ multi\ stack.\ There\ might}}
+\DoxyCodeLine{00214\ \textcolor{comment}{\ \ *\ \ \ \ \ \ \ \ \ \ still\ have\ occurred\ problems\ on\ individual\ transfers\ even\ when}}
+\DoxyCodeLine{00215\ \textcolor{comment}{\ \ *\ \ \ \ \ \ \ \ \ \ this\ returns\ OK.}}
+\DoxyCodeLine{00216\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00217\ CURL\_EXTERN\ CURLMcode\ curl\_multi\_perform(CURLM\ *multi\_handle,}
+\DoxyCodeLine{00218\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ *running\_handles);}
+\DoxyCodeLine{00219\ }
+\DoxyCodeLine{00220\ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00221\ \textcolor{comment}{\ \ *\ Name:\ \ \ \ curl\_multi\_cleanup()}}
+\DoxyCodeLine{00222\ \textcolor{comment}{\ \ *}}
+\DoxyCodeLine{00223\ \textcolor{comment}{\ \ *\ Desc:\ \ \ \ Cleans\ up\ and\ removes\ a\ whole\ multi\ stack.\ It\ does\ not\ free\ or}}
+\DoxyCodeLine{00224\ \textcolor{comment}{\ \ *\ \ \ \ \ \ \ \ \ \ touch\ any\ individual\ easy\ handles\ in\ any\ way.\ We\ need\ to\ define}}
+\DoxyCodeLine{00225\ \textcolor{comment}{\ \ *\ \ \ \ \ \ \ \ \ \ in\ what\ state\ those\ handles\ will\ be\ if\ this\ function\ is\ called}}
+\DoxyCodeLine{00226\ \textcolor{comment}{\ \ *\ \ \ \ \ \ \ \ \ \ in\ the\ middle\ of\ a\ transfer.}}
+\DoxyCodeLine{00227\ \textcolor{comment}{\ \ *}}
+\DoxyCodeLine{00228\ \textcolor{comment}{\ \ *\ Returns:\ CURLMcode\ type,\ general\ multi\ error\ code.}}
+\DoxyCodeLine{00229\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00230\ CURL\_EXTERN\ CURLMcode\ curl\_multi\_cleanup(CURLM\ *multi\_handle);}
+\DoxyCodeLine{00231\ }
+\DoxyCodeLine{00232\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00233\ \textcolor{comment}{\ *\ Name:\ \ \ \ curl\_multi\_info\_read()}}
+\DoxyCodeLine{00234\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00235\ \textcolor{comment}{\ *\ Desc:\ \ \ \ Ask\ the\ multi\ handle\ if\ there\ is\ any\ messages/informationals\ from}}
+\DoxyCodeLine{00236\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ the\ individual\ transfers.\ Messages\ include\ informationals\ such\ as}}
+\DoxyCodeLine{00237\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ error\ code\ from\ the\ transfer\ or\ just\ the\ fact\ that\ a\ transfer\ is}}
+\DoxyCodeLine{00238\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ completed.\ More\ details\ on\ these\ should\ be\ written\ down\ as\ well.}}
+\DoxyCodeLine{00239\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00240\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ Repeated\ calls\ to\ this\ function\ will\ return\ a\ new\ struct\ each}}
+\DoxyCodeLine{00241\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ time,\ until\ a\ special\ "{}end\ of\ msgs"{}\ struct\ is\ returned\ as\ a\ signal}}
+\DoxyCodeLine{00242\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ that\ there\ is\ no\ more\ to\ get\ at\ this\ point.}}
+\DoxyCodeLine{00243\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00244\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ The\ data\ the\ returned\ pointer\ points\ to\ will\ not\ survive\ calling}}
+\DoxyCodeLine{00245\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ curl\_multi\_cleanup().}}
+\DoxyCodeLine{00246\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00247\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ The\ 'CURLMsg'\ struct\ is\ meant\ to\ be\ simple\ and\ only\ contain\ basic}}
+\DoxyCodeLine{00248\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ information.\ If\ more\ involved\ information\ is\ wanted,\ we\ will}}
+\DoxyCodeLine{00249\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ provide\ the\ particular\ "{}transfer\ handle"{}\ in\ that\ struct\ and\ that}}
+\DoxyCodeLine{00250\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ should/could/would\ be\ used\ in\ subsequent\ curl\_easy\_getinfo()\ calls}}
+\DoxyCodeLine{00251\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ (or\ similar).\ The\ point\ being\ that\ we\ must\ never\ expose\ complex}}
+\DoxyCodeLine{00252\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ structs\ to\ applications,\ as\ then\ we\ will\ undoubtably\ get\ backwards}}
+\DoxyCodeLine{00253\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ compatibility\ problems\ in\ the\ future.}}
+\DoxyCodeLine{00254\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00255\ \textcolor{comment}{\ *\ Returns:\ A\ pointer\ to\ a\ filled-\/in\ struct,\ or\ NULL\ if\ it\ failed\ or\ ran\ out}}
+\DoxyCodeLine{00256\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ of\ structs.\ It\ also\ writes\ the\ number\ of\ messages\ left\ in\ the}}
+\DoxyCodeLine{00257\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ queue\ (after\ this\ read)\ in\ the\ integer\ the\ second\ argument\ points}}
+\DoxyCodeLine{00258\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ to.}}
+\DoxyCodeLine{00259\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00260\ CURL\_EXTERN\ \mbox{\hyperlink{struct_c_u_r_l_msg}{CURLMsg}}\ *curl\_multi\_info\_read(CURLM\ *multi\_handle,}
+\DoxyCodeLine{00261\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ *msgs\_in\_queue);}
+\DoxyCodeLine{00262\ }
+\DoxyCodeLine{00263\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00264\ \textcolor{comment}{\ *\ Name:\ \ \ \ curl\_multi\_strerror()}}
+\DoxyCodeLine{00265\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00266\ \textcolor{comment}{\ *\ Desc:\ \ \ \ The\ curl\_multi\_strerror\ function\ may\ be\ used\ to\ turn\ a\ CURLMcode}}
+\DoxyCodeLine{00267\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ value\ into\ the\ equivalent\ human\ readable\ error\ string.\ This\ is}}
+\DoxyCodeLine{00268\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ useful\ for\ printing\ meaningful\ error\ messages.}}
+\DoxyCodeLine{00269\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00270\ \textcolor{comment}{\ *\ Returns:\ A\ pointer\ to\ a\ null-\/terminated\ error\ message.}}
+\DoxyCodeLine{00271\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00272\ CURL\_EXTERN\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *curl\_multi\_strerror(CURLMcode);}
+\DoxyCodeLine{00273\ }
+\DoxyCodeLine{00274\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00275\ \textcolor{comment}{\ *\ Name:\ \ \ \ curl\_multi\_socket()\ and}}
+\DoxyCodeLine{00276\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ curl\_multi\_socket\_all()}}
+\DoxyCodeLine{00277\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00278\ \textcolor{comment}{\ *\ Desc:\ \ \ \ An\ alternative\ version\ of\ curl\_multi\_perform()\ that\ allows\ the}}
+\DoxyCodeLine{00279\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ application\ to\ pass\ in\ one\ of\ the\ file\ descriptors\ that\ have\ been}}
+\DoxyCodeLine{00280\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ detected\ to\ have\ "{}action"{}\ on\ them\ and\ let\ libcurl\ perform.}}
+\DoxyCodeLine{00281\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ See\ manpage\ for\ details.}}
+\DoxyCodeLine{00282\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00283\ \textcolor{preprocessor}{\#define\ CURL\_POLL\_NONE\ \ \ 0}}
+\DoxyCodeLine{00284\ \textcolor{preprocessor}{\#define\ CURL\_POLL\_IN\ \ \ \ \ 1}}
+\DoxyCodeLine{00285\ \textcolor{preprocessor}{\#define\ CURL\_POLL\_OUT\ \ \ \ 2}}
+\DoxyCodeLine{00286\ \textcolor{preprocessor}{\#define\ CURL\_POLL\_INOUT\ \ 3}}
+\DoxyCodeLine{00287\ \textcolor{preprocessor}{\#define\ CURL\_POLL\_REMOVE\ 4}}
+\DoxyCodeLine{00288\ }
+\DoxyCodeLine{00289\ \textcolor{preprocessor}{\#define\ CURL\_SOCKET\_TIMEOUT\ CURL\_SOCKET\_BAD}}
+\DoxyCodeLine{00290\ }
+\DoxyCodeLine{00291\ \textcolor{preprocessor}{\#define\ CURL\_CSELECT\_IN\ \ \ 0x01}}
+\DoxyCodeLine{00292\ \textcolor{preprocessor}{\#define\ CURL\_CSELECT\_OUT\ \ 0x02}}
+\DoxyCodeLine{00293\ \textcolor{preprocessor}{\#define\ CURL\_CSELECT\_ERR\ \ 0x04}}
+\DoxyCodeLine{00294\ }
+\DoxyCodeLine{00295\ \textcolor{keyword}{typedef}\ int\ (*curl\_socket\_callback)(CURL\ *easy,\ \ \ \ \ \ \textcolor{comment}{/*\ easy\ handle\ */}}
+\DoxyCodeLine{00296\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ curl\_socket\_t\ s,\ \textcolor{comment}{/*\ socket\ */}}
+\DoxyCodeLine{00297\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ what,\ \ \ \ \ \ \ \ \textcolor{comment}{/*\ see\ above\ */}}
+\DoxyCodeLine{00298\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ *userp,\ \ \ \ \ \textcolor{comment}{/*\ private\ callback}}
+\DoxyCodeLine{00299\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ pointer\ */}}
+\DoxyCodeLine{00300\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ *socketp);\ \ \textcolor{comment}{/*\ private\ socket}}
+\DoxyCodeLine{00301\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ pointer\ */}}
+\DoxyCodeLine{00302\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00303\ \textcolor{comment}{\ *\ Name:\ \ \ \ curl\_multi\_timer\_callback}}
+\DoxyCodeLine{00304\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00305\ \textcolor{comment}{\ *\ Desc:\ \ \ \ Called\ by\ libcurl\ whenever\ the\ library\ detects\ a\ change\ in\ the}}
+\DoxyCodeLine{00306\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ maximum\ number\ of\ milliseconds\ the\ app\ is\ allowed\ to\ wait\ before}}
+\DoxyCodeLine{00307\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ curl\_multi\_socket()\ or\ curl\_multi\_perform()\ must\ be\ called}}
+\DoxyCodeLine{00308\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ (to\ allow\ libcurl's\ timed\ events\ to\ take\ place).}}
+\DoxyCodeLine{00309\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00310\ \textcolor{comment}{\ *\ Returns:\ The\ callback\ should\ return\ zero.}}
+\DoxyCodeLine{00311\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00312\ \textcolor{keyword}{typedef}\ int\ (*curl\_multi\_timer\_callback)(CURLM\ *multi,\ \ \ \ \textcolor{comment}{/*\ multi\ handle\ */}}
+\DoxyCodeLine{00313\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{long}\ timeout\_ms,\ \textcolor{comment}{/*\ see\ above\ */}}
+\DoxyCodeLine{00314\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ *userp);\ \ \ \ \textcolor{comment}{/*\ private\ callback}}
+\DoxyCodeLine{00315\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ pointer\ */}}
+\DoxyCodeLine{00316\ }
+\DoxyCodeLine{00317\ CURL\_EXTERN\ CURLMcode\ CURL\_DEPRECATED(7.19.5,\ \textcolor{stringliteral}{"{}Use\ curl\_multi\_socket\_action()"{}})}
+\DoxyCodeLine{00318\ curl\_multi\_socket(CURLM\ *multi\_handle,\ curl\_socket\_t\ s,\ \textcolor{keywordtype}{int}\ *running\_handles);}
+\DoxyCodeLine{00319\ }
+\DoxyCodeLine{00320\ CURL\_EXTERN\ CURLMcode\ curl\_multi\_socket\_action(CURLM\ *multi\_handle,}
+\DoxyCodeLine{00321\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ curl\_socket\_t\ s,}
+\DoxyCodeLine{00322\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ ev\_bitmask,}
+\DoxyCodeLine{00323\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ *running\_handles);}
+\DoxyCodeLine{00324\ }
+\DoxyCodeLine{00325\ CURL\_EXTERN\ CURLMcode\ CURL\_DEPRECATED(7.19.5,\ \textcolor{stringliteral}{"{}Use\ curl\_multi\_socket\_action()"{}})}
+\DoxyCodeLine{00326\ curl\_multi\_socket\_all(CURLM\ *multi\_handle,\ \textcolor{keywordtype}{int}\ *running\_handles);}
+\DoxyCodeLine{00327\ }
+\DoxyCodeLine{00328\ \textcolor{preprocessor}{\#ifndef\ CURL\_ALLOW\_OLD\_MULTI\_SOCKET}}
+\DoxyCodeLine{00329\ \textcolor{comment}{/*\ This\ macro\ below\ was\ added\ in\ 7.16.3\ to\ push\ users\ who\ recompile\ to\ use}}
+\DoxyCodeLine{00330\ \textcolor{comment}{\ \ \ the\ new\ curl\_multi\_socket\_action()\ instead\ of\ the\ old\ curl\_multi\_socket()}}
+\DoxyCodeLine{00331\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00332\ \textcolor{preprocessor}{\#define\ curl\_multi\_socket(x,y,z)\ curl\_multi\_socket\_action(x,y,0,z)}}
+\DoxyCodeLine{00333\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00334\ }
+\DoxyCodeLine{00335\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00336\ \textcolor{comment}{\ *\ Name:\ \ \ \ curl\_multi\_timeout()}}
+\DoxyCodeLine{00337\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00338\ \textcolor{comment}{\ *\ Desc:\ \ \ \ Returns\ the\ maximum\ number\ of\ milliseconds\ the\ app\ is\ allowed\ to}}
+\DoxyCodeLine{00339\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ wait\ before\ curl\_multi\_socket()\ or\ curl\_multi\_perform()\ must\ be}}
+\DoxyCodeLine{00340\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ called\ (to\ allow\ libcurl's\ timed\ events\ to\ take\ place).}}
+\DoxyCodeLine{00341\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00342\ \textcolor{comment}{\ *\ Returns:\ CURLM\ error\ code.}}
+\DoxyCodeLine{00343\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00344\ CURL\_EXTERN\ CURLMcode\ curl\_multi\_timeout(CURLM\ *multi\_handle,}
+\DoxyCodeLine{00345\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{long}\ *milliseconds);}
+\DoxyCodeLine{00346\ }
+\DoxyCodeLine{00347\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00348\ \ \ \textcolor{comment}{/*\ This\ is\ the\ socket\ callback\ function\ pointer\ */}}
+\DoxyCodeLine{00349\ \ \ CURLOPT(CURLMOPT\_SOCKETFUNCTION,\ CURLOPTTYPE\_FUNCTIONPOINT,\ 1),}
+\DoxyCodeLine{00350\ }
+\DoxyCodeLine{00351\ \ \ \textcolor{comment}{/*\ This\ is\ the\ argument\ passed\ to\ the\ socket\ callback\ */}}
+\DoxyCodeLine{00352\ \ \ CURLOPT(CURLMOPT\_SOCKETDATA,\ CURLOPTTYPE\_OBJECTPOINT,\ 2),}
+\DoxyCodeLine{00353\ }
+\DoxyCodeLine{00354\ \ \ \ \ \textcolor{comment}{/*\ set\ to\ 1\ to\ enable\ pipelining\ for\ this\ multi\ handle\ */}}
+\DoxyCodeLine{00355\ \ \ CURLOPT(CURLMOPT\_PIPELINING,\ CURLOPTTYPE\_LONG,\ 3),}
+\DoxyCodeLine{00356\ }
+\DoxyCodeLine{00357\ \ \ \ \textcolor{comment}{/*\ This\ is\ the\ timer\ callback\ function\ pointer\ */}}
+\DoxyCodeLine{00358\ \ \ CURLOPT(CURLMOPT\_TIMERFUNCTION,\ CURLOPTTYPE\_FUNCTIONPOINT,\ 4),}
+\DoxyCodeLine{00359\ }
+\DoxyCodeLine{00360\ \ \ \textcolor{comment}{/*\ This\ is\ the\ argument\ passed\ to\ the\ timer\ callback\ */}}
+\DoxyCodeLine{00361\ \ \ CURLOPT(CURLMOPT\_TIMERDATA,\ CURLOPTTYPE\_OBJECTPOINT,\ 5),}
+\DoxyCodeLine{00362\ }
+\DoxyCodeLine{00363\ \ \ \textcolor{comment}{/*\ maximum\ number\ of\ entries\ in\ the\ connection\ cache\ */}}
+\DoxyCodeLine{00364\ \ \ CURLOPT(CURLMOPT\_MAXCONNECTS,\ CURLOPTTYPE\_LONG,\ 6),}
+\DoxyCodeLine{00365\ }
+\DoxyCodeLine{00366\ \ \ \textcolor{comment}{/*\ maximum\ number\ of\ (pipelining)\ connections\ to\ one\ host\ */}}
+\DoxyCodeLine{00367\ \ \ CURLOPT(CURLMOPT\_MAX\_HOST\_CONNECTIONS,\ CURLOPTTYPE\_LONG,\ 7),}
+\DoxyCodeLine{00368\ }
+\DoxyCodeLine{00369\ \ \ \textcolor{comment}{/*\ maximum\ number\ of\ requests\ in\ a\ pipeline\ */}}
+\DoxyCodeLine{00370\ \ \ CURLOPT(CURLMOPT\_MAX\_PIPELINE\_LENGTH,\ CURLOPTTYPE\_LONG,\ 8),}
+\DoxyCodeLine{00371\ }
+\DoxyCodeLine{00372\ \ \ \textcolor{comment}{/*\ a\ connection\ with\ a\ content-\/length\ longer\ than\ this}}
+\DoxyCodeLine{00373\ \textcolor{comment}{\ \ \ \ \ will\ not\ be\ considered\ for\ pipelining\ */}}
+\DoxyCodeLine{00374\ \ \ CURLOPT(CURLMOPT\_CONTENT\_LENGTH\_PENALTY\_SIZE,\ CURLOPTTYPE\_OFF\_T,\ 9),}
+\DoxyCodeLine{00375\ }
+\DoxyCodeLine{00376\ \ \ \textcolor{comment}{/*\ a\ connection\ with\ a\ chunk\ length\ longer\ than\ this}}
+\DoxyCodeLine{00377\ \textcolor{comment}{\ \ \ \ \ will\ not\ be\ considered\ for\ pipelining\ */}}
+\DoxyCodeLine{00378\ \ \ CURLOPT(CURLMOPT\_CHUNK\_LENGTH\_PENALTY\_SIZE,\ CURLOPTTYPE\_OFF\_T,\ 10),}
+\DoxyCodeLine{00379\ }
+\DoxyCodeLine{00380\ \ \ \textcolor{comment}{/*\ a\ list\ of\ site\ names(+port)\ that\ are\ blocked\ from\ pipelining\ */}}
+\DoxyCodeLine{00381\ \ \ CURLOPT(CURLMOPT\_PIPELINING\_SITE\_BL,\ CURLOPTTYPE\_OBJECTPOINT,\ 11),}
+\DoxyCodeLine{00382\ }
+\DoxyCodeLine{00383\ \ \ \textcolor{comment}{/*\ a\ list\ of\ server\ types\ that\ are\ blocked\ from\ pipelining\ */}}
+\DoxyCodeLine{00384\ \ \ CURLOPT(CURLMOPT\_PIPELINING\_SERVER\_BL,\ CURLOPTTYPE\_OBJECTPOINT,\ 12),}
+\DoxyCodeLine{00385\ }
+\DoxyCodeLine{00386\ \ \ \textcolor{comment}{/*\ maximum\ number\ of\ open\ connections\ in\ total\ */}}
+\DoxyCodeLine{00387\ \ \ CURLOPT(CURLMOPT\_MAX\_TOTAL\_CONNECTIONS,\ CURLOPTTYPE\_LONG,\ 13),}
+\DoxyCodeLine{00388\ }
+\DoxyCodeLine{00389\ \ \ \ \textcolor{comment}{/*\ This\ is\ the\ server\ push\ callback\ function\ pointer\ */}}
+\DoxyCodeLine{00390\ \ \ CURLOPT(CURLMOPT\_PUSHFUNCTION,\ CURLOPTTYPE\_FUNCTIONPOINT,\ 14),}
+\DoxyCodeLine{00391\ }
+\DoxyCodeLine{00392\ \ \ \textcolor{comment}{/*\ This\ is\ the\ argument\ passed\ to\ the\ server\ push\ callback\ */}}
+\DoxyCodeLine{00393\ \ \ CURLOPT(CURLMOPT\_PUSHDATA,\ CURLOPTTYPE\_OBJECTPOINT,\ 15),}
+\DoxyCodeLine{00394\ }
+\DoxyCodeLine{00395\ \ \ \textcolor{comment}{/*\ maximum\ number\ of\ concurrent\ streams\ to\ support\ on\ a\ connection\ */}}
+\DoxyCodeLine{00396\ \ \ CURLOPT(CURLMOPT\_MAX\_CONCURRENT\_STREAMS,\ CURLOPTTYPE\_LONG,\ 16),}
+\DoxyCodeLine{00397\ }
+\DoxyCodeLine{00398\ \ \ CURLMOPT\_LASTENTRY\ \textcolor{comment}{/*\ the\ last\ unused\ */}}
+\DoxyCodeLine{00399\ \}\ CURLMoption;}
+\DoxyCodeLine{00400\ }
+\DoxyCodeLine{00401\ }
+\DoxyCodeLine{00402\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00403\ \textcolor{comment}{\ *\ Name:\ \ \ \ curl\_multi\_setopt()}}
+\DoxyCodeLine{00404\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00405\ \textcolor{comment}{\ *\ Desc:\ \ \ \ Sets\ options\ for\ the\ multi\ handle.}}
+\DoxyCodeLine{00406\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00407\ \textcolor{comment}{\ *\ Returns:\ CURLM\ error\ code.}}
+\DoxyCodeLine{00408\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00409\ CURL\_EXTERN\ CURLMcode\ curl\_multi\_setopt(CURLM\ *multi\_handle,}
+\DoxyCodeLine{00410\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ CURLMoption\ option,\ ...);}
+\DoxyCodeLine{00411\ }
+\DoxyCodeLine{00412\ }
+\DoxyCodeLine{00413\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00414\ \textcolor{comment}{\ *\ Name:\ \ \ \ curl\_multi\_assign()}}
+\DoxyCodeLine{00415\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00416\ \textcolor{comment}{\ *\ Desc:\ \ \ \ This\ function\ sets\ an\ association\ in\ the\ multi\ handle\ between\ the}}
+\DoxyCodeLine{00417\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ given\ socket\ and\ a\ private\ pointer\ of\ the\ application.\ This\ is}}
+\DoxyCodeLine{00418\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ (only)\ useful\ for\ curl\_multi\_socket\ uses.}}
+\DoxyCodeLine{00419\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00420\ \textcolor{comment}{\ *\ Returns:\ CURLM\ error\ code.}}
+\DoxyCodeLine{00421\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00422\ CURL\_EXTERN\ CURLMcode\ curl\_multi\_assign(CURLM\ *multi\_handle,}
+\DoxyCodeLine{00423\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ curl\_socket\_t\ sockfd,\ \textcolor{keywordtype}{void}\ *sockp);}
+\DoxyCodeLine{00424\ }
+\DoxyCodeLine{00425\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00426\ \textcolor{comment}{\ *\ Name:\ \ \ \ curl\_multi\_get\_handles()}}
+\DoxyCodeLine{00427\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00428\ \textcolor{comment}{\ *\ Desc:\ \ \ \ Returns\ an\ allocated\ array\ holding\ all\ handles\ currently\ added\ to}}
+\DoxyCodeLine{00429\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ the\ multi\ handle.\ Marks\ the\ final\ entry\ with\ a\ NULL\ pointer.\ If}}
+\DoxyCodeLine{00430\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ there\ is\ no\ easy\ handle\ added\ to\ the\ multi\ handle,\ this\ function}}
+\DoxyCodeLine{00431\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ returns\ an\ array\ with\ the\ first\ entry\ as\ a\ NULL\ pointer.}}
+\DoxyCodeLine{00432\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00433\ \textcolor{comment}{\ *\ Returns:\ NULL\ on\ failure,\ otherwise\ a\ CURL\ **array\ pointer}}
+\DoxyCodeLine{00434\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00435\ CURL\_EXTERN\ CURL\ **curl\_multi\_get\_handles(CURLM\ *multi\_handle);}
+\DoxyCodeLine{00436\ }
+\DoxyCodeLine{00437\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00438\ \textcolor{comment}{\ *\ Name:\ curl\_push\_callback}}
+\DoxyCodeLine{00439\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00440\ \textcolor{comment}{\ *\ Desc:\ This\ callback\ gets\ called\ when\ a\ new\ stream\ is\ being\ pushed\ by\ the}}
+\DoxyCodeLine{00441\ \textcolor{comment}{\ *\ \ \ \ \ \ \ server.\ It\ approves\ or\ denies\ the\ new\ stream.\ It\ can\ also\ decide}}
+\DoxyCodeLine{00442\ \textcolor{comment}{\ *\ \ \ \ \ \ \ to\ completely\ fail\ the\ connection.}}
+\DoxyCodeLine{00443\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00444\ \textcolor{comment}{\ *\ Returns:\ CURL\_PUSH\_OK,\ CURL\_PUSH\_DENY\ or\ CURL\_PUSH\_ERROROUT}}
+\DoxyCodeLine{00445\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00446\ \textcolor{preprocessor}{\#define\ CURL\_PUSH\_OK\ \ \ \ \ \ \ 0}}
+\DoxyCodeLine{00447\ \textcolor{preprocessor}{\#define\ CURL\_PUSH\_DENY\ \ \ \ \ 1}}
+\DoxyCodeLine{00448\ \textcolor{preprocessor}{\#define\ CURL\_PUSH\_ERROROUT\ 2\ }\textcolor{comment}{/*\ added\ in\ 7.72.0\ */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{00449\ }
+\DoxyCodeLine{00450\ \textcolor{keyword}{struct\ }curl\_pushheaders;\ \ \textcolor{comment}{/*\ forward\ declaration\ only\ */}}
+\DoxyCodeLine{00451\ }
+\DoxyCodeLine{00452\ CURL\_EXTERN\ \textcolor{keywordtype}{char}\ *curl\_pushheader\_bynum(\textcolor{keyword}{struct}\ curl\_pushheaders\ *h,}
+\DoxyCodeLine{00453\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ num);}
+\DoxyCodeLine{00454\ CURL\_EXTERN\ \textcolor{keywordtype}{char}\ *curl\_pushheader\_byname(\textcolor{keyword}{struct}\ curl\_pushheaders\ *h,}
+\DoxyCodeLine{00455\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *name);}
+\DoxyCodeLine{00456\ }
+\DoxyCodeLine{00457\ \textcolor{keyword}{typedef}\ int\ (*curl\_push\_callback)(CURL\ *parent,}
+\DoxyCodeLine{00458\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ CURL\ *easy,}
+\DoxyCodeLine{00459\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ num\_headers,}
+\DoxyCodeLine{00460\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{struct\ }curl\_pushheaders\ *headers,}
+\DoxyCodeLine{00461\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ *userp);}
+\DoxyCodeLine{00462\ }
+\DoxyCodeLine{00463\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00464\ \textcolor{comment}{\ *\ Name:\ \ \ \ curl\_multi\_waitfds()}}
+\DoxyCodeLine{00465\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00466\ \textcolor{comment}{\ *\ Desc:\ \ \ \ Ask\ curl\ for\ fds\ for\ polling.\ The\ app\ can\ use\ these\ to\ poll\ on.}}
+\DoxyCodeLine{00467\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ We\ want\ curl\_multi\_perform()\ called\ as\ soon\ as\ one\ of\ them\ are}}
+\DoxyCodeLine{00468\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ ready.\ Passing\ zero\ size\ allows\ to\ get\ just\ a\ number\ of\ fds.}}
+\DoxyCodeLine{00469\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00470\ \textcolor{comment}{\ *\ Returns:\ CURLMcode\ type,\ general\ multi\ error\ code.}}
+\DoxyCodeLine{00471\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00472\ CURL\_EXTERN\ CURLMcode\ curl\_multi\_waitfds(CURLM\ *multi,}
+\DoxyCodeLine{00473\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{struct}\ \mbox{\hyperlink{structcurl__waitfd}{curl\_waitfd}}\ *ufds,}
+\DoxyCodeLine{00474\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ size,}
+\DoxyCodeLine{00475\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ *fd\_count);}
+\DoxyCodeLine{00476\ }
+\DoxyCodeLine{00477\ \textcolor{preprocessor}{\#ifdef\ \_\_cplusplus}}
+\DoxyCodeLine{00478\ \}\ \textcolor{comment}{/*\ end\ of\ extern\ "{}C"{}\ */}}
+\DoxyCodeLine{00479\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00480\ }
+\DoxyCodeLine{00481\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

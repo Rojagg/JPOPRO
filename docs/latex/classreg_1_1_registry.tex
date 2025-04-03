@@ -1,0 +1,176 @@
+\doxysection{reg.\+Registry Class Reference}
+\hypertarget{classreg_1_1_registry}{}\label{classreg_1_1_registry}\index{reg.Registry@{reg.Registry}}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classreg_1_1_registry_aa48ee1a236dbf3d896d194104996c2ff}\label{classreg_1_1_registry_aa48ee1a236dbf3d896d194104996c2ff} 
+{\bfseries \+\_\+\+\_\+init\+\_\+\+\_\+} (self)
+\item 
+\mbox{\hyperlink{classreg_1_1_registry_a751d051fc4dcec44b2991c33d1d4efbf}{load\+Element\+Tree}} (self, tree)
+\item 
+\mbox{\hyperlink{classreg_1_1_registry_a6891eb52491a00403b1a04388b5e4235}{load\+File}} (self, file)
+\item 
+\mbox{\hyperlink{classreg_1_1_registry_aadbdf045dfa5daf0deefdd155e871aef}{set\+Generator}} (self, gen)
+\item 
+\Hypertarget{classreg_1_1_registry_a2926b95d02b0d62d9a073c72a1500485}\label{classreg_1_1_registry_a2926b95d02b0d62d9a073c72a1500485} 
+{\bfseries add\+Element\+Info} (self, elem, info, info\+Name, dictionary)
+\item 
+\Hypertarget{classreg_1_1_registry_abf75c97695c62c812c9bc3320532b6a8}\label{classreg_1_1_registry_abf75c97695c62c812c9bc3320532b6a8} 
+{\bfseries lookup\+Element\+Info} (self, fname, dictionary)
+\item 
+\mbox{\hyperlink{classreg_1_1_registry_ab60dfc9d9976f989b69ab97dd1f95be9}{parse\+Tree}} (self)
+\item 
+\mbox{\hyperlink{classreg_1_1_registry_a24b68d2ed9d88d0acd8458101d3eb8e2}{dump\+Reg}} (self, maxlen=40, filehandle=sys.\+stdout)
+\item 
+\mbox{\hyperlink{classreg_1_1_registry_a079054046be1b5095d342f77670db6f8}{mark\+Type\+Required}} (self, typename, required)
+\item 
+\mbox{\hyperlink{classreg_1_1_registry_a3d22be5c6ffe4d82e147dba5d764ef8b}{mark\+Required}} (self, features, required)
+\item 
+\mbox{\hyperlink{classreg_1_1_registry_ad2cb66fd1bd79de9b025e35275c16b93}{require\+And\+Remove\+Features}} (self, interface, api, profile)
+\item 
+\Hypertarget{classreg_1_1_registry_a8daec06531ec1fa2efbe8fc92ef7b3c3}\label{classreg_1_1_registry_a8daec06531ec1fa2efbe8fc92ef7b3c3} 
+{\bfseries generate\+Feature} (self, fname, ftype, dictionary, gen\+Proc)
+\item 
+\mbox{\hyperlink{classreg_1_1_registry_a59a18c16cf60a7b034252852953eabf7}{generate\+Required\+Interface}} (self, interface)
+\item 
+\mbox{\hyperlink{classreg_1_1_registry_a2c1039e5a81aeb49f9475112fd845e8e}{api\+Gen}} (self, gen\+Opts)
+\item 
+\mbox{\hyperlink{classreg_1_1_registry_a4d7d2c6f3432269587041f00610333e4}{api\+Reset}} (self)
+\item 
+\mbox{\hyperlink{classreg_1_1_registry_a8a3bc7c87faafdbad417f8eb72cfc15b}{validate\+Groups}} (self)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classreg_1_1_registry_a8bd2c2767e49d61ef6bd5454197cb054}\label{classreg_1_1_registry_a8bd2c2767e49d61ef6bd5454197cb054} 
+{\bfseries tree} = None
+\item 
+\Hypertarget{classreg_1_1_registry_a8e2612dbd01e2820b42e43c5d773e030}\label{classreg_1_1_registry_a8e2612dbd01e2820b42e43c5d773e030} 
+dict {\bfseries typedict} = \{\}
+\item 
+\Hypertarget{classreg_1_1_registry_afce7b88f1c9001fc6867c2c57b7a959d}\label{classreg_1_1_registry_afce7b88f1c9001fc6867c2c57b7a959d} 
+dict {\bfseries groupdict} = \{\}
+\item 
+\Hypertarget{classreg_1_1_registry_a823146381f76b05085b8b6dd332fafd6}\label{classreg_1_1_registry_a823146381f76b05085b8b6dd332fafd6} 
+dict {\bfseries enumdict} = \{\}
+\item 
+\Hypertarget{classreg_1_1_registry_a64c5b07653ca13947bc76c3cf1ddcc6c}\label{classreg_1_1_registry_a64c5b07653ca13947bc76c3cf1ddcc6c} 
+dict {\bfseries cmddict} = \{\}
+\item 
+\Hypertarget{classreg_1_1_registry_aaf411ddccf16d1155285634ddf0e83d8}\label{classreg_1_1_registry_aaf411ddccf16d1155285634ddf0e83d8} 
+dict {\bfseries apidict} = \{\}
+\item 
+\Hypertarget{classreg_1_1_registry_a9763b519855b0929d621dd9a866b5537}\label{classreg_1_1_registry_a9763b519855b0929d621dd9a866b5537} 
+list {\bfseries extensions} = \mbox{[}$\,$\mbox{]}
+\item 
+\Hypertarget{classreg_1_1_registry_a7dded8f835e25aeaf2ffa06bc4cacc28}\label{classreg_1_1_registry_a7dded8f835e25aeaf2ffa06bc4cacc28} 
+dict {\bfseries extdict} = \{\}
+\item 
+\Hypertarget{classreg_1_1_registry_a0eb46434db2c82c9260bbf8033ff89a8}\label{classreg_1_1_registry_a0eb46434db2c82c9260bbf8033ff89a8} 
+{\bfseries gen} = \mbox{\hyperlink{classreg_1_1_output_generator}{Output\+Generator}}()
+\item 
+\Hypertarget{classreg_1_1_registry_a3079a3ac1402105b02e4422dd698fb99}\label{classreg_1_1_registry_a3079a3ac1402105b02e4422dd698fb99} 
+{\bfseries gen\+Opts} = None
+\item 
+\Hypertarget{classreg_1_1_registry_ab2dd7c130954d23c0a57fce57fe0481d}\label{classreg_1_1_registry_ab2dd7c130954d23c0a57fce57fe0481d} 
+bool {\bfseries emit\+Features} = False
+\item 
+\Hypertarget{classreg_1_1_registry_ab46314e1ab78d20a634db65da3e18d49}\label{classreg_1_1_registry_ab46314e1ab78d20a634db65da3e18d49} 
+{\bfseries reg} = self.\+tree.\+getroot()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyVerb}Represents an API registry loaded from XML\end{DoxyVerb}
+ 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classreg_1_1_registry_a2c1039e5a81aeb49f9475112fd845e8e}\index{reg.Registry@{reg.Registry}!apiGen@{apiGen}}
+\index{apiGen@{apiGen}!reg.Registry@{reg.Registry}}
+\doxysubsubsection{\texorpdfstring{apiGen()}{apiGen()}}
+{\footnotesize\ttfamily \label{classreg_1_1_registry_a2c1039e5a81aeb49f9475112fd845e8e} 
+reg.\+Registry.\+api\+Gen (\begin{DoxyParamCaption}\item[{}]{self}{, }\item[{}]{gen\+Opts}{}\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Generate interfaces for the specified API type and range of versions\end{DoxyVerb}
+ \Hypertarget{classreg_1_1_registry_a4d7d2c6f3432269587041f00610333e4}\index{reg.Registry@{reg.Registry}!apiReset@{apiReset}}
+\index{apiReset@{apiReset}!reg.Registry@{reg.Registry}}
+\doxysubsubsection{\texorpdfstring{apiReset()}{apiReset()}}
+{\footnotesize\ttfamily \label{classreg_1_1_registry_a4d7d2c6f3432269587041f00610333e4} 
+reg.\+Registry.\+api\+Reset (\begin{DoxyParamCaption}\item[{}]{self}{}\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Reset type/enum/command dictionaries before generating another API\end{DoxyVerb}
+ \Hypertarget{classreg_1_1_registry_a24b68d2ed9d88d0acd8458101d3eb8e2}\index{reg.Registry@{reg.Registry}!dumpReg@{dumpReg}}
+\index{dumpReg@{dumpReg}!reg.Registry@{reg.Registry}}
+\doxysubsubsection{\texorpdfstring{dumpReg()}{dumpReg()}}
+{\footnotesize\ttfamily \label{classreg_1_1_registry_a24b68d2ed9d88d0acd8458101d3eb8e2} 
+reg.\+Registry.\+dump\+Reg (\begin{DoxyParamCaption}\item[{}]{self}{, }\item[{}]{maxlen}{ = {\ttfamily 40}, }\item[{}]{filehandle}{ = {\ttfamily sys.stdout}}\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Dump all the dictionaries constructed from the Registry object\end{DoxyVerb}
+ \Hypertarget{classreg_1_1_registry_a59a18c16cf60a7b034252852953eabf7}\index{reg.Registry@{reg.Registry}!generateRequiredInterface@{generateRequiredInterface}}
+\index{generateRequiredInterface@{generateRequiredInterface}!reg.Registry@{reg.Registry}}
+\doxysubsubsection{\texorpdfstring{generateRequiredInterface()}{generateRequiredInterface()}}
+{\footnotesize\ttfamily \label{classreg_1_1_registry_a59a18c16cf60a7b034252852953eabf7} 
+reg.\+Registry.\+generate\+Required\+Interface (\begin{DoxyParamCaption}\item[{}]{self}{, }\item[{}]{interface}{}\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Generate required C interface for specified API version/extension\end{DoxyVerb}
+ \Hypertarget{classreg_1_1_registry_a751d051fc4dcec44b2991c33d1d4efbf}\index{reg.Registry@{reg.Registry}!loadElementTree@{loadElementTree}}
+\index{loadElementTree@{loadElementTree}!reg.Registry@{reg.Registry}}
+\doxysubsubsection{\texorpdfstring{loadElementTree()}{loadElementTree()}}
+{\footnotesize\ttfamily \label{classreg_1_1_registry_a751d051fc4dcec44b2991c33d1d4efbf} 
+reg.\+Registry.\+load\+Element\+Tree (\begin{DoxyParamCaption}\item[{}]{self}{, }\item[{}]{tree}{}\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Load ElementTree into a Registry object and parse it\end{DoxyVerb}
+ \Hypertarget{classreg_1_1_registry_a6891eb52491a00403b1a04388b5e4235}\index{reg.Registry@{reg.Registry}!loadFile@{loadFile}}
+\index{loadFile@{loadFile}!reg.Registry@{reg.Registry}}
+\doxysubsubsection{\texorpdfstring{loadFile()}{loadFile()}}
+{\footnotesize\ttfamily \label{classreg_1_1_registry_a6891eb52491a00403b1a04388b5e4235} 
+reg.\+Registry.\+load\+File (\begin{DoxyParamCaption}\item[{}]{self}{, }\item[{}]{file}{}\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Load an API registry XML file into a Registry object and parse it\end{DoxyVerb}
+ \Hypertarget{classreg_1_1_registry_a3d22be5c6ffe4d82e147dba5d764ef8b}\index{reg.Registry@{reg.Registry}!markRequired@{markRequired}}
+\index{markRequired@{markRequired}!reg.Registry@{reg.Registry}}
+\doxysubsubsection{\texorpdfstring{markRequired()}{markRequired()}}
+{\footnotesize\ttfamily \label{classreg_1_1_registry_a3d22be5c6ffe4d82e147dba5d764ef8b} 
+reg.\+Registry.\+mark\+Required (\begin{DoxyParamCaption}\item[{}]{self}{, }\item[{}]{features}{, }\item[{}]{required}{}\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Require or remove features specified in the Element\end{DoxyVerb}
+ \Hypertarget{classreg_1_1_registry_a079054046be1b5095d342f77670db6f8}\index{reg.Registry@{reg.Registry}!markTypeRequired@{markTypeRequired}}
+\index{markTypeRequired@{markTypeRequired}!reg.Registry@{reg.Registry}}
+\doxysubsubsection{\texorpdfstring{markTypeRequired()}{markTypeRequired()}}
+{\footnotesize\ttfamily \label{classreg_1_1_registry_a079054046be1b5095d342f77670db6f8} 
+reg.\+Registry.\+mark\+Type\+Required (\begin{DoxyParamCaption}\item[{}]{self}{, }\item[{}]{typename}{, }\item[{}]{required}{}\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Require (along with its dependencies) or remove (but not its dependencies) a type\end{DoxyVerb}
+ \Hypertarget{classreg_1_1_registry_ab60dfc9d9976f989b69ab97dd1f95be9}\index{reg.Registry@{reg.Registry}!parseTree@{parseTree}}
+\index{parseTree@{parseTree}!reg.Registry@{reg.Registry}}
+\doxysubsubsection{\texorpdfstring{parseTree()}{parseTree()}}
+{\footnotesize\ttfamily \label{classreg_1_1_registry_ab60dfc9d9976f989b69ab97dd1f95be9} 
+reg.\+Registry.\+parse\+Tree (\begin{DoxyParamCaption}\item[{}]{self}{}\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Parse the registry Element, once created\end{DoxyVerb}
+ \Hypertarget{classreg_1_1_registry_ad2cb66fd1bd79de9b025e35275c16b93}\index{reg.Registry@{reg.Registry}!requireAndRemoveFeatures@{requireAndRemoveFeatures}}
+\index{requireAndRemoveFeatures@{requireAndRemoveFeatures}!reg.Registry@{reg.Registry}}
+\doxysubsubsection{\texorpdfstring{requireAndRemoveFeatures()}{requireAndRemoveFeatures()}}
+{\footnotesize\ttfamily \label{classreg_1_1_registry_ad2cb66fd1bd79de9b025e35275c16b93} 
+reg.\+Registry.\+require\+And\+Remove\+Features (\begin{DoxyParamCaption}\item[{}]{self}{, }\item[{}]{interface}{, }\item[{}]{api}{, }\item[{}]{profile}{}\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Process <recquire> and <remove> tags for a <version> or <extension>\end{DoxyVerb}
+ \Hypertarget{classreg_1_1_registry_aadbdf045dfa5daf0deefdd155e871aef}\index{reg.Registry@{reg.Registry}!setGenerator@{setGenerator}}
+\index{setGenerator@{setGenerator}!reg.Registry@{reg.Registry}}
+\doxysubsubsection{\texorpdfstring{setGenerator()}{setGenerator()}}
+{\footnotesize\ttfamily \label{classreg_1_1_registry_aadbdf045dfa5daf0deefdd155e871aef} 
+reg.\+Registry.\+set\+Generator (\begin{DoxyParamCaption}\item[{}]{self}{, }\item[{}]{gen}{}\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Specify output generator object. None restores the default generator\end{DoxyVerb}
+ \Hypertarget{classreg_1_1_registry_a8a3bc7c87faafdbad417f8eb72cfc15b}\index{reg.Registry@{reg.Registry}!validateGroups@{validateGroups}}
+\index{validateGroups@{validateGroups}!reg.Registry@{reg.Registry}}
+\doxysubsubsection{\texorpdfstring{validateGroups()}{validateGroups()}}
+{\footnotesize\ttfamily \label{classreg_1_1_registry_a8a3bc7c87faafdbad417f8eb72cfc15b} 
+reg.\+Registry.\+validate\+Groups (\begin{DoxyParamCaption}\item[{}]{self}{}\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Validate group= attributes on <param> and <proto> tags\end{DoxyVerb}
+ 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/xroja/\+Desktop/\+JPO projekt/\+Projekt\+Jezyki\+Programowania\+Obiektowego/build/vcpkg\+\_\+installed/x64-\/windows/share/opengl/reg.\+py\end{DoxyCompactItemize}

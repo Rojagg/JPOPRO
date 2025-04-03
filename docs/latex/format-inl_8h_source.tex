@@ -1,0 +1,1934 @@
+\doxysection{format-\/inl.h}
+\hypertarget{format-inl_8h_source}{}\label{format-inl_8h_source}\index{C:/Users/xroja/Desktop/JPO projekt/ProjektJezykiProgramowaniaObiektowego/build/vcpkg\_installed/x64-\/windows/include/fmt/format-\/inl.h@{C:/Users/xroja/Desktop/JPO projekt/ProjektJezykiProgramowaniaObiektowego/build/vcpkg\_installed/x64-\/windows/include/fmt/format-\/inl.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ Formatting\ library\ for\ C++\ -\/\ implementation}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//\ Copyright\ (c)\ 2012\ -\/\ 2016,\ Victor\ Zverovich}}
+\DoxyCodeLine{00004\ \textcolor{comment}{//\ All\ rights\ reserved.}}
+\DoxyCodeLine{00005\ \textcolor{comment}{//}}
+\DoxyCodeLine{00006\ \textcolor{comment}{//\ For\ the\ license\ information\ refer\ to\ format.h.}}
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#ifndef\ FMT\_FORMAT\_INL\_H\_}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#define\ FMT\_FORMAT\_INL\_H\_}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#ifndef\ FMT\_MODULE}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#\ \ include\ <algorithm>}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#\ \ include\ <cerrno>}\ \ \textcolor{comment}{//\ errno}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#\ \ include\ <climits>}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#\ \ include\ <cmath>}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#\ \ include\ <exception>}}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#\ \ if\ !defined(FMT\_STATIC\_THOUSANDS\_SEPARATOR)}}
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#\ \ \ \ include\ <locale>}}
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#\ \ endif}}
+\DoxyCodeLine{00021\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \textcolor{preprocessor}{\#if\ defined(\_WIN32)\ \&\&\ !defined(FMT\_USE\_WRITE\_CONSOLE)}}
+\DoxyCodeLine{00024\ \textcolor{preprocessor}{\#\ \ include\ <io.h>}\ \ \textcolor{comment}{//\ \_isatty}}
+\DoxyCodeLine{00025\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \textcolor{preprocessor}{\#include\ "{}format.h"{}}}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ FMT\_BEGIN\_NAMESPACE}
+\DoxyCodeLine{00030\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacedetail}{detail}}\ \{}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ FMT\_FUNC\ \textcolor{keywordtype}{void}\ assert\_fail(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ file,\ \textcolor{keywordtype}{int}\ line,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ message)\ \{}
+\DoxyCodeLine{00033\ \ \ \textcolor{comment}{//\ Use\ unchecked\ std::fprintf\ to\ avoid\ triggering\ another\ assertion\ when}}
+\DoxyCodeLine{00034\ \ \ \textcolor{comment}{//\ writing\ to\ stderr\ fails}}
+\DoxyCodeLine{00035\ \ \ std::fprintf(stderr,\ \textcolor{stringliteral}{"{}\%s:\%d:\ assertion\ failed:\ \%s"{}},\ file,\ line,\ message);}
+\DoxyCodeLine{00036\ \ \ \textcolor{comment}{//\ Chosen\ instead\ of\ std::abort\ to\ satisfy\ Clang\ in\ CUDA\ mode\ during\ device}}
+\DoxyCodeLine{00037\ \ \ \textcolor{comment}{//\ code\ pass.}}
+\DoxyCodeLine{00038\ \ \ std::terminate();}
+\DoxyCodeLine{00039\ \}}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ FMT\_FUNC\ \textcolor{keywordtype}{void}\ format\_error\_code(detail::buffer<char>\&\ out,\ \textcolor{keywordtype}{int}\ error\_code,}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ string\_view\ message)\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00043\ \ \ \textcolor{comment}{//\ Report\ error\ code\ making\ sure\ that\ the\ output\ fits\ into}}
+\DoxyCodeLine{00044\ \ \ \textcolor{comment}{//\ inline\_buffer\_size\ to\ avoid\ dynamic\ memory\ allocation\ and\ potential}}
+\DoxyCodeLine{00045\ \ \ \textcolor{comment}{//\ bad\_alloc.}}
+\DoxyCodeLine{00046\ \ \ out.try\_resize(0);}
+\DoxyCodeLine{00047\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ SEP[]\ =\ \textcolor{stringliteral}{"{}:\ "{}};}
+\DoxyCodeLine{00048\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ ERROR\_STR[]\ =\ \textcolor{stringliteral}{"{}error\ "{}};}
+\DoxyCodeLine{00049\ \ \ \textcolor{comment}{//\ Subtract\ 2\ to\ account\ for\ terminating\ null\ characters\ in\ SEP\ and\ ERROR\_STR.}}
+\DoxyCodeLine{00050\ \ \ \textcolor{keywordtype}{size\_t}\ error\_code\_size\ =\ \textcolor{keyword}{sizeof}(SEP)\ +\ \textcolor{keyword}{sizeof}(ERROR\_STR)\ -\/\ 2;}
+\DoxyCodeLine{00051\ \ \ \textcolor{keyword}{auto}\ abs\_value\ =\ \textcolor{keyword}{static\_cast<}uint32\_or\_64\_or\_128\_t<int>\textcolor{keyword}{>}(error\_code);}
+\DoxyCodeLine{00052\ \ \ \textcolor{keywordflow}{if}\ (detail::is\_negative(error\_code))\ \{}
+\DoxyCodeLine{00053\ \ \ \ \ abs\_value\ =\ 0\ -\/\ abs\_value;}
+\DoxyCodeLine{00054\ \ \ \ \ ++error\_code\_size;}
+\DoxyCodeLine{00055\ \ \ \}}
+\DoxyCodeLine{00056\ \ \ error\_code\_size\ +=\ detail::to\_unsigned(detail::count\_digits(abs\_value));}
+\DoxyCodeLine{00057\ \ \ \textcolor{keyword}{auto}\ it\ =\ appender(out);}
+\DoxyCodeLine{00058\ \ \ \textcolor{keywordflow}{if}\ (message.size()\ <=\ inline\_buffer\_size\ -\/\ error\_code\_size)}
+\DoxyCodeLine{00059\ \ \ \ \ fmt::format\_to(it,\ FMT\_STRING(\textcolor{stringliteral}{"{}\{\}\{\}"{}}),\ message,\ SEP);}
+\DoxyCodeLine{00060\ \ \ fmt::format\_to(it,\ FMT\_STRING(\textcolor{stringliteral}{"{}\{\}\{\}"{}}),\ ERROR\_STR,\ error\_code);}
+\DoxyCodeLine{00061\ \ \ FMT\_ASSERT(out.size()\ <=\ inline\_buffer\_size,\ \textcolor{stringliteral}{"{}"{}});}
+\DoxyCodeLine{00062\ \}}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00064\ FMT\_FUNC\ \textcolor{keywordtype}{void}\ report\_error(format\_func\ func,\ \textcolor{keywordtype}{int}\ error\_code,}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ message)\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00066\ \ \ memory\_buffer\ full\_message;}
+\DoxyCodeLine{00067\ \ \ func(full\_message,\ error\_code,\ message);}
+\DoxyCodeLine{00068\ \ \ \textcolor{comment}{//\ Don't\ use\ fwrite\_fully\ because\ the\ latter\ may\ throw.}}
+\DoxyCodeLine{00069\ \ \ \textcolor{keywordflow}{if}\ (std::fwrite(full\_message.\mbox{\hyperlink{classdetail_1_1buffer_aeb33e0a2d2be2bbca9e0236c148089c8}{data}}(),\ full\_message.\mbox{\hyperlink{classdetail_1_1buffer_a8685285932360c284d19003fc4ba3edc}{size}}(),\ 1,\ stderr)\ >\ 0)}
+\DoxyCodeLine{00070\ \ \ \ \ std::fputc(\textcolor{charliteral}{'\(\backslash\)n'},\ stderr);}
+\DoxyCodeLine{00071\ \}}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00073\ \textcolor{comment}{//\ A\ wrapper\ around\ fwrite\ that\ throws\ on\ error.}}
+\DoxyCodeLine{00074\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ fwrite\_fully(\textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*\ ptr,\ \textcolor{keywordtype}{size\_t}\ count,\ FILE*\ stream)\ \{}
+\DoxyCodeLine{00075\ \ \ \textcolor{keywordtype}{size\_t}\ written\ =\ std::fwrite(ptr,\ 1,\ count,\ stream);}
+\DoxyCodeLine{00076\ \ \ \textcolor{keywordflow}{if}\ (written\ <\ count)}
+\DoxyCodeLine{00077\ \ \ \ \ FMT\_THROW(system\_error(errno,\ FMT\_STRING(\textcolor{stringliteral}{"{}cannot\ write\ to\ file"{}})));}
+\DoxyCodeLine{00078\ \}}
+\DoxyCodeLine{00079\ }
+\DoxyCodeLine{00080\ \textcolor{preprocessor}{\#ifndef\ FMT\_STATIC\_THOUSANDS\_SEPARATOR}}
+\DoxyCodeLine{00081\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Locale>}
+\DoxyCodeLine{00082\ locale\_ref::locale\_ref(\textcolor{keyword}{const}\ Locale\&\ loc)\ :\ locale\_(\&loc)\ \{}
+\DoxyCodeLine{00083\ \ \ \textcolor{keyword}{static\_assert}(std::is\_same<Locale,\ std::locale>::value,\ \textcolor{stringliteral}{"{}"{}});}
+\DoxyCodeLine{00084\ \}}
+\DoxyCodeLine{00085\ }
+\DoxyCodeLine{00086\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Locale>\ \textcolor{keyword}{auto}\ locale\_ref::get()\ const\ -\/>\ Locale\ \{}
+\DoxyCodeLine{00087\ \ \ \textcolor{keyword}{static\_assert}(std::is\_same<Locale,\ std::locale>::value,\ \textcolor{stringliteral}{"{}"{}});}
+\DoxyCodeLine{00088\ \ \ \textcolor{keywordflow}{return}\ locale\_\ ?\ *\textcolor{keyword}{static\_cast<}\textcolor{keyword}{const\ }std::locale*\textcolor{keyword}{>}(locale\_)\ :\ std::locale();}
+\DoxyCodeLine{00089\ \}}
+\DoxyCodeLine{00090\ }
+\DoxyCodeLine{00091\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Char>}
+\DoxyCodeLine{00092\ FMT\_FUNC\ \textcolor{keyword}{auto}\ thousands\_sep\_impl(locale\_ref\ loc)\ -\/>\ thousands\_sep\_result<Char>\ \{}
+\DoxyCodeLine{00093\ \ \ \textcolor{keyword}{auto}\&\ facet\ =\ std::use\_facet<std::numpunct<Char>>(loc.get<std::locale>());}
+\DoxyCodeLine{00094\ \ \ \textcolor{keyword}{auto}\ grouping\ =\ facet.grouping();}
+\DoxyCodeLine{00095\ \ \ \textcolor{keyword}{auto}\ thousands\_sep\ =\ grouping.empty()\ ?\ Char()\ :\ facet.thousands\_sep();}
+\DoxyCodeLine{00096\ \ \ \textcolor{keywordflow}{return}\ \{std::move(grouping),\ thousands\_sep\};}
+\DoxyCodeLine{00097\ \}}
+\DoxyCodeLine{00098\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Char>}
+\DoxyCodeLine{00099\ FMT\_FUNC\ \textcolor{keyword}{auto}\ decimal\_point\_impl(locale\_ref\ loc)\ -\/>\ Char\ \{}
+\DoxyCodeLine{00100\ \ \ \textcolor{keywordflow}{return}\ std::use\_facet<std::numpunct<Char>>(loc.get<std::locale>())}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ .decimal\_point();}
+\DoxyCodeLine{00102\ \}}
+\DoxyCodeLine{00103\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00104\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Char>}
+\DoxyCodeLine{00105\ FMT\_FUNC\ \textcolor{keyword}{auto}\ thousands\_sep\_impl(locale\_ref)\ -\/>\ thousands\_sep\_result<Char>\ \{}
+\DoxyCodeLine{00106\ \ \ \textcolor{keywordflow}{return}\ \{\textcolor{stringliteral}{"{}\(\backslash\)03"{}},\ FMT\_STATIC\_THOUSANDS\_SEPARATOR\};}
+\DoxyCodeLine{00107\ \}}
+\DoxyCodeLine{00108\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Char>\ FMT\_FUNC\ Char\ decimal\_point\_impl(locale\_ref)\ \{}
+\DoxyCodeLine{00109\ \ \ \textcolor{keywordflow}{return}\ \textcolor{charliteral}{'.'};}
+\DoxyCodeLine{00110\ \}}
+\DoxyCodeLine{00111\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00112\ }
+\DoxyCodeLine{00113\ FMT\_FUNC\ \textcolor{keyword}{auto}\ write\_loc(appender\ out,\ \mbox{\hyperlink{classloc__value}{loc\_value}}\ value,}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structformat__specs}{format\_specs}}\&\ specs,\ locale\_ref\ loc)\ -\/>\ \textcolor{keywordtype}{bool}\ \{}
+\DoxyCodeLine{00115\ \textcolor{preprocessor}{\#ifdef\ FMT\_STATIC\_THOUSANDS\_SEPARATOR}}
+\DoxyCodeLine{00116\ \ \ value.visit(loc\_writer<>\{}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ out,\ specs,\ std::string(1,\ FMT\_STATIC\_THOUSANDS\_SEPARATOR),\ \textcolor{stringliteral}{"{}\(\backslash\)3"{}},\ \textcolor{stringliteral}{"{}."{}}\});}
+\DoxyCodeLine{00118\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00119\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00120\ \ \ \textcolor{keyword}{auto}\ locale\ =\ loc.get<std::locale>();}
+\DoxyCodeLine{00121\ \ \ \textcolor{comment}{//\ We\ cannot\ use\ the\ num\_put<char>\ facet\ because\ it\ may\ produce\ output\ in}}
+\DoxyCodeLine{00122\ \ \ \textcolor{comment}{//\ a\ wrong\ encoding.}}
+\DoxyCodeLine{00123\ \ \ \textcolor{keyword}{using\ }facet\ =\ \mbox{\hyperlink{classformat__facet}{format\_facet<std::locale>}};}
+\DoxyCodeLine{00124\ \ \ \textcolor{keywordflow}{if}\ (std::has\_facet<facet>(locale))}
+\DoxyCodeLine{00125\ \ \ \ \ \textcolor{keywordflow}{return}\ std::use\_facet<facet>(locale).put(out,\ value,\ specs);}
+\DoxyCodeLine{00126\ \ \ \textcolor{keywordflow}{return}\ facet(locale).put(out,\ value,\ specs);}
+\DoxyCodeLine{00127\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00128\ \}}
+\DoxyCodeLine{00129\ \}\ \ \textcolor{comment}{//\ namespace\ detail}}
+\DoxyCodeLine{00130\ }
+\DoxyCodeLine{00131\ FMT\_FUNC\ \textcolor{keywordtype}{void}\ report\_error(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ message)\ \{}
+\DoxyCodeLine{00132\ \ \ FMT\_THROW(format\_error(message));}
+\DoxyCodeLine{00133\ \}}
+\DoxyCodeLine{00134\ }
+\DoxyCodeLine{00135\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Locale>\ \textcolor{keyword}{typename}\ Locale::id\ format\_facet<Locale>::id;}
+\DoxyCodeLine{00136\ }
+\DoxyCodeLine{00137\ \textcolor{preprocessor}{\#ifndef\ FMT\_STATIC\_THOUSANDS\_SEPARATOR}}
+\DoxyCodeLine{00138\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Locale>\ format\_facet<Locale>::format\_facet(Locale\&\ loc)\ \{}
+\DoxyCodeLine{00139\ \ \ \textcolor{keyword}{auto}\&\ numpunct\ =\ std::use\_facet<std::numpunct<char>>(loc);}
+\DoxyCodeLine{00140\ \ \ grouping\_\ =\ numpunct.grouping();}
+\DoxyCodeLine{00141\ \ \ \textcolor{keywordflow}{if}\ (!grouping\_.empty())\ separator\_\ =\ std::string(1,\ numpunct.thousands\_sep());}
+\DoxyCodeLine{00142\ \}}
+\DoxyCodeLine{00143\ }
+\DoxyCodeLine{00144\ \textcolor{keyword}{template}\ <>}
+\DoxyCodeLine{00145\ FMT\_API\ FMT\_FUNC\ \textcolor{keyword}{auto}\ format\_facet<std::locale>::do\_put(}
+\DoxyCodeLine{00146\ \ \ \ \ appender\ out,\ \mbox{\hyperlink{classloc__value}{loc\_value}}\ val,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{structformat__specs}{format\_specs}}\&\ specs)\ \textcolor{keyword}{const}\ -\/>\ \textcolor{keywordtype}{bool}\ \{}
+\DoxyCodeLine{00147\ \ \ \textcolor{keywordflow}{return}\ val.visit(}
+\DoxyCodeLine{00148\ \ \ \ \ \ \ \mbox{\hyperlink{structdetail_1_1loc__writer}{detail::loc\_writer<>}}\{out,\ specs,\ separator\_,\ grouping\_,\ decimal\_point\_\});}
+\DoxyCodeLine{00149\ \}}
+\DoxyCodeLine{00150\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00151\ }
+\DoxyCodeLine{00152\ FMT\_FUNC\ \textcolor{keyword}{auto}\ vsystem\_error(\textcolor{keywordtype}{int}\ error\_code,\ string\_view\ fmt,\ format\_args\ args)}
+\DoxyCodeLine{00153\ \ \ \ \ -\/>\ std::system\_error\ \{}
+\DoxyCodeLine{00154\ \ \ \textcolor{keyword}{auto}\ ec\ =\ std::error\_code(error\_code,\ std::generic\_category());}
+\DoxyCodeLine{00155\ \ \ \textcolor{keywordflow}{return}\ std::system\_error(ec,\ vformat(fmt,\ args));}
+\DoxyCodeLine{00156\ \}}
+\DoxyCodeLine{00157\ }
+\DoxyCodeLine{00158\ \textcolor{keyword}{namespace\ }\mbox{\hyperlink{namespacedetail}{detail}}\ \{}
+\DoxyCodeLine{00159\ }
+\DoxyCodeLine{00160\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ F>}
+\DoxyCodeLine{00161\ \textcolor{keyword}{inline}\ \textcolor{keyword}{auto}\ operator==(\mbox{\hyperlink{structdetail_1_1basic__fp}{basic\_fp<F>}}\ x,\ \mbox{\hyperlink{structdetail_1_1basic__fp}{basic\_fp<F>}}\ y)\ -\/>\ \textcolor{keywordtype}{bool}\ \{}
+\DoxyCodeLine{00162\ \ \ \textcolor{keywordflow}{return}\ x.f\ ==\ y.f\ \&\&\ x.e\ ==\ y.e;}
+\DoxyCodeLine{00163\ \}}
+\DoxyCodeLine{00164\ }
+\DoxyCodeLine{00165\ \textcolor{comment}{//\ Compilers\ should\ be\ able\ to\ optimize\ this\ into\ the\ ror\ instruction.}}
+\DoxyCodeLine{00166\ FMT\_CONSTEXPR\ \textcolor{keyword}{inline}\ \textcolor{keyword}{auto}\ rotr(uint32\_t\ n,\ uint32\_t\ r)\ \textcolor{keyword}{noexcept}\ -\/>\ uint32\_t\ \{}
+\DoxyCodeLine{00167\ \ \ r\ \&=\ 31;}
+\DoxyCodeLine{00168\ \ \ \textcolor{keywordflow}{return}\ (n\ >>\ r)\ |\ (n\ <<\ (32\ -\/\ r));}
+\DoxyCodeLine{00169\ \}}
+\DoxyCodeLine{00170\ FMT\_CONSTEXPR\ \textcolor{keyword}{inline}\ \textcolor{keyword}{auto}\ rotr(uint64\_t\ n,\ uint32\_t\ r)\ \textcolor{keyword}{noexcept}\ -\/>\ uint64\_t\ \{}
+\DoxyCodeLine{00171\ \ \ r\ \&=\ 63;}
+\DoxyCodeLine{00172\ \ \ \textcolor{keywordflow}{return}\ (n\ >>\ r)\ |\ (n\ <<\ (64\ -\/\ r));}
+\DoxyCodeLine{00173\ \}}
+\DoxyCodeLine{00174\ }
+\DoxyCodeLine{00175\ \textcolor{comment}{//\ Implementation\ of\ Dragonbox\ algorithm:\ https://github.com/jk-\/jeon/dragonbox.}}
+\DoxyCodeLine{00176\ \textcolor{keyword}{namespace\ }dragonbox\ \{}
+\DoxyCodeLine{00177\ \textcolor{comment}{//\ Computes\ upper\ 64\ bits\ of\ multiplication\ of\ a\ 32-\/bit\ unsigned\ integer\ and\ a}}
+\DoxyCodeLine{00178\ \textcolor{comment}{//\ 64-\/bit\ unsigned\ integer.}}
+\DoxyCodeLine{00179\ \textcolor{keyword}{inline}\ \textcolor{keyword}{auto}\ umul96\_upper64(uint32\_t\ x,\ uint64\_t\ y)\ \textcolor{keyword}{noexcept}\ -\/>\ uint64\_t\ \{}
+\DoxyCodeLine{00180\ \ \ \textcolor{keywordflow}{return}\ umul128\_upper64(\textcolor{keyword}{static\_cast<}uint64\_t\textcolor{keyword}{>}(x)\ <<\ 32,\ y);}
+\DoxyCodeLine{00181\ \}}
+\DoxyCodeLine{00182\ }
+\DoxyCodeLine{00183\ \textcolor{comment}{//\ Computes\ lower\ 128\ bits\ of\ multiplication\ of\ a\ 64-\/bit\ unsigned\ integer\ and\ a}}
+\DoxyCodeLine{00184\ \textcolor{comment}{//\ 128-\/bit\ unsigned\ integer.}}
+\DoxyCodeLine{00185\ \textcolor{keyword}{inline}\ \textcolor{keyword}{auto}\ umul192\_lower128(uint64\_t\ x,\ uint128\_fallback\ y)\ \textcolor{keyword}{noexcept}}
+\DoxyCodeLine{00186\ \ \ \ \ -\/>\ uint128\_fallback\ \{}
+\DoxyCodeLine{00187\ \ \ uint64\_t\ high\ =\ x\ *\ y.high();}
+\DoxyCodeLine{00188\ \ \ uint128\_fallback\ high\_low\ =\ umul128(x,\ y.low());}
+\DoxyCodeLine{00189\ \ \ \textcolor{keywordflow}{return}\ \{high\ +\ high\_low.high(),\ high\_low.low()\};}
+\DoxyCodeLine{00190\ \}}
+\DoxyCodeLine{00191\ }
+\DoxyCodeLine{00192\ \textcolor{comment}{//\ Computes\ lower\ 64\ bits\ of\ multiplication\ of\ a\ 32-\/bit\ unsigned\ integer\ and\ a}}
+\DoxyCodeLine{00193\ \textcolor{comment}{//\ 64-\/bit\ unsigned\ integer.}}
+\DoxyCodeLine{00194\ \textcolor{keyword}{inline}\ \textcolor{keyword}{auto}\ umul96\_lower64(uint32\_t\ x,\ uint64\_t\ y)\ \textcolor{keyword}{noexcept}\ -\/>\ uint64\_t\ \{}
+\DoxyCodeLine{00195\ \ \ \textcolor{keywordflow}{return}\ x\ *\ y;}
+\DoxyCodeLine{00196\ \}}
+\DoxyCodeLine{00197\ }
+\DoxyCodeLine{00198\ \textcolor{comment}{//\ Various\ fast\ log\ computations.}}
+\DoxyCodeLine{00199\ \textcolor{keyword}{inline}\ \textcolor{keyword}{auto}\ floor\_log10\_pow2\_minus\_log10\_4\_over\_3(\textcolor{keywordtype}{int}\ e)\ \textcolor{keyword}{noexcept}\ -\/>\ \textcolor{keywordtype}{int}\ \{}
+\DoxyCodeLine{00200\ \ \ FMT\_ASSERT(e\ <=\ 2936\ \&\&\ e\ >=\ -\/2985,\ \textcolor{stringliteral}{"{}too\ large\ exponent"{}});}
+\DoxyCodeLine{00201\ \ \ \textcolor{keywordflow}{return}\ (e\ *\ 631305\ -\/\ 261663)\ >>\ 21;}
+\DoxyCodeLine{00202\ \}}
+\DoxyCodeLine{00203\ }
+\DoxyCodeLine{00204\ FMT\_INLINE\_VARIABLE\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{struct\ }\{}
+\DoxyCodeLine{00205\ \ \ uint32\_t\ divisor;}
+\DoxyCodeLine{00206\ \ \ \textcolor{keywordtype}{int}\ shift\_amount;}
+\DoxyCodeLine{00207\ \}\ div\_small\_pow10\_infos[]\ =\ \{\{10,\ 16\},\ \{100,\ 16\}\};}
+\DoxyCodeLine{00208\ }
+\DoxyCodeLine{00209\ \textcolor{comment}{//\ Replaces\ n\ by\ floor(n\ /\ pow(10,\ N))\ returning\ true\ if\ and\ only\ if\ n\ is}}
+\DoxyCodeLine{00210\ \textcolor{comment}{//\ divisible\ by\ pow(10,\ N).}}
+\DoxyCodeLine{00211\ \textcolor{comment}{//\ Precondition:\ n\ <=\ pow(10,\ N\ +\ 1).}}
+\DoxyCodeLine{00212\ \textcolor{keyword}{template}\ <\textcolor{keywordtype}{int}\ N>}
+\DoxyCodeLine{00213\ \textcolor{keyword}{auto}\ check\_divisibility\_and\_divide\_by\_pow10(uint32\_t\&\ n)\ \textcolor{keyword}{noexcept}\ -\/>\ \textcolor{keywordtype}{bool}\ \{}
+\DoxyCodeLine{00214\ \ \ \textcolor{comment}{//\ The\ numbers\ below\ are\ chosen\ such\ that:}}
+\DoxyCodeLine{00215\ \ \ \textcolor{comment}{//\ \ \ 1.\ floor(n/d)\ =\ floor(nm\ /\ 2\string^k)\ where\ d=10\ or\ d=100,}}
+\DoxyCodeLine{00216\ \ \ \textcolor{comment}{//\ \ \ 2.\ nm\ mod\ 2\string^k\ <\ m\ if\ and\ only\ if\ n\ is\ divisible\ by\ d,}}
+\DoxyCodeLine{00217\ \ \ \textcolor{comment}{//\ where\ m\ is\ magic\_number,\ k\ is\ shift\_amount}}
+\DoxyCodeLine{00218\ \ \ \textcolor{comment}{//\ and\ d\ is\ divisor.}}
+\DoxyCodeLine{00219\ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00220\ \ \ \textcolor{comment}{//\ Item\ 1\ is\ a\ common\ technique\ of\ replacing\ division\ by\ a\ constant\ with}}
+\DoxyCodeLine{00221\ \ \ \textcolor{comment}{//\ multiplication,\ see\ e.g.\ "{}Division\ by\ Invariant\ Integers\ Using}}
+\DoxyCodeLine{00222\ \ \ \textcolor{comment}{//\ Multiplication"{}\ by\ Granlund\ and\ Montgomery\ (1994).\ magic\_number\ (m)\ is\ set}}
+\DoxyCodeLine{00223\ \ \ \textcolor{comment}{//\ to\ ceil(2\string^k/d)\ for\ large\ enough\ k.}}
+\DoxyCodeLine{00224\ \ \ \textcolor{comment}{//\ The\ idea\ for\ item\ 2\ originates\ from\ Schubfach.}}
+\DoxyCodeLine{00225\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ info\ =\ div\_small\_pow10\_infos[N\ -\/\ 1];}
+\DoxyCodeLine{00226\ \ \ FMT\_ASSERT(n\ <=\ info.divisor\ *\ 10,\ \textcolor{stringliteral}{"{}n\ is\ too\ large"{}});}
+\DoxyCodeLine{00227\ \ \ \textcolor{keyword}{constexpr}\ uint32\_t\ magic\_number\ =}
+\DoxyCodeLine{00228\ \ \ \ \ \ \ (1u\ <<\ info.shift\_amount)\ /\ info.divisor\ +\ 1;}
+\DoxyCodeLine{00229\ \ \ n\ *=\ magic\_number;}
+\DoxyCodeLine{00230\ \ \ \textcolor{keyword}{const}\ uint32\_t\ comparison\_mask\ =\ (1u\ <<\ info.shift\_amount)\ -\/\ 1;}
+\DoxyCodeLine{00231\ \ \ \textcolor{keywordtype}{bool}\ result\ =\ (n\ \&\ comparison\_mask)\ <\ magic\_number;}
+\DoxyCodeLine{00232\ \ \ n\ >>=\ info.shift\_amount;}
+\DoxyCodeLine{00233\ \ \ \textcolor{keywordflow}{return}\ result;}
+\DoxyCodeLine{00234\ \}}
+\DoxyCodeLine{00235\ }
+\DoxyCodeLine{00236\ \textcolor{comment}{//\ Computes\ floor(n\ /\ pow(10,\ N))\ for\ small\ n\ and\ N.}}
+\DoxyCodeLine{00237\ \textcolor{comment}{//\ Precondition:\ n\ <=\ pow(10,\ N\ +\ 1).}}
+\DoxyCodeLine{00238\ \textcolor{keyword}{template}\ <\textcolor{keywordtype}{int}\ N>\ \textcolor{keyword}{auto}\ small\_division\_by\_pow10(uint32\_t\ n)\ \textcolor{keyword}{noexcept}\ -\/>\ uint32\_t\ \{}
+\DoxyCodeLine{00239\ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{auto}\ info\ =\ div\_small\_pow10\_infos[N\ -\/\ 1];}
+\DoxyCodeLine{00240\ \ \ FMT\_ASSERT(n\ <=\ info.divisor\ *\ 10,\ \textcolor{stringliteral}{"{}n\ is\ too\ large"{}});}
+\DoxyCodeLine{00241\ \ \ \textcolor{keyword}{constexpr}\ uint32\_t\ magic\_number\ =}
+\DoxyCodeLine{00242\ \ \ \ \ \ \ (1u\ <<\ info.shift\_amount)\ /\ info.divisor\ +\ 1;}
+\DoxyCodeLine{00243\ \ \ \textcolor{keywordflow}{return}\ (n\ *\ magic\_number)\ >>\ info.shift\_amount;}
+\DoxyCodeLine{00244\ \}}
+\DoxyCodeLine{00245\ }
+\DoxyCodeLine{00246\ \textcolor{comment}{//\ Computes\ floor(n\ /\ 10\string^(kappa\ +\ 1))\ (float)}}
+\DoxyCodeLine{00247\ \textcolor{keyword}{inline}\ \textcolor{keyword}{auto}\ divide\_by\_10\_to\_kappa\_plus\_1(uint32\_t\ n)\ \textcolor{keyword}{noexcept}\ -\/>\ uint32\_t\ \{}
+\DoxyCodeLine{00248\ \ \ \textcolor{comment}{//\ 1374389535\ =\ ceil(2\string^37/100)}}
+\DoxyCodeLine{00249\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}((\textcolor{keyword}{static\_cast<}uint64\_t\textcolor{keyword}{>}(n)\ *\ 1374389535)\ >>\ 37);}
+\DoxyCodeLine{00250\ \}}
+\DoxyCodeLine{00251\ \textcolor{comment}{//\ Computes\ floor(n\ /\ 10\string^(kappa\ +\ 1))\ (double)}}
+\DoxyCodeLine{00252\ \textcolor{keyword}{inline}\ \textcolor{keyword}{auto}\ divide\_by\_10\_to\_kappa\_plus\_1(uint64\_t\ n)\ \textcolor{keyword}{noexcept}\ -\/>\ uint64\_t\ \{}
+\DoxyCodeLine{00253\ \ \ \textcolor{comment}{//\ 2361183241434822607\ =\ ceil(2\string^(64+7)/1000)}}
+\DoxyCodeLine{00254\ \ \ \textcolor{keywordflow}{return}\ umul128\_upper64(n,\ 2361183241434822607ull)\ >>\ 7;}
+\DoxyCodeLine{00255\ \}}
+\DoxyCodeLine{00256\ }
+\DoxyCodeLine{00257\ \textcolor{comment}{//\ Various\ subroutines\ using\ pow10\ cache}}
+\DoxyCodeLine{00258\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structdetail_1_1dragonbox_1_1cache__accessor}{cache\_accessor}};}
+\DoxyCodeLine{00259\ }
+\DoxyCodeLine{00260\ \textcolor{keyword}{template}\ <>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structdetail_1_1dragonbox_1_1cache__accessor}{cache\_accessor}}<float>\ \{}
+\DoxyCodeLine{00261\ \ \ \textcolor{keyword}{using\ }carrier\_uint\ =\ \mbox{\hyperlink{structdetail_1_1dragonbox_1_1float__info}{float\_info<float>::carrier\_uint}};}
+\DoxyCodeLine{00262\ \ \ \textcolor{keyword}{using\ }cache\_entry\_type\ =\ uint64\_t;}
+\DoxyCodeLine{00263\ }
+\DoxyCodeLine{00264\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{auto}\ get\_cached\_power(\textcolor{keywordtype}{int}\ k)\ \textcolor{keyword}{noexcept}\ -\/>\ uint64\_t\ \{}
+\DoxyCodeLine{00265\ \ \ \ \ FMT\_ASSERT(k\ >=\ \mbox{\hyperlink{structdetail_1_1dragonbox_1_1float__info}{float\_info<float>::min\_k}}\ \&\&\ k\ <=\ \mbox{\hyperlink{structdetail_1_1dragonbox_1_1float__info}{float\_info<float>::max\_k}},}
+\DoxyCodeLine{00266\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}k\ is\ out\ of\ range"{}});}
+\DoxyCodeLine{00267\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{const}\ uint64\_t\ pow10\_significands[]\ =\ \{}
+\DoxyCodeLine{00268\ \ \ \ \ \ \ \ \ 0x81ceb32c4b43fcf5,\ 0xa2425ff75e14fc32,\ 0xcad2f7f5359a3b3f,}
+\DoxyCodeLine{00269\ \ \ \ \ \ \ \ \ 0xfd87b5f28300ca0e,\ 0x9e74d1b791e07e49,\ 0xc612062576589ddb,}
+\DoxyCodeLine{00270\ \ \ \ \ \ \ \ \ 0xf79687aed3eec552,\ 0x9abe14cd44753b53,\ 0xc16d9a0095928a28,}
+\DoxyCodeLine{00271\ \ \ \ \ \ \ \ \ 0xf1c90080baf72cb2,\ 0x971da05074da7bef,\ 0xbce5086492111aeb,}
+\DoxyCodeLine{00272\ \ \ \ \ \ \ \ \ 0xec1e4a7db69561a6,\ 0x9392ee8e921d5d08,\ 0xb877aa3236a4b44a,}
+\DoxyCodeLine{00273\ \ \ \ \ \ \ \ \ 0xe69594bec44de15c,\ 0x901d7cf73ab0acda,\ 0xb424dc35095cd810,}
+\DoxyCodeLine{00274\ \ \ \ \ \ \ \ \ 0xe12e13424bb40e14,\ 0x8cbccc096f5088cc,\ 0xafebff0bcb24aaff,}
+\DoxyCodeLine{00275\ \ \ \ \ \ \ \ \ 0xdbe6fecebdedd5bf,\ 0x89705f4136b4a598,\ 0xabcc77118461cefd,}
+\DoxyCodeLine{00276\ \ \ \ \ \ \ \ \ 0xd6bf94d5e57a42bd,\ 0x8637bd05af6c69b6,\ 0xa7c5ac471b478424,}
+\DoxyCodeLine{00277\ \ \ \ \ \ \ \ \ 0xd1b71758e219652c,\ 0x83126e978d4fdf3c,\ 0xa3d70a3d70a3d70b,}
+\DoxyCodeLine{00278\ \ \ \ \ \ \ \ \ 0xcccccccccccccccd,\ 0x8000000000000000,\ 0xa000000000000000,}
+\DoxyCodeLine{00279\ \ \ \ \ \ \ \ \ 0xc800000000000000,\ 0xfa00000000000000,\ 0x9c40000000000000,}
+\DoxyCodeLine{00280\ \ \ \ \ \ \ \ \ 0xc350000000000000,\ 0xf424000000000000,\ 0x9896800000000000,}
+\DoxyCodeLine{00281\ \ \ \ \ \ \ \ \ 0xbebc200000000000,\ 0xee6b280000000000,\ 0x9502f90000000000,}
+\DoxyCodeLine{00282\ \ \ \ \ \ \ \ \ 0xba43b74000000000,\ 0xe8d4a51000000000,\ 0x9184e72a00000000,}
+\DoxyCodeLine{00283\ \ \ \ \ \ \ \ \ 0xb5e620f480000000,\ 0xe35fa931a0000000,\ 0x8e1bc9bf04000000,}
+\DoxyCodeLine{00284\ \ \ \ \ \ \ \ \ 0xb1a2bc2ec5000000,\ 0xde0b6b3a76400000,\ 0x8ac7230489e80000,}
+\DoxyCodeLine{00285\ \ \ \ \ \ \ \ \ 0xad78ebc5ac620000,\ 0xd8d726b7177a8000,\ 0x878678326eac9000,}
+\DoxyCodeLine{00286\ \ \ \ \ \ \ \ \ 0xa968163f0a57b400,\ 0xd3c21bcecceda100,\ 0x84595161401484a0,}
+\DoxyCodeLine{00287\ \ \ \ \ \ \ \ \ 0xa56fa5b99019a5c8,\ 0xcecb8f27f4200f3a,\ 0x813f3978f8940985,}
+\DoxyCodeLine{00288\ \ \ \ \ \ \ \ \ 0xa18f07d736b90be6,\ 0xc9f2c9cd04674edf,\ 0xfc6f7c4045812297,}
+\DoxyCodeLine{00289\ \ \ \ \ \ \ \ \ 0x9dc5ada82b70b59e,\ 0xc5371912364ce306,\ 0xf684df56c3e01bc7,}
+\DoxyCodeLine{00290\ \ \ \ \ \ \ \ \ 0x9a130b963a6c115d,\ 0xc097ce7bc90715b4,\ 0xf0bdc21abb48db21,}
+\DoxyCodeLine{00291\ \ \ \ \ \ \ \ \ 0x96769950b50d88f5,\ 0xbc143fa4e250eb32,\ 0xeb194f8e1ae525fe,}
+\DoxyCodeLine{00292\ \ \ \ \ \ \ \ \ 0x92efd1b8d0cf37bf,\ 0xb7abc627050305ae,\ 0xe596b7b0c643c71a,}
+\DoxyCodeLine{00293\ \ \ \ \ \ \ \ \ 0x8f7e32ce7bea5c70,\ 0xb35dbf821ae4f38c,\ 0xe0352f62a19e306f\};}
+\DoxyCodeLine{00294\ \ \ \ \ \textcolor{keywordflow}{return}\ pow10\_significands[k\ -\/\ \mbox{\hyperlink{structdetail_1_1dragonbox_1_1float__info}{float\_info<float>::min\_k}}];}
+\DoxyCodeLine{00295\ \ \ \}}
+\DoxyCodeLine{00296\ }
+\DoxyCodeLine{00297\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structdetail_1_1dragonbox_1_1cache__accessor_3_01float_01_4_1_1compute__mul__result}{compute\_mul\_result}}\ \{}
+\DoxyCodeLine{00298\ \ \ \ \ carrier\_uint\ result;}
+\DoxyCodeLine{00299\ \ \ \ \ \textcolor{keywordtype}{bool}\ is\_integer;}
+\DoxyCodeLine{00300\ \ \ \};}
+\DoxyCodeLine{00301\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structdetail_1_1dragonbox_1_1cache__accessor_3_01float_01_4_1_1compute__mul__parity__result}{compute\_mul\_parity\_result}}\ \{}
+\DoxyCodeLine{00302\ \ \ \ \ \textcolor{keywordtype}{bool}\ parity;}
+\DoxyCodeLine{00303\ \ \ \ \ \textcolor{keywordtype}{bool}\ is\_integer;}
+\DoxyCodeLine{00304\ \ \ \};}
+\DoxyCodeLine{00305\ }
+\DoxyCodeLine{00306\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{auto}\ compute\_mul(carrier\_uint\ u,}
+\DoxyCodeLine{00307\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ cache\_entry\_type\&\ cache)\ \textcolor{keyword}{noexcept}}
+\DoxyCodeLine{00308\ \ \ \ \ \ \ -\/>\ \mbox{\hyperlink{structdetail_1_1dragonbox_1_1cache__accessor_3_01float_01_4_1_1compute__mul__result}{compute\_mul\_result}}\ \{}
+\DoxyCodeLine{00309\ \ \ \ \ \textcolor{keyword}{auto}\ r\ =\ umul96\_upper64(u,\ cache);}
+\DoxyCodeLine{00310\ \ \ \ \ \textcolor{keywordflow}{return}\ \{\textcolor{keyword}{static\_cast<}carrier\_uint\textcolor{keyword}{>}(r\ >>\ 32),}
+\DoxyCodeLine{00311\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}carrier\_uint\textcolor{keyword}{>}(r)\ ==\ 0\};}
+\DoxyCodeLine{00312\ \ \ \}}
+\DoxyCodeLine{00313\ }
+\DoxyCodeLine{00314\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{auto}\ compute\_delta(\textcolor{keyword}{const}\ cache\_entry\_type\&\ cache,\ \textcolor{keywordtype}{int}\ beta)\ \textcolor{keyword}{noexcept}}
+\DoxyCodeLine{00315\ \ \ \ \ \ \ -\/>\ uint32\_t\ \{}
+\DoxyCodeLine{00316\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(cache\ >>\ (64\ -\/\ 1\ -\/\ beta));}
+\DoxyCodeLine{00317\ \ \ \}}
+\DoxyCodeLine{00318\ }
+\DoxyCodeLine{00319\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{auto}\ compute\_mul\_parity(carrier\_uint\ two\_f,}
+\DoxyCodeLine{00320\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ cache\_entry\_type\&\ cache,}
+\DoxyCodeLine{00321\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ beta)\ \textcolor{keyword}{noexcept}}
+\DoxyCodeLine{00322\ \ \ \ \ \ \ -\/>\ compute\_mul\_parity\_result\ \{}
+\DoxyCodeLine{00323\ \ \ \ \ FMT\_ASSERT(beta\ >=\ 1,\ \textcolor{stringliteral}{"{}"{}});}
+\DoxyCodeLine{00324\ \ \ \ \ FMT\_ASSERT(beta\ <\ 64,\ \textcolor{stringliteral}{"{}"{}});}
+\DoxyCodeLine{00325\ }
+\DoxyCodeLine{00326\ \ \ \ \ \textcolor{keyword}{auto}\ r\ =\ umul96\_lower64(two\_f,\ cache);}
+\DoxyCodeLine{00327\ \ \ \ \ \textcolor{keywordflow}{return}\ \{((r\ >>\ (64\ -\/\ beta))\ \&\ 1)\ !=\ 0,}
+\DoxyCodeLine{00328\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(r\ >>\ (32\ -\/\ beta))\ ==\ 0\};}
+\DoxyCodeLine{00329\ \ \ \}}
+\DoxyCodeLine{00330\ }
+\DoxyCodeLine{00331\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{auto}\ compute\_left\_endpoint\_for\_shorter\_interval\_case(}
+\DoxyCodeLine{00332\ \ \ \ \ \ \ \textcolor{keyword}{const}\ cache\_entry\_type\&\ cache,\ \textcolor{keywordtype}{int}\ beta)\ \textcolor{keyword}{noexcept}\ -\/>\ carrier\_uint\ \{}
+\DoxyCodeLine{00333\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}carrier\_uint\textcolor{keyword}{>}(}
+\DoxyCodeLine{00334\ \ \ \ \ \ \ \ \ (cache\ -\/\ (cache\ >>\ (num\_significand\_bits<float>()\ +\ 2)))\ >>}
+\DoxyCodeLine{00335\ \ \ \ \ \ \ \ \ (64\ -\/\ num\_significand\_bits<float>()\ -\/\ 1\ -\/\ beta));}
+\DoxyCodeLine{00336\ \ \ \}}
+\DoxyCodeLine{00337\ }
+\DoxyCodeLine{00338\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{auto}\ compute\_right\_endpoint\_for\_shorter\_interval\_case(}
+\DoxyCodeLine{00339\ \ \ \ \ \ \ \textcolor{keyword}{const}\ cache\_entry\_type\&\ cache,\ \textcolor{keywordtype}{int}\ beta)\ \textcolor{keyword}{noexcept}\ -\/>\ carrier\_uint\ \{}
+\DoxyCodeLine{00340\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}carrier\_uint\textcolor{keyword}{>}(}
+\DoxyCodeLine{00341\ \ \ \ \ \ \ \ \ (cache\ +\ (cache\ >>\ (num\_significand\_bits<float>()\ +\ 1)))\ >>}
+\DoxyCodeLine{00342\ \ \ \ \ \ \ \ \ (64\ -\/\ num\_significand\_bits<float>()\ -\/\ 1\ -\/\ beta));}
+\DoxyCodeLine{00343\ \ \ \}}
+\DoxyCodeLine{00344\ }
+\DoxyCodeLine{00345\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{auto}\ compute\_round\_up\_for\_shorter\_interval\_case(}
+\DoxyCodeLine{00346\ \ \ \ \ \ \ \textcolor{keyword}{const}\ cache\_entry\_type\&\ cache,\ \textcolor{keywordtype}{int}\ beta)\ \textcolor{keyword}{noexcept}\ -\/>\ carrier\_uint\ \{}
+\DoxyCodeLine{00347\ \ \ \ \ \textcolor{keywordflow}{return}\ (\textcolor{keyword}{static\_cast<}carrier\_uint\textcolor{keyword}{>}(}
+\DoxyCodeLine{00348\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ cache\ >>\ (64\ -\/\ num\_significand\_bits<float>()\ -\/\ 2\ -\/\ beta))\ +}
+\DoxyCodeLine{00349\ \ \ \ \ \ \ \ \ \ \ \ \ 1)\ /}
+\DoxyCodeLine{00350\ \ \ \ \ \ \ \ \ \ \ \ 2;}
+\DoxyCodeLine{00351\ \ \ \}}
+\DoxyCodeLine{00352\ \};}
+\DoxyCodeLine{00353\ }
+\DoxyCodeLine{00354\ \textcolor{keyword}{template}\ <>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structdetail_1_1dragonbox_1_1cache__accessor}{cache\_accessor}}<double>\ \{}
+\DoxyCodeLine{00355\ \ \ \textcolor{keyword}{using\ }carrier\_uint\ =\ \mbox{\hyperlink{structdetail_1_1dragonbox_1_1float__info}{float\_info<double>::carrier\_uint}};}
+\DoxyCodeLine{00356\ \ \ \textcolor{keyword}{using\ }cache\_entry\_type\ =\ \mbox{\hyperlink{classdetail_1_1uint128__fallback}{uint128\_fallback}};}
+\DoxyCodeLine{00357\ }
+\DoxyCodeLine{00358\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{auto}\ get\_cached\_power(\textcolor{keywordtype}{int}\ k)\ \textcolor{keyword}{noexcept}\ -\/>\ \mbox{\hyperlink{classdetail_1_1uint128__fallback}{uint128\_fallback}}\ \{}
+\DoxyCodeLine{00359\ \ \ \ \ FMT\_ASSERT(k\ >=\ \mbox{\hyperlink{structdetail_1_1dragonbox_1_1float__info}{float\_info<double>::min\_k}}\ \&\&\ k\ <=\ \mbox{\hyperlink{structdetail_1_1dragonbox_1_1float__info}{float\_info<double>::max\_k}},}
+\DoxyCodeLine{00360\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}k\ is\ out\ of\ range"{}});}
+\DoxyCodeLine{00361\ }
+\DoxyCodeLine{00362\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classdetail_1_1uint128__fallback}{uint128\_fallback}}\ pow10\_significands[]\ =\ \{}
+\DoxyCodeLine{00363\ \textcolor{preprocessor}{\#if\ FMT\_USE\_FULL\_CACHE\_DRAGONBOX}}
+\DoxyCodeLine{00364\ \ \ \ \ \ \ \{0xff77b1fcbebcdc4f,\ 0x25e8e89c13bb0f7b\},}
+\DoxyCodeLine{00365\ \ \ \ \ \ \ \{0x9faacf3df73609b1,\ 0x77b191618c54e9ad\},}
+\DoxyCodeLine{00366\ \ \ \ \ \ \ \{0xc795830d75038c1d,\ 0xd59df5b9ef6a2418\},}
+\DoxyCodeLine{00367\ \ \ \ \ \ \ \{0xf97ae3d0d2446f25,\ 0x4b0573286b44ad1e\},}
+\DoxyCodeLine{00368\ \ \ \ \ \ \ \{0x9becce62836ac577,\ 0x4ee367f9430aec33\},}
+\DoxyCodeLine{00369\ \ \ \ \ \ \ \{0xc2e801fb244576d5,\ 0x229c41f793cda740\},}
+\DoxyCodeLine{00370\ \ \ \ \ \ \ \{0xf3a20279ed56d48a,\ 0x6b43527578c11110\},}
+\DoxyCodeLine{00371\ \ \ \ \ \ \ \{0x9845418c345644d6,\ 0x830a13896b78aaaa\},}
+\DoxyCodeLine{00372\ \ \ \ \ \ \ \{0xbe5691ef416bd60c,\ 0x23cc986bc656d554\},}
+\DoxyCodeLine{00373\ \ \ \ \ \ \ \{0xedec366b11c6cb8f,\ 0x2cbfbe86b7ec8aa9\},}
+\DoxyCodeLine{00374\ \ \ \ \ \ \ \{0x94b3a202eb1c3f39,\ 0x7bf7d71432f3d6aa\},}
+\DoxyCodeLine{00375\ \ \ \ \ \ \ \{0xb9e08a83a5e34f07,\ 0xdaf5ccd93fb0cc54\},}
+\DoxyCodeLine{00376\ \ \ \ \ \ \ \{0xe858ad248f5c22c9,\ 0xd1b3400f8f9cff69\},}
+\DoxyCodeLine{00377\ \ \ \ \ \ \ \{0x91376c36d99995be,\ 0x23100809b9c21fa2\},}
+\DoxyCodeLine{00378\ \ \ \ \ \ \ \{0xb58547448ffffb2d,\ 0xabd40a0c2832a78b\},}
+\DoxyCodeLine{00379\ \ \ \ \ \ \ \{0xe2e69915b3fff9f9,\ 0x16c90c8f323f516d\},}
+\DoxyCodeLine{00380\ \ \ \ \ \ \ \{0x8dd01fad907ffc3b,\ 0xae3da7d97f6792e4\},}
+\DoxyCodeLine{00381\ \ \ \ \ \ \ \{0xb1442798f49ffb4a,\ 0x99cd11cfdf41779d\},}
+\DoxyCodeLine{00382\ \ \ \ \ \ \ \{0xdd95317f31c7fa1d,\ 0x40405643d711d584\},}
+\DoxyCodeLine{00383\ \ \ \ \ \ \ \{0x8a7d3eef7f1cfc52,\ 0x482835ea666b2573\},}
+\DoxyCodeLine{00384\ \ \ \ \ \ \ \{0xad1c8eab5ee43b66,\ 0xda3243650005eed0\},}
+\DoxyCodeLine{00385\ \ \ \ \ \ \ \{0xd863b256369d4a40,\ 0x90bed43e40076a83\},}
+\DoxyCodeLine{00386\ \ \ \ \ \ \ \{0x873e4f75e2224e68,\ 0x5a7744a6e804a292\},}
+\DoxyCodeLine{00387\ \ \ \ \ \ \ \{0xa90de3535aaae202,\ 0x711515d0a205cb37\},}
+\DoxyCodeLine{00388\ \ \ \ \ \ \ \{0xd3515c2831559a83,\ 0x0d5a5b44ca873e04\},}
+\DoxyCodeLine{00389\ \ \ \ \ \ \ \{0x8412d9991ed58091,\ 0xe858790afe9486c3\},}
+\DoxyCodeLine{00390\ \ \ \ \ \ \ \{0xa5178fff668ae0b6,\ 0x626e974dbe39a873\},}
+\DoxyCodeLine{00391\ \ \ \ \ \ \ \{0xce5d73ff402d98e3,\ 0xfb0a3d212dc81290\},}
+\DoxyCodeLine{00392\ \ \ \ \ \ \ \{0x80fa687f881c7f8e,\ 0x7ce66634bc9d0b9a\},}
+\DoxyCodeLine{00393\ \ \ \ \ \ \ \{0xa139029f6a239f72,\ 0x1c1fffc1ebc44e81\},}
+\DoxyCodeLine{00394\ \ \ \ \ \ \ \{0xc987434744ac874e,\ 0xa327ffb266b56221\},}
+\DoxyCodeLine{00395\ \ \ \ \ \ \ \{0xfbe9141915d7a922,\ 0x4bf1ff9f0062baa9\},}
+\DoxyCodeLine{00396\ \ \ \ \ \ \ \{0x9d71ac8fada6c9b5,\ 0x6f773fc3603db4aa\},}
+\DoxyCodeLine{00397\ \ \ \ \ \ \ \{0xc4ce17b399107c22,\ 0xcb550fb4384d21d4\},}
+\DoxyCodeLine{00398\ \ \ \ \ \ \ \{0xf6019da07f549b2b,\ 0x7e2a53a146606a49\},}
+\DoxyCodeLine{00399\ \ \ \ \ \ \ \{0x99c102844f94e0fb,\ 0x2eda7444cbfc426e\},}
+\DoxyCodeLine{00400\ \ \ \ \ \ \ \{0xc0314325637a1939,\ 0xfa911155fefb5309\},}
+\DoxyCodeLine{00401\ \ \ \ \ \ \ \{0xf03d93eebc589f88,\ 0x793555ab7eba27cb\},}
+\DoxyCodeLine{00402\ \ \ \ \ \ \ \{0x96267c7535b763b5,\ 0x4bc1558b2f3458df\},}
+\DoxyCodeLine{00403\ \ \ \ \ \ \ \{0xbbb01b9283253ca2,\ 0x9eb1aaedfb016f17\},}
+\DoxyCodeLine{00404\ \ \ \ \ \ \ \{0xea9c227723ee8bcb,\ 0x465e15a979c1cadd\},}
+\DoxyCodeLine{00405\ \ \ \ \ \ \ \{0x92a1958a7675175f,\ 0x0bfacd89ec191eca\},}
+\DoxyCodeLine{00406\ \ \ \ \ \ \ \{0xb749faed14125d36,\ 0xcef980ec671f667c\},}
+\DoxyCodeLine{00407\ \ \ \ \ \ \ \{0xe51c79a85916f484,\ 0x82b7e12780e7401b\},}
+\DoxyCodeLine{00408\ \ \ \ \ \ \ \{0x8f31cc0937ae58d2,\ 0xd1b2ecb8b0908811\},}
+\DoxyCodeLine{00409\ \ \ \ \ \ \ \{0xb2fe3f0b8599ef07,\ 0x861fa7e6dcb4aa16\},}
+\DoxyCodeLine{00410\ \ \ \ \ \ \ \{0xdfbdcece67006ac9,\ 0x67a791e093e1d49b\},}
+\DoxyCodeLine{00411\ \ \ \ \ \ \ \{0x8bd6a141006042bd,\ 0xe0c8bb2c5c6d24e1\},}
+\DoxyCodeLine{00412\ \ \ \ \ \ \ \{0xaecc49914078536d,\ 0x58fae9f773886e19\},}
+\DoxyCodeLine{00413\ \ \ \ \ \ \ \{0xda7f5bf590966848,\ 0xaf39a475506a899f\},}
+\DoxyCodeLine{00414\ \ \ \ \ \ \ \{0x888f99797a5e012d,\ 0x6d8406c952429604\},}
+\DoxyCodeLine{00415\ \ \ \ \ \ \ \{0xaab37fd7d8f58178,\ 0xc8e5087ba6d33b84\},}
+\DoxyCodeLine{00416\ \ \ \ \ \ \ \{0xd5605fcdcf32e1d6,\ 0xfb1e4a9a90880a65\},}
+\DoxyCodeLine{00417\ \ \ \ \ \ \ \{0x855c3be0a17fcd26,\ 0x5cf2eea09a550680\},}
+\DoxyCodeLine{00418\ \ \ \ \ \ \ \{0xa6b34ad8c9dfc06f,\ 0xf42faa48c0ea481f\},}
+\DoxyCodeLine{00419\ \ \ \ \ \ \ \{0xd0601d8efc57b08b,\ 0xf13b94daf124da27\},}
+\DoxyCodeLine{00420\ \ \ \ \ \ \ \{0x823c12795db6ce57,\ 0x76c53d08d6b70859\},}
+\DoxyCodeLine{00421\ \ \ \ \ \ \ \{0xa2cb1717b52481ed,\ 0x54768c4b0c64ca6f\},}
+\DoxyCodeLine{00422\ \ \ \ \ \ \ \{0xcb7ddcdda26da268,\ 0xa9942f5dcf7dfd0a\},}
+\DoxyCodeLine{00423\ \ \ \ \ \ \ \{0xfe5d54150b090b02,\ 0xd3f93b35435d7c4d\},}
+\DoxyCodeLine{00424\ \ \ \ \ \ \ \{0x9efa548d26e5a6e1,\ 0xc47bc5014a1a6db0\},}
+\DoxyCodeLine{00425\ \ \ \ \ \ \ \{0xc6b8e9b0709f109a,\ 0x359ab6419ca1091c\},}
+\DoxyCodeLine{00426\ \ \ \ \ \ \ \{0xf867241c8cc6d4c0,\ 0xc30163d203c94b63\},}
+\DoxyCodeLine{00427\ \ \ \ \ \ \ \{0x9b407691d7fc44f8,\ 0x79e0de63425dcf1e\},}
+\DoxyCodeLine{00428\ \ \ \ \ \ \ \{0xc21094364dfb5636,\ 0x985915fc12f542e5\},}
+\DoxyCodeLine{00429\ \ \ \ \ \ \ \{0xf294b943e17a2bc4,\ 0x3e6f5b7b17b2939e\},}
+\DoxyCodeLine{00430\ \ \ \ \ \ \ \{0x979cf3ca6cec5b5a,\ 0xa705992ceecf9c43\},}
+\DoxyCodeLine{00431\ \ \ \ \ \ \ \{0xbd8430bd08277231,\ 0x50c6ff782a838354\},}
+\DoxyCodeLine{00432\ \ \ \ \ \ \ \{0xece53cec4a314ebd,\ 0xa4f8bf5635246429\},}
+\DoxyCodeLine{00433\ \ \ \ \ \ \ \{0x940f4613ae5ed136,\ 0x871b7795e136be9a\},}
+\DoxyCodeLine{00434\ \ \ \ \ \ \ \{0xb913179899f68584,\ 0x28e2557b59846e40\},}
+\DoxyCodeLine{00435\ \ \ \ \ \ \ \{0xe757dd7ec07426e5,\ 0x331aeada2fe589d0\},}
+\DoxyCodeLine{00436\ \ \ \ \ \ \ \{0x9096ea6f3848984f,\ 0x3ff0d2c85def7622\},}
+\DoxyCodeLine{00437\ \ \ \ \ \ \ \{0xb4bca50b065abe63,\ 0x0fed077a756b53aa\},}
+\DoxyCodeLine{00438\ \ \ \ \ \ \ \{0xe1ebce4dc7f16dfb,\ 0xd3e8495912c62895\},}
+\DoxyCodeLine{00439\ \ \ \ \ \ \ \{0x8d3360f09cf6e4bd,\ 0x64712dd7abbbd95d\},}
+\DoxyCodeLine{00440\ \ \ \ \ \ \ \{0xb080392cc4349dec,\ 0xbd8d794d96aacfb4\},}
+\DoxyCodeLine{00441\ \ \ \ \ \ \ \{0xdca04777f541c567,\ 0xecf0d7a0fc5583a1\},}
+\DoxyCodeLine{00442\ \ \ \ \ \ \ \{0x89e42caaf9491b60,\ 0xf41686c49db57245\},}
+\DoxyCodeLine{00443\ \ \ \ \ \ \ \{0xac5d37d5b79b6239,\ 0x311c2875c522ced6\},}
+\DoxyCodeLine{00444\ \ \ \ \ \ \ \{0xd77485cb25823ac7,\ 0x7d633293366b828c\},}
+\DoxyCodeLine{00445\ \ \ \ \ \ \ \{0x86a8d39ef77164bc,\ 0xae5dff9c02033198\},}
+\DoxyCodeLine{00446\ \ \ \ \ \ \ \{0xa8530886b54dbdeb,\ 0xd9f57f830283fdfd\},}
+\DoxyCodeLine{00447\ \ \ \ \ \ \ \{0xd267caa862a12d66,\ 0xd072df63c324fd7c\},}
+\DoxyCodeLine{00448\ \ \ \ \ \ \ \{0x8380dea93da4bc60,\ 0x4247cb9e59f71e6e\},}
+\DoxyCodeLine{00449\ \ \ \ \ \ \ \{0xa46116538d0deb78,\ 0x52d9be85f074e609\},}
+\DoxyCodeLine{00450\ \ \ \ \ \ \ \{0xcd795be870516656,\ 0x67902e276c921f8c\},}
+\DoxyCodeLine{00451\ \ \ \ \ \ \ \{0x806bd9714632dff6,\ 0x00ba1cd8a3db53b7\},}
+\DoxyCodeLine{00452\ \ \ \ \ \ \ \{0xa086cfcd97bf97f3,\ 0x80e8a40eccd228a5\},}
+\DoxyCodeLine{00453\ \ \ \ \ \ \ \{0xc8a883c0fdaf7df0,\ 0x6122cd128006b2ce\},}
+\DoxyCodeLine{00454\ \ \ \ \ \ \ \{0xfad2a4b13d1b5d6c,\ 0x796b805720085f82\},}
+\DoxyCodeLine{00455\ \ \ \ \ \ \ \{0x9cc3a6eec6311a63,\ 0xcbe3303674053bb1\},}
+\DoxyCodeLine{00456\ \ \ \ \ \ \ \{0xc3f490aa77bd60fc,\ 0xbedbfc4411068a9d\},}
+\DoxyCodeLine{00457\ \ \ \ \ \ \ \{0xf4f1b4d515acb93b,\ 0xee92fb5515482d45\},}
+\DoxyCodeLine{00458\ \ \ \ \ \ \ \{0x991711052d8bf3c5,\ 0x751bdd152d4d1c4b\},}
+\DoxyCodeLine{00459\ \ \ \ \ \ \ \{0xbf5cd54678eef0b6,\ 0xd262d45a78a0635e\},}
+\DoxyCodeLine{00460\ \ \ \ \ \ \ \{0xef340a98172aace4,\ 0x86fb897116c87c35\},}
+\DoxyCodeLine{00461\ \ \ \ \ \ \ \{0x9580869f0e7aac0e,\ 0xd45d35e6ae3d4da1\},}
+\DoxyCodeLine{00462\ \ \ \ \ \ \ \{0xbae0a846d2195712,\ 0x8974836059cca10a\},}
+\DoxyCodeLine{00463\ \ \ \ \ \ \ \{0xe998d258869facd7,\ 0x2bd1a438703fc94c\},}
+\DoxyCodeLine{00464\ \ \ \ \ \ \ \{0x91ff83775423cc06,\ 0x7b6306a34627ddd0\},}
+\DoxyCodeLine{00465\ \ \ \ \ \ \ \{0xb67f6455292cbf08,\ 0x1a3bc84c17b1d543\},}
+\DoxyCodeLine{00466\ \ \ \ \ \ \ \{0xe41f3d6a7377eeca,\ 0x20caba5f1d9e4a94\},}
+\DoxyCodeLine{00467\ \ \ \ \ \ \ \{0x8e938662882af53e,\ 0x547eb47b7282ee9d\},}
+\DoxyCodeLine{00468\ \ \ \ \ \ \ \{0xb23867fb2a35b28d,\ 0xe99e619a4f23aa44\},}
+\DoxyCodeLine{00469\ \ \ \ \ \ \ \{0xdec681f9f4c31f31,\ 0x6405fa00e2ec94d5\},}
+\DoxyCodeLine{00470\ \ \ \ \ \ \ \{0x8b3c113c38f9f37e,\ 0xde83bc408dd3dd05\},}
+\DoxyCodeLine{00471\ \ \ \ \ \ \ \{0xae0b158b4738705e,\ 0x9624ab50b148d446\},}
+\DoxyCodeLine{00472\ \ \ \ \ \ \ \{0xd98ddaee19068c76,\ 0x3badd624dd9b0958\},}
+\DoxyCodeLine{00473\ \ \ \ \ \ \ \{0x87f8a8d4cfa417c9,\ 0xe54ca5d70a80e5d7\},}
+\DoxyCodeLine{00474\ \ \ \ \ \ \ \{0xa9f6d30a038d1dbc,\ 0x5e9fcf4ccd211f4d\},}
+\DoxyCodeLine{00475\ \ \ \ \ \ \ \{0xd47487cc8470652b,\ 0x7647c32000696720\},}
+\DoxyCodeLine{00476\ \ \ \ \ \ \ \{0x84c8d4dfd2c63f3b,\ 0x29ecd9f40041e074\},}
+\DoxyCodeLine{00477\ \ \ \ \ \ \ \{0xa5fb0a17c777cf09,\ 0xf468107100525891\},}
+\DoxyCodeLine{00478\ \ \ \ \ \ \ \{0xcf79cc9db955c2cc,\ 0x7182148d4066eeb5\},}
+\DoxyCodeLine{00479\ \ \ \ \ \ \ \{0x81ac1fe293d599bf,\ 0xc6f14cd848405531\},}
+\DoxyCodeLine{00480\ \ \ \ \ \ \ \{0xa21727db38cb002f,\ 0xb8ada00e5a506a7d\},}
+\DoxyCodeLine{00481\ \ \ \ \ \ \ \{0xca9cf1d206fdc03b,\ 0xa6d90811f0e4851d\},}
+\DoxyCodeLine{00482\ \ \ \ \ \ \ \{0xfd442e4688bd304a,\ 0x908f4a166d1da664\},}
+\DoxyCodeLine{00483\ \ \ \ \ \ \ \{0x9e4a9cec15763e2e,\ 0x9a598e4e043287ff\},}
+\DoxyCodeLine{00484\ \ \ \ \ \ \ \{0xc5dd44271ad3cdba,\ 0x40eff1e1853f29fe\},}
+\DoxyCodeLine{00485\ \ \ \ \ \ \ \{0xf7549530e188c128,\ 0xd12bee59e68ef47d\},}
+\DoxyCodeLine{00486\ \ \ \ \ \ \ \{0x9a94dd3e8cf578b9,\ 0x82bb74f8301958cf\},}
+\DoxyCodeLine{00487\ \ \ \ \ \ \ \{0xc13a148e3032d6e7,\ 0xe36a52363c1faf02\},}
+\DoxyCodeLine{00488\ \ \ \ \ \ \ \{0xf18899b1bc3f8ca1,\ 0xdc44e6c3cb279ac2\},}
+\DoxyCodeLine{00489\ \ \ \ \ \ \ \{0x96f5600f15a7b7e5,\ 0x29ab103a5ef8c0ba\},}
+\DoxyCodeLine{00490\ \ \ \ \ \ \ \{0xbcb2b812db11a5de,\ 0x7415d448f6b6f0e8\},}
+\DoxyCodeLine{00491\ \ \ \ \ \ \ \{0xebdf661791d60f56,\ 0x111b495b3464ad22\},}
+\DoxyCodeLine{00492\ \ \ \ \ \ \ \{0x936b9fcebb25c995,\ 0xcab10dd900beec35\},}
+\DoxyCodeLine{00493\ \ \ \ \ \ \ \{0xb84687c269ef3bfb,\ 0x3d5d514f40eea743\},}
+\DoxyCodeLine{00494\ \ \ \ \ \ \ \{0xe65829b3046b0afa,\ 0x0cb4a5a3112a5113\},}
+\DoxyCodeLine{00495\ \ \ \ \ \ \ \{0x8ff71a0fe2c2e6dc,\ 0x47f0e785eaba72ac\},}
+\DoxyCodeLine{00496\ \ \ \ \ \ \ \{0xb3f4e093db73a093,\ 0x59ed216765690f57\},}
+\DoxyCodeLine{00497\ \ \ \ \ \ \ \{0xe0f218b8d25088b8,\ 0x306869c13ec3532d\},}
+\DoxyCodeLine{00498\ \ \ \ \ \ \ \{0x8c974f7383725573,\ 0x1e414218c73a13fc\},}
+\DoxyCodeLine{00499\ \ \ \ \ \ \ \{0xafbd2350644eeacf,\ 0xe5d1929ef90898fb\},}
+\DoxyCodeLine{00500\ \ \ \ \ \ \ \{0xdbac6c247d62a583,\ 0xdf45f746b74abf3a\},}
+\DoxyCodeLine{00501\ \ \ \ \ \ \ \{0x894bc396ce5da772,\ 0x6b8bba8c328eb784\},}
+\DoxyCodeLine{00502\ \ \ \ \ \ \ \{0xab9eb47c81f5114f,\ 0x066ea92f3f326565\},}
+\DoxyCodeLine{00503\ \ \ \ \ \ \ \{0xd686619ba27255a2,\ 0xc80a537b0efefebe\},}
+\DoxyCodeLine{00504\ \ \ \ \ \ \ \{0x8613fd0145877585,\ 0xbd06742ce95f5f37\},}
+\DoxyCodeLine{00505\ \ \ \ \ \ \ \{0xa798fc4196e952e7,\ 0x2c48113823b73705\},}
+\DoxyCodeLine{00506\ \ \ \ \ \ \ \{0xd17f3b51fca3a7a0,\ 0xf75a15862ca504c6\},}
+\DoxyCodeLine{00507\ \ \ \ \ \ \ \{0x82ef85133de648c4,\ 0x9a984d73dbe722fc\},}
+\DoxyCodeLine{00508\ \ \ \ \ \ \ \{0xa3ab66580d5fdaf5,\ 0xc13e60d0d2e0ebbb\},}
+\DoxyCodeLine{00509\ \ \ \ \ \ \ \{0xcc963fee10b7d1b3,\ 0x318df905079926a9\},}
+\DoxyCodeLine{00510\ \ \ \ \ \ \ \{0xffbbcfe994e5c61f,\ 0xfdf17746497f7053\},}
+\DoxyCodeLine{00511\ \ \ \ \ \ \ \{0x9fd561f1fd0f9bd3,\ 0xfeb6ea8bedefa634\},}
+\DoxyCodeLine{00512\ \ \ \ \ \ \ \{0xc7caba6e7c5382c8,\ 0xfe64a52ee96b8fc1\},}
+\DoxyCodeLine{00513\ \ \ \ \ \ \ \{0xf9bd690a1b68637b,\ 0x3dfdce7aa3c673b1\},}
+\DoxyCodeLine{00514\ \ \ \ \ \ \ \{0x9c1661a651213e2d,\ 0x06bea10ca65c084f\},}
+\DoxyCodeLine{00515\ \ \ \ \ \ \ \{0xc31bfa0fe5698db8,\ 0x486e494fcff30a63\},}
+\DoxyCodeLine{00516\ \ \ \ \ \ \ \{0xf3e2f893dec3f126,\ 0x5a89dba3c3efccfb\},}
+\DoxyCodeLine{00517\ \ \ \ \ \ \ \{0x986ddb5c6b3a76b7,\ 0xf89629465a75e01d\},}
+\DoxyCodeLine{00518\ \ \ \ \ \ \ \{0xbe89523386091465,\ 0xf6bbb397f1135824\},}
+\DoxyCodeLine{00519\ \ \ \ \ \ \ \{0xee2ba6c0678b597f,\ 0x746aa07ded582e2d\},}
+\DoxyCodeLine{00520\ \ \ \ \ \ \ \{0x94db483840b717ef,\ 0xa8c2a44eb4571cdd\},}
+\DoxyCodeLine{00521\ \ \ \ \ \ \ \{0xba121a4650e4ddeb,\ 0x92f34d62616ce414\},}
+\DoxyCodeLine{00522\ \ \ \ \ \ \ \{0xe896a0d7e51e1566,\ 0x77b020baf9c81d18\},}
+\DoxyCodeLine{00523\ \ \ \ \ \ \ \{0x915e2486ef32cd60,\ 0x0ace1474dc1d122f\},}
+\DoxyCodeLine{00524\ \ \ \ \ \ \ \{0xb5b5ada8aaff80b8,\ 0x0d819992132456bb\},}
+\DoxyCodeLine{00525\ \ \ \ \ \ \ \{0xe3231912d5bf60e6,\ 0x10e1fff697ed6c6a\},}
+\DoxyCodeLine{00526\ \ \ \ \ \ \ \{0x8df5efabc5979c8f,\ 0xca8d3ffa1ef463c2\},}
+\DoxyCodeLine{00527\ \ \ \ \ \ \ \{0xb1736b96b6fd83b3,\ 0xbd308ff8a6b17cb3\},}
+\DoxyCodeLine{00528\ \ \ \ \ \ \ \{0xddd0467c64bce4a0,\ 0xac7cb3f6d05ddbdf\},}
+\DoxyCodeLine{00529\ \ \ \ \ \ \ \{0x8aa22c0dbef60ee4,\ 0x6bcdf07a423aa96c\},}
+\DoxyCodeLine{00530\ \ \ \ \ \ \ \{0xad4ab7112eb3929d,\ 0x86c16c98d2c953c7\},}
+\DoxyCodeLine{00531\ \ \ \ \ \ \ \{0xd89d64d57a607744,\ 0xe871c7bf077ba8b8\},}
+\DoxyCodeLine{00532\ \ \ \ \ \ \ \{0x87625f056c7c4a8b,\ 0x11471cd764ad4973\},}
+\DoxyCodeLine{00533\ \ \ \ \ \ \ \{0xa93af6c6c79b5d2d,\ 0xd598e40d3dd89bd0\},}
+\DoxyCodeLine{00534\ \ \ \ \ \ \ \{0xd389b47879823479,\ 0x4aff1d108d4ec2c4\},}
+\DoxyCodeLine{00535\ \ \ \ \ \ \ \{0x843610cb4bf160cb,\ 0xcedf722a585139bb\},}
+\DoxyCodeLine{00536\ \ \ \ \ \ \ \{0xa54394fe1eedb8fe,\ 0xc2974eb4ee658829\},}
+\DoxyCodeLine{00537\ \ \ \ \ \ \ \{0xce947a3da6a9273e,\ 0x733d226229feea33\},}
+\DoxyCodeLine{00538\ \ \ \ \ \ \ \{0x811ccc668829b887,\ 0x0806357d5a3f5260\},}
+\DoxyCodeLine{00539\ \ \ \ \ \ \ \{0xa163ff802a3426a8,\ 0xca07c2dcb0cf26f8\},}
+\DoxyCodeLine{00540\ \ \ \ \ \ \ \{0xc9bcff6034c13052,\ 0xfc89b393dd02f0b6\},}
+\DoxyCodeLine{00541\ \ \ \ \ \ \ \{0xfc2c3f3841f17c67,\ 0xbbac2078d443ace3\},}
+\DoxyCodeLine{00542\ \ \ \ \ \ \ \{0x9d9ba7832936edc0,\ 0xd54b944b84aa4c0e\},}
+\DoxyCodeLine{00543\ \ \ \ \ \ \ \{0xc5029163f384a931,\ 0x0a9e795e65d4df12\},}
+\DoxyCodeLine{00544\ \ \ \ \ \ \ \{0xf64335bcf065d37d,\ 0x4d4617b5ff4a16d6\},}
+\DoxyCodeLine{00545\ \ \ \ \ \ \ \{0x99ea0196163fa42e,\ 0x504bced1bf8e4e46\},}
+\DoxyCodeLine{00546\ \ \ \ \ \ \ \{0xc06481fb9bcf8d39,\ 0xe45ec2862f71e1d7\},}
+\DoxyCodeLine{00547\ \ \ \ \ \ \ \{0xf07da27a82c37088,\ 0x5d767327bb4e5a4d\},}
+\DoxyCodeLine{00548\ \ \ \ \ \ \ \{0x964e858c91ba2655,\ 0x3a6a07f8d510f870\},}
+\DoxyCodeLine{00549\ \ \ \ \ \ \ \{0xbbe226efb628afea,\ 0x890489f70a55368c\},}
+\DoxyCodeLine{00550\ \ \ \ \ \ \ \{0xeadab0aba3b2dbe5,\ 0x2b45ac74ccea842f\},}
+\DoxyCodeLine{00551\ \ \ \ \ \ \ \{0x92c8ae6b464fc96f,\ 0x3b0b8bc90012929e\},}
+\DoxyCodeLine{00552\ \ \ \ \ \ \ \{0xb77ada0617e3bbcb,\ 0x09ce6ebb40173745\},}
+\DoxyCodeLine{00553\ \ \ \ \ \ \ \{0xe55990879ddcaabd,\ 0xcc420a6a101d0516\},}
+\DoxyCodeLine{00554\ \ \ \ \ \ \ \{0x8f57fa54c2a9eab6,\ 0x9fa946824a12232e\},}
+\DoxyCodeLine{00555\ \ \ \ \ \ \ \{0xb32df8e9f3546564,\ 0x47939822dc96abfa\},}
+\DoxyCodeLine{00556\ \ \ \ \ \ \ \{0xdff9772470297ebd,\ 0x59787e2b93bc56f8\},}
+\DoxyCodeLine{00557\ \ \ \ \ \ \ \{0x8bfbea76c619ef36,\ 0x57eb4edb3c55b65b\},}
+\DoxyCodeLine{00558\ \ \ \ \ \ \ \{0xaefae51477a06b03,\ 0xede622920b6b23f2\},}
+\DoxyCodeLine{00559\ \ \ \ \ \ \ \{0xdab99e59958885c4,\ 0xe95fab368e45ecee\},}
+\DoxyCodeLine{00560\ \ \ \ \ \ \ \{0x88b402f7fd75539b,\ 0x11dbcb0218ebb415\},}
+\DoxyCodeLine{00561\ \ \ \ \ \ \ \{0xaae103b5fcd2a881,\ 0xd652bdc29f26a11a\},}
+\DoxyCodeLine{00562\ \ \ \ \ \ \ \{0xd59944a37c0752a2,\ 0x4be76d3346f04960\},}
+\DoxyCodeLine{00563\ \ \ \ \ \ \ \{0x857fcae62d8493a5,\ 0x6f70a4400c562ddc\},}
+\DoxyCodeLine{00564\ \ \ \ \ \ \ \{0xa6dfbd9fb8e5b88e,\ 0xcb4ccd500f6bb953\},}
+\DoxyCodeLine{00565\ \ \ \ \ \ \ \{0xd097ad07a71f26b2,\ 0x7e2000a41346a7a8\},}
+\DoxyCodeLine{00566\ \ \ \ \ \ \ \{0x825ecc24c873782f,\ 0x8ed400668c0c28c9\},}
+\DoxyCodeLine{00567\ \ \ \ \ \ \ \{0xa2f67f2dfa90563b,\ 0x728900802f0f32fb\},}
+\DoxyCodeLine{00568\ \ \ \ \ \ \ \{0xcbb41ef979346bca,\ 0x4f2b40a03ad2ffba\},}
+\DoxyCodeLine{00569\ \ \ \ \ \ \ \{0xfea126b7d78186bc,\ 0xe2f610c84987bfa9\},}
+\DoxyCodeLine{00570\ \ \ \ \ \ \ \{0x9f24b832e6b0f436,\ 0x0dd9ca7d2df4d7ca\},}
+\DoxyCodeLine{00571\ \ \ \ \ \ \ \{0xc6ede63fa05d3143,\ 0x91503d1c79720dbc\},}
+\DoxyCodeLine{00572\ \ \ \ \ \ \ \{0xf8a95fcf88747d94,\ 0x75a44c6397ce912b\},}
+\DoxyCodeLine{00573\ \ \ \ \ \ \ \{0x9b69dbe1b548ce7c,\ 0xc986afbe3ee11abb\},}
+\DoxyCodeLine{00574\ \ \ \ \ \ \ \{0xc24452da229b021b,\ 0xfbe85badce996169\},}
+\DoxyCodeLine{00575\ \ \ \ \ \ \ \{0xf2d56790ab41c2a2,\ 0xfae27299423fb9c4\},}
+\DoxyCodeLine{00576\ \ \ \ \ \ \ \{0x97c560ba6b0919a5,\ 0xdccd879fc967d41b\},}
+\DoxyCodeLine{00577\ \ \ \ \ \ \ \{0xbdb6b8e905cb600f,\ 0x5400e987bbc1c921\},}
+\DoxyCodeLine{00578\ \ \ \ \ \ \ \{0xed246723473e3813,\ 0x290123e9aab23b69\},}
+\DoxyCodeLine{00579\ \ \ \ \ \ \ \{0x9436c0760c86e30b,\ 0xf9a0b6720aaf6522\},}
+\DoxyCodeLine{00580\ \ \ \ \ \ \ \{0xb94470938fa89bce,\ 0xf808e40e8d5b3e6a\},}
+\DoxyCodeLine{00581\ \ \ \ \ \ \ \{0xe7958cb87392c2c2,\ 0xb60b1d1230b20e05\},}
+\DoxyCodeLine{00582\ \ \ \ \ \ \ \{0x90bd77f3483bb9b9,\ 0xb1c6f22b5e6f48c3\},}
+\DoxyCodeLine{00583\ \ \ \ \ \ \ \{0xb4ecd5f01a4aa828,\ 0x1e38aeb6360b1af4\},}
+\DoxyCodeLine{00584\ \ \ \ \ \ \ \{0xe2280b6c20dd5232,\ 0x25c6da63c38de1b1\},}
+\DoxyCodeLine{00585\ \ \ \ \ \ \ \{0x8d590723948a535f,\ 0x579c487e5a38ad0f\},}
+\DoxyCodeLine{00586\ \ \ \ \ \ \ \{0xb0af48ec79ace837,\ 0x2d835a9df0c6d852\},}
+\DoxyCodeLine{00587\ \ \ \ \ \ \ \{0xdcdb1b2798182244,\ 0xf8e431456cf88e66\},}
+\DoxyCodeLine{00588\ \ \ \ \ \ \ \{0x8a08f0f8bf0f156b,\ 0x1b8e9ecb641b5900\},}
+\DoxyCodeLine{00589\ \ \ \ \ \ \ \{0xac8b2d36eed2dac5,\ 0xe272467e3d222f40\},}
+\DoxyCodeLine{00590\ \ \ \ \ \ \ \{0xd7adf884aa879177,\ 0x5b0ed81dcc6abb10\},}
+\DoxyCodeLine{00591\ \ \ \ \ \ \ \{0x86ccbb52ea94baea,\ 0x98e947129fc2b4ea\},}
+\DoxyCodeLine{00592\ \ \ \ \ \ \ \{0xa87fea27a539e9a5,\ 0x3f2398d747b36225\},}
+\DoxyCodeLine{00593\ \ \ \ \ \ \ \{0xd29fe4b18e88640e,\ 0x8eec7f0d19a03aae\},}
+\DoxyCodeLine{00594\ \ \ \ \ \ \ \{0x83a3eeeef9153e89,\ 0x1953cf68300424ad\},}
+\DoxyCodeLine{00595\ \ \ \ \ \ \ \{0xa48ceaaab75a8e2b,\ 0x5fa8c3423c052dd8\},}
+\DoxyCodeLine{00596\ \ \ \ \ \ \ \{0xcdb02555653131b6,\ 0x3792f412cb06794e\},}
+\DoxyCodeLine{00597\ \ \ \ \ \ \ \{0x808e17555f3ebf11,\ 0xe2bbd88bbee40bd1\},}
+\DoxyCodeLine{00598\ \ \ \ \ \ \ \{0xa0b19d2ab70e6ed6,\ 0x5b6aceaeae9d0ec5\},}
+\DoxyCodeLine{00599\ \ \ \ \ \ \ \{0xc8de047564d20a8b,\ 0xf245825a5a445276\},}
+\DoxyCodeLine{00600\ \ \ \ \ \ \ \{0xfb158592be068d2e,\ 0xeed6e2f0f0d56713\},}
+\DoxyCodeLine{00601\ \ \ \ \ \ \ \{0x9ced737bb6c4183d,\ 0x55464dd69685606c\},}
+\DoxyCodeLine{00602\ \ \ \ \ \ \ \{0xc428d05aa4751e4c,\ 0xaa97e14c3c26b887\},}
+\DoxyCodeLine{00603\ \ \ \ \ \ \ \{0xf53304714d9265df,\ 0xd53dd99f4b3066a9\},}
+\DoxyCodeLine{00604\ \ \ \ \ \ \ \{0x993fe2c6d07b7fab,\ 0xe546a8038efe402a\},}
+\DoxyCodeLine{00605\ \ \ \ \ \ \ \{0xbf8fdb78849a5f96,\ 0xde98520472bdd034\},}
+\DoxyCodeLine{00606\ \ \ \ \ \ \ \{0xef73d256a5c0f77c,\ 0x963e66858f6d4441\},}
+\DoxyCodeLine{00607\ \ \ \ \ \ \ \{0x95a8637627989aad,\ 0xdde7001379a44aa9\},}
+\DoxyCodeLine{00608\ \ \ \ \ \ \ \{0xbb127c53b17ec159,\ 0x5560c018580d5d53\},}
+\DoxyCodeLine{00609\ \ \ \ \ \ \ \{0xe9d71b689dde71af,\ 0xaab8f01e6e10b4a7\},}
+\DoxyCodeLine{00610\ \ \ \ \ \ \ \{0x9226712162ab070d,\ 0xcab3961304ca70e9\},}
+\DoxyCodeLine{00611\ \ \ \ \ \ \ \{0xb6b00d69bb55c8d1,\ 0x3d607b97c5fd0d23\},}
+\DoxyCodeLine{00612\ \ \ \ \ \ \ \{0xe45c10c42a2b3b05,\ 0x8cb89a7db77c506b\},}
+\DoxyCodeLine{00613\ \ \ \ \ \ \ \{0x8eb98a7a9a5b04e3,\ 0x77f3608e92adb243\},}
+\DoxyCodeLine{00614\ \ \ \ \ \ \ \{0xb267ed1940f1c61c,\ 0x55f038b237591ed4\},}
+\DoxyCodeLine{00615\ \ \ \ \ \ \ \{0xdf01e85f912e37a3,\ 0x6b6c46dec52f6689\},}
+\DoxyCodeLine{00616\ \ \ \ \ \ \ \{0x8b61313bbabce2c6,\ 0x2323ac4b3b3da016\},}
+\DoxyCodeLine{00617\ \ \ \ \ \ \ \{0xae397d8aa96c1b77,\ 0xabec975e0a0d081b\},}
+\DoxyCodeLine{00618\ \ \ \ \ \ \ \{0xd9c7dced53c72255,\ 0x96e7bd358c904a22\},}
+\DoxyCodeLine{00619\ \ \ \ \ \ \ \{0x881cea14545c7575,\ 0x7e50d64177da2e55\},}
+\DoxyCodeLine{00620\ \ \ \ \ \ \ \{0xaa242499697392d2,\ 0xdde50bd1d5d0b9ea\},}
+\DoxyCodeLine{00621\ \ \ \ \ \ \ \{0xd4ad2dbfc3d07787,\ 0x955e4ec64b44e865\},}
+\DoxyCodeLine{00622\ \ \ \ \ \ \ \{0x84ec3c97da624ab4,\ 0xbd5af13bef0b113f\},}
+\DoxyCodeLine{00623\ \ \ \ \ \ \ \{0xa6274bbdd0fadd61,\ 0xecb1ad8aeacdd58f\},}
+\DoxyCodeLine{00624\ \ \ \ \ \ \ \{0xcfb11ead453994ba,\ 0x67de18eda5814af3\},}
+\DoxyCodeLine{00625\ \ \ \ \ \ \ \{0x81ceb32c4b43fcf4,\ 0x80eacf948770ced8\},}
+\DoxyCodeLine{00626\ \ \ \ \ \ \ \{0xa2425ff75e14fc31,\ 0xa1258379a94d028e\},}
+\DoxyCodeLine{00627\ \ \ \ \ \ \ \{0xcad2f7f5359a3b3e,\ 0x096ee45813a04331\},}
+\DoxyCodeLine{00628\ \ \ \ \ \ \ \{0xfd87b5f28300ca0d,\ 0x8bca9d6e188853fd\},}
+\DoxyCodeLine{00629\ \ \ \ \ \ \ \{0x9e74d1b791e07e48,\ 0x775ea264cf55347e\},}
+\DoxyCodeLine{00630\ \ \ \ \ \ \ \{0xc612062576589dda,\ 0x95364afe032a819e\},}
+\DoxyCodeLine{00631\ \ \ \ \ \ \ \{0xf79687aed3eec551,\ 0x3a83ddbd83f52205\},}
+\DoxyCodeLine{00632\ \ \ \ \ \ \ \{0x9abe14cd44753b52,\ 0xc4926a9672793543\},}
+\DoxyCodeLine{00633\ \ \ \ \ \ \ \{0xc16d9a0095928a27,\ 0x75b7053c0f178294\},}
+\DoxyCodeLine{00634\ \ \ \ \ \ \ \{0xf1c90080baf72cb1,\ 0x5324c68b12dd6339\},}
+\DoxyCodeLine{00635\ \ \ \ \ \ \ \{0x971da05074da7bee,\ 0xd3f6fc16ebca5e04\},}
+\DoxyCodeLine{00636\ \ \ \ \ \ \ \{0xbce5086492111aea,\ 0x88f4bb1ca6bcf585\},}
+\DoxyCodeLine{00637\ \ \ \ \ \ \ \{0xec1e4a7db69561a5,\ 0x2b31e9e3d06c32e6\},}
+\DoxyCodeLine{00638\ \ \ \ \ \ \ \{0x9392ee8e921d5d07,\ 0x3aff322e62439fd0\},}
+\DoxyCodeLine{00639\ \ \ \ \ \ \ \{0xb877aa3236a4b449,\ 0x09befeb9fad487c3\},}
+\DoxyCodeLine{00640\ \ \ \ \ \ \ \{0xe69594bec44de15b,\ 0x4c2ebe687989a9b4\},}
+\DoxyCodeLine{00641\ \ \ \ \ \ \ \{0x901d7cf73ab0acd9,\ 0x0f9d37014bf60a11\},}
+\DoxyCodeLine{00642\ \ \ \ \ \ \ \{0xb424dc35095cd80f,\ 0x538484c19ef38c95\},}
+\DoxyCodeLine{00643\ \ \ \ \ \ \ \{0xe12e13424bb40e13,\ 0x2865a5f206b06fba\},}
+\DoxyCodeLine{00644\ \ \ \ \ \ \ \{0x8cbccc096f5088cb,\ 0xf93f87b7442e45d4\},}
+\DoxyCodeLine{00645\ \ \ \ \ \ \ \{0xafebff0bcb24aafe,\ 0xf78f69a51539d749\},}
+\DoxyCodeLine{00646\ \ \ \ \ \ \ \{0xdbe6fecebdedd5be,\ 0xb573440e5a884d1c\},}
+\DoxyCodeLine{00647\ \ \ \ \ \ \ \{0x89705f4136b4a597,\ 0x31680a88f8953031\},}
+\DoxyCodeLine{00648\ \ \ \ \ \ \ \{0xabcc77118461cefc,\ 0xfdc20d2b36ba7c3e\},}
+\DoxyCodeLine{00649\ \ \ \ \ \ \ \{0xd6bf94d5e57a42bc,\ 0x3d32907604691b4d\},}
+\DoxyCodeLine{00650\ \ \ \ \ \ \ \{0x8637bd05af6c69b5,\ 0xa63f9a49c2c1b110\},}
+\DoxyCodeLine{00651\ \ \ \ \ \ \ \{0xa7c5ac471b478423,\ 0x0fcf80dc33721d54\},}
+\DoxyCodeLine{00652\ \ \ \ \ \ \ \{0xd1b71758e219652b,\ 0xd3c36113404ea4a9\},}
+\DoxyCodeLine{00653\ \ \ \ \ \ \ \{0x83126e978d4fdf3b,\ 0x645a1cac083126ea\},}
+\DoxyCodeLine{00654\ \ \ \ \ \ \ \{0xa3d70a3d70a3d70a,\ 0x3d70a3d70a3d70a4\},}
+\DoxyCodeLine{00655\ \ \ \ \ \ \ \{0xcccccccccccccccc,\ 0xcccccccccccccccd\},}
+\DoxyCodeLine{00656\ \ \ \ \ \ \ \{0x8000000000000000,\ 0x0000000000000000\},}
+\DoxyCodeLine{00657\ \ \ \ \ \ \ \{0xa000000000000000,\ 0x0000000000000000\},}
+\DoxyCodeLine{00658\ \ \ \ \ \ \ \{0xc800000000000000,\ 0x0000000000000000\},}
+\DoxyCodeLine{00659\ \ \ \ \ \ \ \{0xfa00000000000000,\ 0x0000000000000000\},}
+\DoxyCodeLine{00660\ \ \ \ \ \ \ \{0x9c40000000000000,\ 0x0000000000000000\},}
+\DoxyCodeLine{00661\ \ \ \ \ \ \ \{0xc350000000000000,\ 0x0000000000000000\},}
+\DoxyCodeLine{00662\ \ \ \ \ \ \ \{0xf424000000000000,\ 0x0000000000000000\},}
+\DoxyCodeLine{00663\ \ \ \ \ \ \ \{0x9896800000000000,\ 0x0000000000000000\},}
+\DoxyCodeLine{00664\ \ \ \ \ \ \ \{0xbebc200000000000,\ 0x0000000000000000\},}
+\DoxyCodeLine{00665\ \ \ \ \ \ \ \{0xee6b280000000000,\ 0x0000000000000000\},}
+\DoxyCodeLine{00666\ \ \ \ \ \ \ \{0x9502f90000000000,\ 0x0000000000000000\},}
+\DoxyCodeLine{00667\ \ \ \ \ \ \ \{0xba43b74000000000,\ 0x0000000000000000\},}
+\DoxyCodeLine{00668\ \ \ \ \ \ \ \{0xe8d4a51000000000,\ 0x0000000000000000\},}
+\DoxyCodeLine{00669\ \ \ \ \ \ \ \{0x9184e72a00000000,\ 0x0000000000000000\},}
+\DoxyCodeLine{00670\ \ \ \ \ \ \ \{0xb5e620f480000000,\ 0x0000000000000000\},}
+\DoxyCodeLine{00671\ \ \ \ \ \ \ \{0xe35fa931a0000000,\ 0x0000000000000000\},}
+\DoxyCodeLine{00672\ \ \ \ \ \ \ \{0x8e1bc9bf04000000,\ 0x0000000000000000\},}
+\DoxyCodeLine{00673\ \ \ \ \ \ \ \{0xb1a2bc2ec5000000,\ 0x0000000000000000\},}
+\DoxyCodeLine{00674\ \ \ \ \ \ \ \{0xde0b6b3a76400000,\ 0x0000000000000000\},}
+\DoxyCodeLine{00675\ \ \ \ \ \ \ \{0x8ac7230489e80000,\ 0x0000000000000000\},}
+\DoxyCodeLine{00676\ \ \ \ \ \ \ \{0xad78ebc5ac620000,\ 0x0000000000000000\},}
+\DoxyCodeLine{00677\ \ \ \ \ \ \ \{0xd8d726b7177a8000,\ 0x0000000000000000\},}
+\DoxyCodeLine{00678\ \ \ \ \ \ \ \{0x878678326eac9000,\ 0x0000000000000000\},}
+\DoxyCodeLine{00679\ \ \ \ \ \ \ \{0xa968163f0a57b400,\ 0x0000000000000000\},}
+\DoxyCodeLine{00680\ \ \ \ \ \ \ \{0xd3c21bcecceda100,\ 0x0000000000000000\},}
+\DoxyCodeLine{00681\ \ \ \ \ \ \ \{0x84595161401484a0,\ 0x0000000000000000\},}
+\DoxyCodeLine{00682\ \ \ \ \ \ \ \{0xa56fa5b99019a5c8,\ 0x0000000000000000\},}
+\DoxyCodeLine{00683\ \ \ \ \ \ \ \{0xcecb8f27f4200f3a,\ 0x0000000000000000\},}
+\DoxyCodeLine{00684\ \ \ \ \ \ \ \{0x813f3978f8940984,\ 0x4000000000000000\},}
+\DoxyCodeLine{00685\ \ \ \ \ \ \ \{0xa18f07d736b90be5,\ 0x5000000000000000\},}
+\DoxyCodeLine{00686\ \ \ \ \ \ \ \{0xc9f2c9cd04674ede,\ 0xa400000000000000\},}
+\DoxyCodeLine{00687\ \ \ \ \ \ \ \{0xfc6f7c4045812296,\ 0x4d00000000000000\},}
+\DoxyCodeLine{00688\ \ \ \ \ \ \ \{0x9dc5ada82b70b59d,\ 0xf020000000000000\},}
+\DoxyCodeLine{00689\ \ \ \ \ \ \ \{0xc5371912364ce305,\ 0x6c28000000000000\},}
+\DoxyCodeLine{00690\ \ \ \ \ \ \ \{0xf684df56c3e01bc6,\ 0xc732000000000000\},}
+\DoxyCodeLine{00691\ \ \ \ \ \ \ \{0x9a130b963a6c115c,\ 0x3c7f400000000000\},}
+\DoxyCodeLine{00692\ \ \ \ \ \ \ \{0xc097ce7bc90715b3,\ 0x4b9f100000000000\},}
+\DoxyCodeLine{00693\ \ \ \ \ \ \ \{0xf0bdc21abb48db20,\ 0x1e86d40000000000\},}
+\DoxyCodeLine{00694\ \ \ \ \ \ \ \{0x96769950b50d88f4,\ 0x1314448000000000\},}
+\DoxyCodeLine{00695\ \ \ \ \ \ \ \{0xbc143fa4e250eb31,\ 0x17d955a000000000\},}
+\DoxyCodeLine{00696\ \ \ \ \ \ \ \{0xeb194f8e1ae525fd,\ 0x5dcfab0800000000\},}
+\DoxyCodeLine{00697\ \ \ \ \ \ \ \{0x92efd1b8d0cf37be,\ 0x5aa1cae500000000\},}
+\DoxyCodeLine{00698\ \ \ \ \ \ \ \{0xb7abc627050305ad,\ 0xf14a3d9e40000000\},}
+\DoxyCodeLine{00699\ \ \ \ \ \ \ \{0xe596b7b0c643c719,\ 0x6d9ccd05d0000000\},}
+\DoxyCodeLine{00700\ \ \ \ \ \ \ \{0x8f7e32ce7bea5c6f,\ 0xe4820023a2000000\},}
+\DoxyCodeLine{00701\ \ \ \ \ \ \ \{0xb35dbf821ae4f38b,\ 0xdda2802c8a800000\},}
+\DoxyCodeLine{00702\ \ \ \ \ \ \ \{0xe0352f62a19e306e,\ 0xd50b2037ad200000\},}
+\DoxyCodeLine{00703\ \ \ \ \ \ \ \{0x8c213d9da502de45,\ 0x4526f422cc340000\},}
+\DoxyCodeLine{00704\ \ \ \ \ \ \ \{0xaf298d050e4395d6,\ 0x9670b12b7f410000\},}
+\DoxyCodeLine{00705\ \ \ \ \ \ \ \{0xdaf3f04651d47b4c,\ 0x3c0cdd765f114000\},}
+\DoxyCodeLine{00706\ \ \ \ \ \ \ \{0x88d8762bf324cd0f,\ 0xa5880a69fb6ac800\},}
+\DoxyCodeLine{00707\ \ \ \ \ \ \ \{0xab0e93b6efee0053,\ 0x8eea0d047a457a00\},}
+\DoxyCodeLine{00708\ \ \ \ \ \ \ \{0xd5d238a4abe98068,\ 0x72a4904598d6d880\},}
+\DoxyCodeLine{00709\ \ \ \ \ \ \ \{0x85a36366eb71f041,\ 0x47a6da2b7f864750\},}
+\DoxyCodeLine{00710\ \ \ \ \ \ \ \{0xa70c3c40a64e6c51,\ 0x999090b65f67d924\},}
+\DoxyCodeLine{00711\ \ \ \ \ \ \ \{0xd0cf4b50cfe20765,\ 0xfff4b4e3f741cf6d\},}
+\DoxyCodeLine{00712\ \ \ \ \ \ \ \{0x82818f1281ed449f,\ 0xbff8f10e7a8921a5\},}
+\DoxyCodeLine{00713\ \ \ \ \ \ \ \{0xa321f2d7226895c7,\ 0xaff72d52192b6a0e\},}
+\DoxyCodeLine{00714\ \ \ \ \ \ \ \{0xcbea6f8ceb02bb39,\ 0x9bf4f8a69f764491\},}
+\DoxyCodeLine{00715\ \ \ \ \ \ \ \{0xfee50b7025c36a08,\ 0x02f236d04753d5b5\},}
+\DoxyCodeLine{00716\ \ \ \ \ \ \ \{0x9f4f2726179a2245,\ 0x01d762422c946591\},}
+\DoxyCodeLine{00717\ \ \ \ \ \ \ \{0xc722f0ef9d80aad6,\ 0x424d3ad2b7b97ef6\},}
+\DoxyCodeLine{00718\ \ \ \ \ \ \ \{0xf8ebad2b84e0d58b,\ 0xd2e0898765a7deb3\},}
+\DoxyCodeLine{00719\ \ \ \ \ \ \ \{0x9b934c3b330c8577,\ 0x63cc55f49f88eb30\},}
+\DoxyCodeLine{00720\ \ \ \ \ \ \ \{0xc2781f49ffcfa6d5,\ 0x3cbf6b71c76b25fc\},}
+\DoxyCodeLine{00721\ \ \ \ \ \ \ \{0xf316271c7fc3908a,\ 0x8bef464e3945ef7b\},}
+\DoxyCodeLine{00722\ \ \ \ \ \ \ \{0x97edd871cfda3a56,\ 0x97758bf0e3cbb5ad\},}
+\DoxyCodeLine{00723\ \ \ \ \ \ \ \{0xbde94e8e43d0c8ec,\ 0x3d52eeed1cbea318\},}
+\DoxyCodeLine{00724\ \ \ \ \ \ \ \{0xed63a231d4c4fb27,\ 0x4ca7aaa863ee4bde\},}
+\DoxyCodeLine{00725\ \ \ \ \ \ \ \{0x945e455f24fb1cf8,\ 0x8fe8caa93e74ef6b\},}
+\DoxyCodeLine{00726\ \ \ \ \ \ \ \{0xb975d6b6ee39e436,\ 0xb3e2fd538e122b45\},}
+\DoxyCodeLine{00727\ \ \ \ \ \ \ \{0xe7d34c64a9c85d44,\ 0x60dbbca87196b617\},}
+\DoxyCodeLine{00728\ \ \ \ \ \ \ \{0x90e40fbeea1d3a4a,\ 0xbc8955e946fe31ce\},}
+\DoxyCodeLine{00729\ \ \ \ \ \ \ \{0xb51d13aea4a488dd,\ 0x6babab6398bdbe42\},}
+\DoxyCodeLine{00730\ \ \ \ \ \ \ \{0xe264589a4dcdab14,\ 0xc696963c7eed2dd2\},}
+\DoxyCodeLine{00731\ \ \ \ \ \ \ \{0x8d7eb76070a08aec,\ 0xfc1e1de5cf543ca3\},}
+\DoxyCodeLine{00732\ \ \ \ \ \ \ \{0xb0de65388cc8ada8,\ 0x3b25a55f43294bcc\},}
+\DoxyCodeLine{00733\ \ \ \ \ \ \ \{0xdd15fe86affad912,\ 0x49ef0eb713f39ebf\},}
+\DoxyCodeLine{00734\ \ \ \ \ \ \ \{0x8a2dbf142dfcc7ab,\ 0x6e3569326c784338\},}
+\DoxyCodeLine{00735\ \ \ \ \ \ \ \{0xacb92ed9397bf996,\ 0x49c2c37f07965405\},}
+\DoxyCodeLine{00736\ \ \ \ \ \ \ \{0xd7e77a8f87daf7fb,\ 0xdc33745ec97be907\},}
+\DoxyCodeLine{00737\ \ \ \ \ \ \ \{0x86f0ac99b4e8dafd,\ 0x69a028bb3ded71a4\},}
+\DoxyCodeLine{00738\ \ \ \ \ \ \ \{0xa8acd7c0222311bc,\ 0xc40832ea0d68ce0d\},}
+\DoxyCodeLine{00739\ \ \ \ \ \ \ \{0xd2d80db02aabd62b,\ 0xf50a3fa490c30191\},}
+\DoxyCodeLine{00740\ \ \ \ \ \ \ \{0x83c7088e1aab65db,\ 0x792667c6da79e0fb\},}
+\DoxyCodeLine{00741\ \ \ \ \ \ \ \{0xa4b8cab1a1563f52,\ 0x577001b891185939\},}
+\DoxyCodeLine{00742\ \ \ \ \ \ \ \{0xcde6fd5e09abcf26,\ 0xed4c0226b55e6f87\},}
+\DoxyCodeLine{00743\ \ \ \ \ \ \ \{0x80b05e5ac60b6178,\ 0x544f8158315b05b5\},}
+\DoxyCodeLine{00744\ \ \ \ \ \ \ \{0xa0dc75f1778e39d6,\ 0x696361ae3db1c722\},}
+\DoxyCodeLine{00745\ \ \ \ \ \ \ \{0xc913936dd571c84c,\ 0x03bc3a19cd1e38ea\},}
+\DoxyCodeLine{00746\ \ \ \ \ \ \ \{0xfb5878494ace3a5f,\ 0x04ab48a04065c724\},}
+\DoxyCodeLine{00747\ \ \ \ \ \ \ \{0x9d174b2dcec0e47b,\ 0x62eb0d64283f9c77\},}
+\DoxyCodeLine{00748\ \ \ \ \ \ \ \{0xc45d1df942711d9a,\ 0x3ba5d0bd324f8395\},}
+\DoxyCodeLine{00749\ \ \ \ \ \ \ \{0xf5746577930d6500,\ 0xca8f44ec7ee3647a\},}
+\DoxyCodeLine{00750\ \ \ \ \ \ \ \{0x9968bf6abbe85f20,\ 0x7e998b13cf4e1ecc\},}
+\DoxyCodeLine{00751\ \ \ \ \ \ \ \{0xbfc2ef456ae276e8,\ 0x9e3fedd8c321a67f\},}
+\DoxyCodeLine{00752\ \ \ \ \ \ \ \{0xefb3ab16c59b14a2,\ 0xc5cfe94ef3ea101f\},}
+\DoxyCodeLine{00753\ \ \ \ \ \ \ \{0x95d04aee3b80ece5,\ 0xbba1f1d158724a13\},}
+\DoxyCodeLine{00754\ \ \ \ \ \ \ \{0xbb445da9ca61281f,\ 0x2a8a6e45ae8edc98\},}
+\DoxyCodeLine{00755\ \ \ \ \ \ \ \{0xea1575143cf97226,\ 0xf52d09d71a3293be\},}
+\DoxyCodeLine{00756\ \ \ \ \ \ \ \{0x924d692ca61be758,\ 0x593c2626705f9c57\},}
+\DoxyCodeLine{00757\ \ \ \ \ \ \ \{0xb6e0c377cfa2e12e,\ 0x6f8b2fb00c77836d\},}
+\DoxyCodeLine{00758\ \ \ \ \ \ \ \{0xe498f455c38b997a,\ 0x0b6dfb9c0f956448\},}
+\DoxyCodeLine{00759\ \ \ \ \ \ \ \{0x8edf98b59a373fec,\ 0x4724bd4189bd5ead\},}
+\DoxyCodeLine{00760\ \ \ \ \ \ \ \{0xb2977ee300c50fe7,\ 0x58edec91ec2cb658\},}
+\DoxyCodeLine{00761\ \ \ \ \ \ \ \{0xdf3d5e9bc0f653e1,\ 0x2f2967b66737e3ee\},}
+\DoxyCodeLine{00762\ \ \ \ \ \ \ \{0x8b865b215899f46c,\ 0xbd79e0d20082ee75\},}
+\DoxyCodeLine{00763\ \ \ \ \ \ \ \{0xae67f1e9aec07187,\ 0xecd8590680a3aa12\},}
+\DoxyCodeLine{00764\ \ \ \ \ \ \ \{0xda01ee641a708de9,\ 0xe80e6f4820cc9496\},}
+\DoxyCodeLine{00765\ \ \ \ \ \ \ \{0x884134fe908658b2,\ 0x3109058d147fdcde\},}
+\DoxyCodeLine{00766\ \ \ \ \ \ \ \{0xaa51823e34a7eede,\ 0xbd4b46f0599fd416\},}
+\DoxyCodeLine{00767\ \ \ \ \ \ \ \{0xd4e5e2cdc1d1ea96,\ 0x6c9e18ac7007c91b\},}
+\DoxyCodeLine{00768\ \ \ \ \ \ \ \{0x850fadc09923329e,\ 0x03e2cf6bc604ddb1\},}
+\DoxyCodeLine{00769\ \ \ \ \ \ \ \{0xa6539930bf6bff45,\ 0x84db8346b786151d\},}
+\DoxyCodeLine{00770\ \ \ \ \ \ \ \{0xcfe87f7cef46ff16,\ 0xe612641865679a64\},}
+\DoxyCodeLine{00771\ \ \ \ \ \ \ \{0x81f14fae158c5f6e,\ 0x4fcb7e8f3f60c07f\},}
+\DoxyCodeLine{00772\ \ \ \ \ \ \ \{0xa26da3999aef7749,\ 0xe3be5e330f38f09e\},}
+\DoxyCodeLine{00773\ \ \ \ \ \ \ \{0xcb090c8001ab551c,\ 0x5cadf5bfd3072cc6\},}
+\DoxyCodeLine{00774\ \ \ \ \ \ \ \{0xfdcb4fa002162a63,\ 0x73d9732fc7c8f7f7\},}
+\DoxyCodeLine{00775\ \ \ \ \ \ \ \{0x9e9f11c4014dda7e,\ 0x2867e7fddcdd9afb\},}
+\DoxyCodeLine{00776\ \ \ \ \ \ \ \{0xc646d63501a1511d,\ 0xb281e1fd541501b9\},}
+\DoxyCodeLine{00777\ \ \ \ \ \ \ \{0xf7d88bc24209a565,\ 0x1f225a7ca91a4227\},}
+\DoxyCodeLine{00778\ \ \ \ \ \ \ \{0x9ae757596946075f,\ 0x3375788de9b06959\},}
+\DoxyCodeLine{00779\ \ \ \ \ \ \ \{0xc1a12d2fc3978937,\ 0x0052d6b1641c83af\},}
+\DoxyCodeLine{00780\ \ \ \ \ \ \ \{0xf209787bb47d6b84,\ 0xc0678c5dbd23a49b\},}
+\DoxyCodeLine{00781\ \ \ \ \ \ \ \{0x9745eb4d50ce6332,\ 0xf840b7ba963646e1\},}
+\DoxyCodeLine{00782\ \ \ \ \ \ \ \{0xbd176620a501fbff,\ 0xb650e5a93bc3d899\},}
+\DoxyCodeLine{00783\ \ \ \ \ \ \ \{0xec5d3fa8ce427aff,\ 0xa3e51f138ab4cebf\},}
+\DoxyCodeLine{00784\ \ \ \ \ \ \ \{0x93ba47c980e98cdf,\ 0xc66f336c36b10138\},}
+\DoxyCodeLine{00785\ \ \ \ \ \ \ \{0xb8a8d9bbe123f017,\ 0xb80b0047445d4185\},}
+\DoxyCodeLine{00786\ \ \ \ \ \ \ \{0xe6d3102ad96cec1d,\ 0xa60dc059157491e6\},}
+\DoxyCodeLine{00787\ \ \ \ \ \ \ \{0x9043ea1ac7e41392,\ 0x87c89837ad68db30\},}
+\DoxyCodeLine{00788\ \ \ \ \ \ \ \{0xb454e4a179dd1877,\ 0x29babe4598c311fc\},}
+\DoxyCodeLine{00789\ \ \ \ \ \ \ \{0xe16a1dc9d8545e94,\ 0xf4296dd6fef3d67b\},}
+\DoxyCodeLine{00790\ \ \ \ \ \ \ \{0x8ce2529e2734bb1d,\ 0x1899e4a65f58660d\},}
+\DoxyCodeLine{00791\ \ \ \ \ \ \ \{0xb01ae745b101e9e4,\ 0x5ec05dcff72e7f90\},}
+\DoxyCodeLine{00792\ \ \ \ \ \ \ \{0xdc21a1171d42645d,\ 0x76707543f4fa1f74\},}
+\DoxyCodeLine{00793\ \ \ \ \ \ \ \{0x899504ae72497eba,\ 0x6a06494a791c53a9\},}
+\DoxyCodeLine{00794\ \ \ \ \ \ \ \{0xabfa45da0edbde69,\ 0x0487db9d17636893\},}
+\DoxyCodeLine{00795\ \ \ \ \ \ \ \{0xd6f8d7509292d603,\ 0x45a9d2845d3c42b7\},}
+\DoxyCodeLine{00796\ \ \ \ \ \ \ \{0x865b86925b9bc5c2,\ 0x0b8a2392ba45a9b3\},}
+\DoxyCodeLine{00797\ \ \ \ \ \ \ \{0xa7f26836f282b732,\ 0x8e6cac7768d7141f\},}
+\DoxyCodeLine{00798\ \ \ \ \ \ \ \{0xd1ef0244af2364ff,\ 0x3207d795430cd927\},}
+\DoxyCodeLine{00799\ \ \ \ \ \ \ \{0x8335616aed761f1f,\ 0x7f44e6bd49e807b9\},}
+\DoxyCodeLine{00800\ \ \ \ \ \ \ \{0xa402b9c5a8d3a6e7,\ 0x5f16206c9c6209a7\},}
+\DoxyCodeLine{00801\ \ \ \ \ \ \ \{0xcd036837130890a1,\ 0x36dba887c37a8c10\},}
+\DoxyCodeLine{00802\ \ \ \ \ \ \ \{0x802221226be55a64,\ 0xc2494954da2c978a\},}
+\DoxyCodeLine{00803\ \ \ \ \ \ \ \{0xa02aa96b06deb0fd,\ 0xf2db9baa10b7bd6d\},}
+\DoxyCodeLine{00804\ \ \ \ \ \ \ \{0xc83553c5c8965d3d,\ 0x6f92829494e5acc8\},}
+\DoxyCodeLine{00805\ \ \ \ \ \ \ \{0xfa42a8b73abbf48c,\ 0xcb772339ba1f17fa\},}
+\DoxyCodeLine{00806\ \ \ \ \ \ \ \{0x9c69a97284b578d7,\ 0xff2a760414536efc\},}
+\DoxyCodeLine{00807\ \ \ \ \ \ \ \{0xc38413cf25e2d70d,\ 0xfef5138519684abb\},}
+\DoxyCodeLine{00808\ \ \ \ \ \ \ \{0xf46518c2ef5b8cd1,\ 0x7eb258665fc25d6a\},}
+\DoxyCodeLine{00809\ \ \ \ \ \ \ \{0x98bf2f79d5993802,\ 0xef2f773ffbd97a62\},}
+\DoxyCodeLine{00810\ \ \ \ \ \ \ \{0xbeeefb584aff8603,\ 0xaafb550ffacfd8fb\},}
+\DoxyCodeLine{00811\ \ \ \ \ \ \ \{0xeeaaba2e5dbf6784,\ 0x95ba2a53f983cf39\},}
+\DoxyCodeLine{00812\ \ \ \ \ \ \ \{0x952ab45cfa97a0b2,\ 0xdd945a747bf26184\},}
+\DoxyCodeLine{00813\ \ \ \ \ \ \ \{0xba756174393d88df,\ 0x94f971119aeef9e5\},}
+\DoxyCodeLine{00814\ \ \ \ \ \ \ \{0xe912b9d1478ceb17,\ 0x7a37cd5601aab85e\},}
+\DoxyCodeLine{00815\ \ \ \ \ \ \ \{0x91abb422ccb812ee,\ 0xac62e055c10ab33b\},}
+\DoxyCodeLine{00816\ \ \ \ \ \ \ \{0xb616a12b7fe617aa,\ 0x577b986b314d600a\},}
+\DoxyCodeLine{00817\ \ \ \ \ \ \ \{0xe39c49765fdf9d94,\ 0xed5a7e85fda0b80c\},}
+\DoxyCodeLine{00818\ \ \ \ \ \ \ \{0x8e41ade9fbebc27d,\ 0x14588f13be847308\},}
+\DoxyCodeLine{00819\ \ \ \ \ \ \ \{0xb1d219647ae6b31c,\ 0x596eb2d8ae258fc9\},}
+\DoxyCodeLine{00820\ \ \ \ \ \ \ \{0xde469fbd99a05fe3,\ 0x6fca5f8ed9aef3bc\},}
+\DoxyCodeLine{00821\ \ \ \ \ \ \ \{0x8aec23d680043bee,\ 0x25de7bb9480d5855\},}
+\DoxyCodeLine{00822\ \ \ \ \ \ \ \{0xada72ccc20054ae9,\ 0xaf561aa79a10ae6b\},}
+\DoxyCodeLine{00823\ \ \ \ \ \ \ \{0xd910f7ff28069da4,\ 0x1b2ba1518094da05\},}
+\DoxyCodeLine{00824\ \ \ \ \ \ \ \{0x87aa9aff79042286,\ 0x90fb44d2f05d0843\},}
+\DoxyCodeLine{00825\ \ \ \ \ \ \ \{0xa99541bf57452b28,\ 0x353a1607ac744a54\},}
+\DoxyCodeLine{00826\ \ \ \ \ \ \ \{0xd3fa922f2d1675f2,\ 0x42889b8997915ce9\},}
+\DoxyCodeLine{00827\ \ \ \ \ \ \ \{0x847c9b5d7c2e09b7,\ 0x69956135febada12\},}
+\DoxyCodeLine{00828\ \ \ \ \ \ \ \{0xa59bc234db398c25,\ 0x43fab9837e699096\},}
+\DoxyCodeLine{00829\ \ \ \ \ \ \ \{0xcf02b2c21207ef2e,\ 0x94f967e45e03f4bc\},}
+\DoxyCodeLine{00830\ \ \ \ \ \ \ \{0x8161afb94b44f57d,\ 0x1d1be0eebac278f6\},}
+\DoxyCodeLine{00831\ \ \ \ \ \ \ \{0xa1ba1ba79e1632dc,\ 0x6462d92a69731733\},}
+\DoxyCodeLine{00832\ \ \ \ \ \ \ \{0xca28a291859bbf93,\ 0x7d7b8f7503cfdcff\},}
+\DoxyCodeLine{00833\ \ \ \ \ \ \ \{0xfcb2cb35e702af78,\ 0x5cda735244c3d43f\},}
+\DoxyCodeLine{00834\ \ \ \ \ \ \ \{0x9defbf01b061adab,\ 0x3a0888136afa64a8\},}
+\DoxyCodeLine{00835\ \ \ \ \ \ \ \{0xc56baec21c7a1916,\ 0x088aaa1845b8fdd1\},}
+\DoxyCodeLine{00836\ \ \ \ \ \ \ \{0xf6c69a72a3989f5b,\ 0x8aad549e57273d46\},}
+\DoxyCodeLine{00837\ \ \ \ \ \ \ \{0x9a3c2087a63f6399,\ 0x36ac54e2f678864c\},}
+\DoxyCodeLine{00838\ \ \ \ \ \ \ \{0xc0cb28a98fcf3c7f,\ 0x84576a1bb416a7de\},}
+\DoxyCodeLine{00839\ \ \ \ \ \ \ \{0xf0fdf2d3f3c30b9f,\ 0x656d44a2a11c51d6\},}
+\DoxyCodeLine{00840\ \ \ \ \ \ \ \{0x969eb7c47859e743,\ 0x9f644ae5a4b1b326\},}
+\DoxyCodeLine{00841\ \ \ \ \ \ \ \{0xbc4665b596706114,\ 0x873d5d9f0dde1fef\},}
+\DoxyCodeLine{00842\ \ \ \ \ \ \ \{0xeb57ff22fc0c7959,\ 0xa90cb506d155a7eb\},}
+\DoxyCodeLine{00843\ \ \ \ \ \ \ \{0x9316ff75dd87cbd8,\ 0x09a7f12442d588f3\},}
+\DoxyCodeLine{00844\ \ \ \ \ \ \ \{0xb7dcbf5354e9bece,\ 0x0c11ed6d538aeb30\},}
+\DoxyCodeLine{00845\ \ \ \ \ \ \ \{0xe5d3ef282a242e81,\ 0x8f1668c8a86da5fb\},}
+\DoxyCodeLine{00846\ \ \ \ \ \ \ \{0x8fa475791a569d10,\ 0xf96e017d694487bd\},}
+\DoxyCodeLine{00847\ \ \ \ \ \ \ \{0xb38d92d760ec4455,\ 0x37c981dcc395a9ad\},}
+\DoxyCodeLine{00848\ \ \ \ \ \ \ \{0xe070f78d3927556a,\ 0x85bbe253f47b1418\},}
+\DoxyCodeLine{00849\ \ \ \ \ \ \ \{0x8c469ab843b89562,\ 0x93956d7478ccec8f\},}
+\DoxyCodeLine{00850\ \ \ \ \ \ \ \{0xaf58416654a6babb,\ 0x387ac8d1970027b3\},}
+\DoxyCodeLine{00851\ \ \ \ \ \ \ \{0xdb2e51bfe9d0696a,\ 0x06997b05fcc0319f\},}
+\DoxyCodeLine{00852\ \ \ \ \ \ \ \{0x88fcf317f22241e2,\ 0x441fece3bdf81f04\},}
+\DoxyCodeLine{00853\ \ \ \ \ \ \ \{0xab3c2fddeeaad25a,\ 0xd527e81cad7626c4\},}
+\DoxyCodeLine{00854\ \ \ \ \ \ \ \{0xd60b3bd56a5586f1,\ 0x8a71e223d8d3b075\},}
+\DoxyCodeLine{00855\ \ \ \ \ \ \ \{0x85c7056562757456,\ 0xf6872d5667844e4a\},}
+\DoxyCodeLine{00856\ \ \ \ \ \ \ \{0xa738c6bebb12d16c,\ 0xb428f8ac016561dc\},}
+\DoxyCodeLine{00857\ \ \ \ \ \ \ \{0xd106f86e69d785c7,\ 0xe13336d701beba53\},}
+\DoxyCodeLine{00858\ \ \ \ \ \ \ \{0x82a45b450226b39c,\ 0xecc0024661173474\},}
+\DoxyCodeLine{00859\ \ \ \ \ \ \ \{0xa34d721642b06084,\ 0x27f002d7f95d0191\},}
+\DoxyCodeLine{00860\ \ \ \ \ \ \ \{0xcc20ce9bd35c78a5,\ 0x31ec038df7b441f5\},}
+\DoxyCodeLine{00861\ \ \ \ \ \ \ \{0xff290242c83396ce,\ 0x7e67047175a15272\},}
+\DoxyCodeLine{00862\ \ \ \ \ \ \ \{0x9f79a169bd203e41,\ 0x0f0062c6e984d387\},}
+\DoxyCodeLine{00863\ \ \ \ \ \ \ \{0xc75809c42c684dd1,\ 0x52c07b78a3e60869\},}
+\DoxyCodeLine{00864\ \ \ \ \ \ \ \{0xf92e0c3537826145,\ 0xa7709a56ccdf8a83\},}
+\DoxyCodeLine{00865\ \ \ \ \ \ \ \{0x9bbcc7a142b17ccb,\ 0x88a66076400bb692\},}
+\DoxyCodeLine{00866\ \ \ \ \ \ \ \{0xc2abf989935ddbfe,\ 0x6acff893d00ea436\},}
+\DoxyCodeLine{00867\ \ \ \ \ \ \ \{0xf356f7ebf83552fe,\ 0x0583f6b8c4124d44\},}
+\DoxyCodeLine{00868\ \ \ \ \ \ \ \{0x98165af37b2153de,\ 0xc3727a337a8b704b\},}
+\DoxyCodeLine{00869\ \ \ \ \ \ \ \{0xbe1bf1b059e9a8d6,\ 0x744f18c0592e4c5d\},}
+\DoxyCodeLine{00870\ \ \ \ \ \ \ \{0xeda2ee1c7064130c,\ 0x1162def06f79df74\},}
+\DoxyCodeLine{00871\ \ \ \ \ \ \ \{0x9485d4d1c63e8be7,\ 0x8addcb5645ac2ba9\},}
+\DoxyCodeLine{00872\ \ \ \ \ \ \ \{0xb9a74a0637ce2ee1,\ 0x6d953e2bd7173693\},}
+\DoxyCodeLine{00873\ \ \ \ \ \ \ \{0xe8111c87c5c1ba99,\ 0xc8fa8db6ccdd0438\},}
+\DoxyCodeLine{00874\ \ \ \ \ \ \ \{0x910ab1d4db9914a0,\ 0x1d9c9892400a22a3\},}
+\DoxyCodeLine{00875\ \ \ \ \ \ \ \{0xb54d5e4a127f59c8,\ 0x2503beb6d00cab4c\},}
+\DoxyCodeLine{00876\ \ \ \ \ \ \ \{0xe2a0b5dc971f303a,\ 0x2e44ae64840fd61e\},}
+\DoxyCodeLine{00877\ \ \ \ \ \ \ \{0x8da471a9de737e24,\ 0x5ceaecfed289e5d3\},}
+\DoxyCodeLine{00878\ \ \ \ \ \ \ \{0xb10d8e1456105dad,\ 0x7425a83e872c5f48\},}
+\DoxyCodeLine{00879\ \ \ \ \ \ \ \{0xdd50f1996b947518,\ 0xd12f124e28f7771a\},}
+\DoxyCodeLine{00880\ \ \ \ \ \ \ \{0x8a5296ffe33cc92f,\ 0x82bd6b70d99aaa70\},}
+\DoxyCodeLine{00881\ \ \ \ \ \ \ \{0xace73cbfdc0bfb7b,\ 0x636cc64d1001550c\},}
+\DoxyCodeLine{00882\ \ \ \ \ \ \ \{0xd8210befd30efa5a,\ 0x3c47f7e05401aa4f\},}
+\DoxyCodeLine{00883\ \ \ \ \ \ \ \{0x8714a775e3e95c78,\ 0x65acfaec34810a72\},}
+\DoxyCodeLine{00884\ \ \ \ \ \ \ \{0xa8d9d1535ce3b396,\ 0x7f1839a741a14d0e\},}
+\DoxyCodeLine{00885\ \ \ \ \ \ \ \{0xd31045a8341ca07c,\ 0x1ede48111209a051\},}
+\DoxyCodeLine{00886\ \ \ \ \ \ \ \{0x83ea2b892091e44d,\ 0x934aed0aab460433\},}
+\DoxyCodeLine{00887\ \ \ \ \ \ \ \{0xa4e4b66b68b65d60,\ 0xf81da84d56178540\},}
+\DoxyCodeLine{00888\ \ \ \ \ \ \ \{0xce1de40642e3f4b9,\ 0x36251260ab9d668f\},}
+\DoxyCodeLine{00889\ \ \ \ \ \ \ \{0x80d2ae83e9ce78f3,\ 0xc1d72b7c6b42601a\},}
+\DoxyCodeLine{00890\ \ \ \ \ \ \ \{0xa1075a24e4421730,\ 0xb24cf65b8612f820\},}
+\DoxyCodeLine{00891\ \ \ \ \ \ \ \{0xc94930ae1d529cfc,\ 0xdee033f26797b628\},}
+\DoxyCodeLine{00892\ \ \ \ \ \ \ \{0xfb9b7cd9a4a7443c,\ 0x169840ef017da3b2\},}
+\DoxyCodeLine{00893\ \ \ \ \ \ \ \{0x9d412e0806e88aa5,\ 0x8e1f289560ee864f\},}
+\DoxyCodeLine{00894\ \ \ \ \ \ \ \{0xc491798a08a2ad4e,\ 0xf1a6f2bab92a27e3\},}
+\DoxyCodeLine{00895\ \ \ \ \ \ \ \{0xf5b5d7ec8acb58a2,\ 0xae10af696774b1dc\},}
+\DoxyCodeLine{00896\ \ \ \ \ \ \ \{0x9991a6f3d6bf1765,\ 0xacca6da1e0a8ef2a\},}
+\DoxyCodeLine{00897\ \ \ \ \ \ \ \{0xbff610b0cc6edd3f,\ 0x17fd090a58d32af4\},}
+\DoxyCodeLine{00898\ \ \ \ \ \ \ \{0xeff394dcff8a948e,\ 0xddfc4b4cef07f5b1\},}
+\DoxyCodeLine{00899\ \ \ \ \ \ \ \{0x95f83d0a1fb69cd9,\ 0x4abdaf101564f98f\},}
+\DoxyCodeLine{00900\ \ \ \ \ \ \ \{0xbb764c4ca7a4440f,\ 0x9d6d1ad41abe37f2\},}
+\DoxyCodeLine{00901\ \ \ \ \ \ \ \{0xea53df5fd18d5513,\ 0x84c86189216dc5ee\},}
+\DoxyCodeLine{00902\ \ \ \ \ \ \ \{0x92746b9be2f8552c,\ 0x32fd3cf5b4e49bb5\},}
+\DoxyCodeLine{00903\ \ \ \ \ \ \ \{0xb7118682dbb66a77,\ 0x3fbc8c33221dc2a2\},}
+\DoxyCodeLine{00904\ \ \ \ \ \ \ \{0xe4d5e82392a40515,\ 0x0fabaf3feaa5334b\},}
+\DoxyCodeLine{00905\ \ \ \ \ \ \ \{0x8f05b1163ba6832d,\ 0x29cb4d87f2a7400f\},}
+\DoxyCodeLine{00906\ \ \ \ \ \ \ \{0xb2c71d5bca9023f8,\ 0x743e20e9ef511013\},}
+\DoxyCodeLine{00907\ \ \ \ \ \ \ \{0xdf78e4b2bd342cf6,\ 0x914da9246b255417\},}
+\DoxyCodeLine{00908\ \ \ \ \ \ \ \{0x8bab8eefb6409c1a,\ 0x1ad089b6c2f7548f\},}
+\DoxyCodeLine{00909\ \ \ \ \ \ \ \{0xae9672aba3d0c320,\ 0xa184ac2473b529b2\},}
+\DoxyCodeLine{00910\ \ \ \ \ \ \ \{0xda3c0f568cc4f3e8,\ 0xc9e5d72d90a2741f\},}
+\DoxyCodeLine{00911\ \ \ \ \ \ \ \{0x8865899617fb1871,\ 0x7e2fa67c7a658893\},}
+\DoxyCodeLine{00912\ \ \ \ \ \ \ \{0xaa7eebfb9df9de8d,\ 0xddbb901b98feeab8\},}
+\DoxyCodeLine{00913\ \ \ \ \ \ \ \{0xd51ea6fa85785631,\ 0x552a74227f3ea566\},}
+\DoxyCodeLine{00914\ \ \ \ \ \ \ \{0x8533285c936b35de,\ 0xd53a88958f872760\},}
+\DoxyCodeLine{00915\ \ \ \ \ \ \ \{0xa67ff273b8460356,\ 0x8a892abaf368f138\},}
+\DoxyCodeLine{00916\ \ \ \ \ \ \ \{0xd01fef10a657842c,\ 0x2d2b7569b0432d86\},}
+\DoxyCodeLine{00917\ \ \ \ \ \ \ \{0x8213f56a67f6b29b,\ 0x9c3b29620e29fc74\},}
+\DoxyCodeLine{00918\ \ \ \ \ \ \ \{0xa298f2c501f45f42,\ 0x8349f3ba91b47b90\},}
+\DoxyCodeLine{00919\ \ \ \ \ \ \ \{0xcb3f2f7642717713,\ 0x241c70a936219a74\},}
+\DoxyCodeLine{00920\ \ \ \ \ \ \ \{0xfe0efb53d30dd4d7,\ 0xed238cd383aa0111\},}
+\DoxyCodeLine{00921\ \ \ \ \ \ \ \{0x9ec95d1463e8a506,\ 0xf4363804324a40ab\},}
+\DoxyCodeLine{00922\ \ \ \ \ \ \ \{0xc67bb4597ce2ce48,\ 0xb143c6053edcd0d6\},}
+\DoxyCodeLine{00923\ \ \ \ \ \ \ \{0xf81aa16fdc1b81da,\ 0xdd94b7868e94050b\},}
+\DoxyCodeLine{00924\ \ \ \ \ \ \ \{0x9b10a4e5e9913128,\ 0xca7cf2b4191c8327\},}
+\DoxyCodeLine{00925\ \ \ \ \ \ \ \{0xc1d4ce1f63f57d72,\ 0xfd1c2f611f63a3f1\},}
+\DoxyCodeLine{00926\ \ \ \ \ \ \ \{0xf24a01a73cf2dccf,\ 0xbc633b39673c8ced\},}
+\DoxyCodeLine{00927\ \ \ \ \ \ \ \{0x976e41088617ca01,\ 0xd5be0503e085d814\},}
+\DoxyCodeLine{00928\ \ \ \ \ \ \ \{0xbd49d14aa79dbc82,\ 0x4b2d8644d8a74e19\},}
+\DoxyCodeLine{00929\ \ \ \ \ \ \ \{0xec9c459d51852ba2,\ 0xddf8e7d60ed1219f\},}
+\DoxyCodeLine{00930\ \ \ \ \ \ \ \{0x93e1ab8252f33b45,\ 0xcabb90e5c942b504\},}
+\DoxyCodeLine{00931\ \ \ \ \ \ \ \{0xb8da1662e7b00a17,\ 0x3d6a751f3b936244\},}
+\DoxyCodeLine{00932\ \ \ \ \ \ \ \{0xe7109bfba19c0c9d,\ 0x0cc512670a783ad5\},}
+\DoxyCodeLine{00933\ \ \ \ \ \ \ \{0x906a617d450187e2,\ 0x27fb2b80668b24c6\},}
+\DoxyCodeLine{00934\ \ \ \ \ \ \ \{0xb484f9dc9641e9da,\ 0xb1f9f660802dedf7\},}
+\DoxyCodeLine{00935\ \ \ \ \ \ \ \{0xe1a63853bbd26451,\ 0x5e7873f8a0396974\},}
+\DoxyCodeLine{00936\ \ \ \ \ \ \ \{0x8d07e33455637eb2,\ 0xdb0b487b6423e1e9\},}
+\DoxyCodeLine{00937\ \ \ \ \ \ \ \{0xb049dc016abc5e5f,\ 0x91ce1a9a3d2cda63\},}
+\DoxyCodeLine{00938\ \ \ \ \ \ \ \{0xdc5c5301c56b75f7,\ 0x7641a140cc7810fc\},}
+\DoxyCodeLine{00939\ \ \ \ \ \ \ \{0x89b9b3e11b6329ba,\ 0xa9e904c87fcb0a9e\},}
+\DoxyCodeLine{00940\ \ \ \ \ \ \ \{0xac2820d9623bf429,\ 0x546345fa9fbdcd45\},}
+\DoxyCodeLine{00941\ \ \ \ \ \ \ \{0xd732290fbacaf133,\ 0xa97c177947ad4096\},}
+\DoxyCodeLine{00942\ \ \ \ \ \ \ \{0x867f59a9d4bed6c0,\ 0x49ed8eabcccc485e\},}
+\DoxyCodeLine{00943\ \ \ \ \ \ \ \{0xa81f301449ee8c70,\ 0x5c68f256bfff5a75\},}
+\DoxyCodeLine{00944\ \ \ \ \ \ \ \{0xd226fc195c6a2f8c,\ 0x73832eec6fff3112\},}
+\DoxyCodeLine{00945\ \ \ \ \ \ \ \{0x83585d8fd9c25db7,\ 0xc831fd53c5ff7eac\},}
+\DoxyCodeLine{00946\ \ \ \ \ \ \ \{0xa42e74f3d032f525,\ 0xba3e7ca8b77f5e56\},}
+\DoxyCodeLine{00947\ \ \ \ \ \ \ \{0xcd3a1230c43fb26f,\ 0x28ce1bd2e55f35ec\},}
+\DoxyCodeLine{00948\ \ \ \ \ \ \ \{0x80444b5e7aa7cf85,\ 0x7980d163cf5b81b4\},}
+\DoxyCodeLine{00949\ \ \ \ \ \ \ \{0xa0555e361951c366,\ 0xd7e105bcc3326220\},}
+\DoxyCodeLine{00950\ \ \ \ \ \ \ \{0xc86ab5c39fa63440,\ 0x8dd9472bf3fefaa8\},}
+\DoxyCodeLine{00951\ \ \ \ \ \ \ \{0xfa856334878fc150,\ 0xb14f98f6f0feb952\},}
+\DoxyCodeLine{00952\ \ \ \ \ \ \ \{0x9c935e00d4b9d8d2,\ 0x6ed1bf9a569f33d4\},}
+\DoxyCodeLine{00953\ \ \ \ \ \ \ \{0xc3b8358109e84f07,\ 0x0a862f80ec4700c9\},}
+\DoxyCodeLine{00954\ \ \ \ \ \ \ \{0xf4a642e14c6262c8,\ 0xcd27bb612758c0fb\},}
+\DoxyCodeLine{00955\ \ \ \ \ \ \ \{0x98e7e9cccfbd7dbd,\ 0x8038d51cb897789d\},}
+\DoxyCodeLine{00956\ \ \ \ \ \ \ \{0xbf21e44003acdd2c,\ 0xe0470a63e6bd56c4\},}
+\DoxyCodeLine{00957\ \ \ \ \ \ \ \{0xeeea5d5004981478,\ 0x1858ccfce06cac75\},}
+\DoxyCodeLine{00958\ \ \ \ \ \ \ \{0x95527a5202df0ccb,\ 0x0f37801e0c43ebc9\},}
+\DoxyCodeLine{00959\ \ \ \ \ \ \ \{0xbaa718e68396cffd,\ 0xd30560258f54e6bb\},}
+\DoxyCodeLine{00960\ \ \ \ \ \ \ \{0xe950df20247c83fd,\ 0x47c6b82ef32a206a\},}
+\DoxyCodeLine{00961\ \ \ \ \ \ \ \{0x91d28b7416cdd27e,\ 0x4cdc331d57fa5442\},}
+\DoxyCodeLine{00962\ \ \ \ \ \ \ \{0xb6472e511c81471d,\ 0xe0133fe4adf8e953\},}
+\DoxyCodeLine{00963\ \ \ \ \ \ \ \{0xe3d8f9e563a198e5,\ 0x58180fddd97723a7\},}
+\DoxyCodeLine{00964\ \ \ \ \ \ \ \{0x8e679c2f5e44ff8f,\ 0x570f09eaa7ea7649\},}
+\DoxyCodeLine{00965\ \ \ \ \ \ \ \{0xb201833b35d63f73,\ 0x2cd2cc6551e513db\},}
+\DoxyCodeLine{00966\ \ \ \ \ \ \ \{0xde81e40a034bcf4f,\ 0xf8077f7ea65e58d2\},}
+\DoxyCodeLine{00967\ \ \ \ \ \ \ \{0x8b112e86420f6191,\ 0xfb04afaf27faf783\},}
+\DoxyCodeLine{00968\ \ \ \ \ \ \ \{0xadd57a27d29339f6,\ 0x79c5db9af1f9b564\},}
+\DoxyCodeLine{00969\ \ \ \ \ \ \ \{0xd94ad8b1c7380874,\ 0x18375281ae7822bd\},}
+\DoxyCodeLine{00970\ \ \ \ \ \ \ \{0x87cec76f1c830548,\ 0x8f2293910d0b15b6\},}
+\DoxyCodeLine{00971\ \ \ \ \ \ \ \{0xa9c2794ae3a3c69a,\ 0xb2eb3875504ddb23\},}
+\DoxyCodeLine{00972\ \ \ \ \ \ \ \{0xd433179d9c8cb841,\ 0x5fa60692a46151ec\},}
+\DoxyCodeLine{00973\ \ \ \ \ \ \ \{0x849feec281d7f328,\ 0xdbc7c41ba6bcd334\},}
+\DoxyCodeLine{00974\ \ \ \ \ \ \ \{0xa5c7ea73224deff3,\ 0x12b9b522906c0801\},}
+\DoxyCodeLine{00975\ \ \ \ \ \ \ \{0xcf39e50feae16bef,\ 0xd768226b34870a01\},}
+\DoxyCodeLine{00976\ \ \ \ \ \ \ \{0x81842f29f2cce375,\ 0xe6a1158300d46641\},}
+\DoxyCodeLine{00977\ \ \ \ \ \ \ \{0xa1e53af46f801c53,\ 0x60495ae3c1097fd1\},}
+\DoxyCodeLine{00978\ \ \ \ \ \ \ \{0xca5e89b18b602368,\ 0x385bb19cb14bdfc5\},}
+\DoxyCodeLine{00979\ \ \ \ \ \ \ \{0xfcf62c1dee382c42,\ 0x46729e03dd9ed7b6\},}
+\DoxyCodeLine{00980\ \ \ \ \ \ \ \{0x9e19db92b4e31ba9,\ 0x6c07a2c26a8346d2\},}
+\DoxyCodeLine{00981\ \ \ \ \ \ \ \{0xc5a05277621be293,\ 0xc7098b7305241886\},}
+\DoxyCodeLine{00982\ \ \ \ \ \ \ \{0xf70867153aa2db38,\ 0xb8cbee4fc66d1ea8\},}
+\DoxyCodeLine{00983\ \ \ \ \ \ \ \{0x9a65406d44a5c903,\ 0x737f74f1dc043329\},}
+\DoxyCodeLine{00984\ \ \ \ \ \ \ \{0xc0fe908895cf3b44,\ 0x505f522e53053ff3\},}
+\DoxyCodeLine{00985\ \ \ \ \ \ \ \{0xf13e34aabb430a15,\ 0x647726b9e7c68ff0\},}
+\DoxyCodeLine{00986\ \ \ \ \ \ \ \{0x96c6e0eab509e64d,\ 0x5eca783430dc19f6\},}
+\DoxyCodeLine{00987\ \ \ \ \ \ \ \{0xbc789925624c5fe0,\ 0xb67d16413d132073\},}
+\DoxyCodeLine{00988\ \ \ \ \ \ \ \{0xeb96bf6ebadf77d8,\ 0xe41c5bd18c57e890\},}
+\DoxyCodeLine{00989\ \ \ \ \ \ \ \{0x933e37a534cbaae7,\ 0x8e91b962f7b6f15a\},}
+\DoxyCodeLine{00990\ \ \ \ \ \ \ \{0xb80dc58e81fe95a1,\ 0x723627bbb5a4adb1\},}
+\DoxyCodeLine{00991\ \ \ \ \ \ \ \{0xe61136f2227e3b09,\ 0xcec3b1aaa30dd91d\},}
+\DoxyCodeLine{00992\ \ \ \ \ \ \ \{0x8fcac257558ee4e6,\ 0x213a4f0aa5e8a7b2\},}
+\DoxyCodeLine{00993\ \ \ \ \ \ \ \{0xb3bd72ed2af29e1f,\ 0xa988e2cd4f62d19e\},}
+\DoxyCodeLine{00994\ \ \ \ \ \ \ \{0xe0accfa875af45a7,\ 0x93eb1b80a33b8606\},}
+\DoxyCodeLine{00995\ \ \ \ \ \ \ \{0x8c6c01c9498d8b88,\ 0xbc72f130660533c4\},}
+\DoxyCodeLine{00996\ \ \ \ \ \ \ \{0xaf87023b9bf0ee6a,\ 0xeb8fad7c7f8680b5\},}
+\DoxyCodeLine{00997\ \ \ \ \ \ \ \{0xdb68c2ca82ed2a05,\ 0xa67398db9f6820e2\},}
+\DoxyCodeLine{00998\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00999\ \ \ \ \ \ \ \{0xff77b1fcbebcdc4f,\ 0x25e8e89c13bb0f7b\},}
+\DoxyCodeLine{01000\ \ \ \ \ \ \ \{0xce5d73ff402d98e3,\ 0xfb0a3d212dc81290\},}
+\DoxyCodeLine{01001\ \ \ \ \ \ \ \{0xa6b34ad8c9dfc06f,\ 0xf42faa48c0ea481f\},}
+\DoxyCodeLine{01002\ \ \ \ \ \ \ \{0x86a8d39ef77164bc,\ 0xae5dff9c02033198\},}
+\DoxyCodeLine{01003\ \ \ \ \ \ \ \{0xd98ddaee19068c76,\ 0x3badd624dd9b0958\},}
+\DoxyCodeLine{01004\ \ \ \ \ \ \ \{0xafbd2350644eeacf,\ 0xe5d1929ef90898fb\},}
+\DoxyCodeLine{01005\ \ \ \ \ \ \ \{0x8df5efabc5979c8f,\ 0xca8d3ffa1ef463c2\},}
+\DoxyCodeLine{01006\ \ \ \ \ \ \ \{0xe55990879ddcaabd,\ 0xcc420a6a101d0516\},}
+\DoxyCodeLine{01007\ \ \ \ \ \ \ \{0xb94470938fa89bce,\ 0xf808e40e8d5b3e6a\},}
+\DoxyCodeLine{01008\ \ \ \ \ \ \ \{0x95a8637627989aad,\ 0xdde7001379a44aa9\},}
+\DoxyCodeLine{01009\ \ \ \ \ \ \ \{0xf1c90080baf72cb1,\ 0x5324c68b12dd6339\},}
+\DoxyCodeLine{01010\ \ \ \ \ \ \ \{0xc350000000000000,\ 0x0000000000000000\},}
+\DoxyCodeLine{01011\ \ \ \ \ \ \ \{0x9dc5ada82b70b59d,\ 0xf020000000000000\},}
+\DoxyCodeLine{01012\ \ \ \ \ \ \ \{0xfee50b7025c36a08,\ 0x02f236d04753d5b5\},}
+\DoxyCodeLine{01013\ \ \ \ \ \ \ \{0xcde6fd5e09abcf26,\ 0xed4c0226b55e6f87\},}
+\DoxyCodeLine{01014\ \ \ \ \ \ \ \{0xa6539930bf6bff45,\ 0x84db8346b786151d\},}
+\DoxyCodeLine{01015\ \ \ \ \ \ \ \{0x865b86925b9bc5c2,\ 0x0b8a2392ba45a9b3\},}
+\DoxyCodeLine{01016\ \ \ \ \ \ \ \{0xd910f7ff28069da4,\ 0x1b2ba1518094da05\},}
+\DoxyCodeLine{01017\ \ \ \ \ \ \ \{0xaf58416654a6babb,\ 0x387ac8d1970027b3\},}
+\DoxyCodeLine{01018\ \ \ \ \ \ \ \{0x8da471a9de737e24,\ 0x5ceaecfed289e5d3\},}
+\DoxyCodeLine{01019\ \ \ \ \ \ \ \{0xe4d5e82392a40515,\ 0x0fabaf3feaa5334b\},}
+\DoxyCodeLine{01020\ \ \ \ \ \ \ \{0xb8da1662e7b00a17,\ 0x3d6a751f3b936244\},}
+\DoxyCodeLine{01021\ \ \ \ \ \ \ \{0x95527a5202df0ccb,\ 0x0f37801e0c43ebc9\},}
+\DoxyCodeLine{01022\ \ \ \ \ \ \ \{0xf13e34aabb430a15,\ 0x647726b9e7c68ff0\}}
+\DoxyCodeLine{01023\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{01024\ \ \ \ \ \};}
+\DoxyCodeLine{01025\ }
+\DoxyCodeLine{01026\ \textcolor{preprocessor}{\#if\ FMT\_USE\_FULL\_CACHE\_DRAGONBOX}}
+\DoxyCodeLine{01027\ \ \ \ \ \textcolor{keywordflow}{return}\ pow10\_significands[k\ -\/\ \mbox{\hyperlink{structdetail_1_1dragonbox_1_1float__info}{float\_info<double>::min\_k}}];}
+\DoxyCodeLine{01028\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{01029\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{const}\ uint64\_t\ powers\_of\_5\_64[]\ =\ \{}
+\DoxyCodeLine{01030\ \ \ \ \ \ \ \ \ 0x0000000000000001,\ 0x0000000000000005,\ 0x0000000000000019,}
+\DoxyCodeLine{01031\ \ \ \ \ \ \ \ \ 0x000000000000007d,\ 0x0000000000000271,\ 0x0000000000000c35,}
+\DoxyCodeLine{01032\ \ \ \ \ \ \ \ \ 0x0000000000003d09,\ 0x000000000001312d,\ 0x000000000005f5e1,}
+\DoxyCodeLine{01033\ \ \ \ \ \ \ \ \ 0x00000000001dcd65,\ 0x00000000009502f9,\ 0x0000000002e90edd,}
+\DoxyCodeLine{01034\ \ \ \ \ \ \ \ \ 0x000000000e8d4a51,\ 0x0000000048c27395,\ 0x000000016bcc41e9,}
+\DoxyCodeLine{01035\ \ \ \ \ \ \ \ \ 0x000000071afd498d,\ 0x0000002386f26fc1,\ 0x000000b1a2bc2ec5,}
+\DoxyCodeLine{01036\ \ \ \ \ \ \ \ \ 0x000003782dace9d9,\ 0x00001158e460913d,\ 0x000056bc75e2d631,}
+\DoxyCodeLine{01037\ \ \ \ \ \ \ \ \ 0x0001b1ae4d6e2ef5,\ 0x000878678326eac9,\ 0x002a5a058fc295ed,}
+\DoxyCodeLine{01038\ \ \ \ \ \ \ \ \ 0x00d3c21bcecceda1,\ 0x0422ca8b0a00a425,\ 0x14adf4b7320334b9\};}
+\DoxyCodeLine{01039\ }
+\DoxyCodeLine{01040\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ compression\_ratio\ =\ 27;}
+\DoxyCodeLine{01041\ }
+\DoxyCodeLine{01042\ \ \ \ \ \textcolor{comment}{//\ Compute\ base\ index.}}
+\DoxyCodeLine{01043\ \ \ \ \ \textcolor{keywordtype}{int}\ cache\_index\ =\ (k\ -\/\ \mbox{\hyperlink{structdetail_1_1dragonbox_1_1float__info}{float\_info<double>::min\_k}})\ /\ compression\_ratio;}
+\DoxyCodeLine{01044\ \ \ \ \ \textcolor{keywordtype}{int}\ kb\ =\ cache\_index\ *\ compression\_ratio\ +\ \mbox{\hyperlink{structdetail_1_1dragonbox_1_1float__info}{float\_info<double>::min\_k}};}
+\DoxyCodeLine{01045\ \ \ \ \ \textcolor{keywordtype}{int}\ offset\ =\ k\ -\/\ kb;}
+\DoxyCodeLine{01046\ }
+\DoxyCodeLine{01047\ \ \ \ \ \textcolor{comment}{//\ Get\ base\ cache.}}
+\DoxyCodeLine{01048\ \ \ \ \ \mbox{\hyperlink{classdetail_1_1uint128__fallback}{uint128\_fallback}}\ base\_cache\ =\ pow10\_significands[cache\_index];}
+\DoxyCodeLine{01049\ \ \ \ \ \textcolor{keywordflow}{if}\ (offset\ ==\ 0)\ \textcolor{keywordflow}{return}\ base\_cache;}
+\DoxyCodeLine{01050\ }
+\DoxyCodeLine{01051\ \ \ \ \ \textcolor{comment}{//\ Compute\ the\ required\ amount\ of\ bit-\/shift.}}
+\DoxyCodeLine{01052\ \ \ \ \ \textcolor{keywordtype}{int}\ alpha\ =\ floor\_log2\_pow10(kb\ +\ offset)\ -\/\ floor\_log2\_pow10(kb)\ -\/\ offset;}
+\DoxyCodeLine{01053\ \ \ \ \ FMT\_ASSERT(alpha\ >\ 0\ \&\&\ alpha\ <\ 64,\ \textcolor{stringliteral}{"{}shifting\ error\ detected"{}});}
+\DoxyCodeLine{01054\ }
+\DoxyCodeLine{01055\ \ \ \ \ \textcolor{comment}{//\ Try\ to\ recover\ the\ real\ cache.}}
+\DoxyCodeLine{01056\ \ \ \ \ uint64\_t\ pow5\ =\ powers\_of\_5\_64[offset];}
+\DoxyCodeLine{01057\ \ \ \ \ \mbox{\hyperlink{classdetail_1_1uint128__fallback}{uint128\_fallback}}\ recovered\_cache\ =\ umul128(base\_cache.high(),\ pow5);}
+\DoxyCodeLine{01058\ \ \ \ \ \mbox{\hyperlink{classdetail_1_1uint128__fallback}{uint128\_fallback}}\ middle\_low\ =\ umul128(base\_cache.low(),\ pow5);}
+\DoxyCodeLine{01059\ }
+\DoxyCodeLine{01060\ \ \ \ \ recovered\_cache\ +=\ middle\_low.high();}
+\DoxyCodeLine{01061\ }
+\DoxyCodeLine{01062\ \ \ \ \ uint64\_t\ high\_to\_middle\ =\ recovered\_cache.high()\ <<\ (64\ -\/\ alpha);}
+\DoxyCodeLine{01063\ \ \ \ \ uint64\_t\ middle\_to\_low\ =\ recovered\_cache.low()\ <<\ (64\ -\/\ alpha);}
+\DoxyCodeLine{01064\ }
+\DoxyCodeLine{01065\ \ \ \ \ recovered\_cache\ =}
+\DoxyCodeLine{01066\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classdetail_1_1uint128__fallback}{uint128\_fallback}}\{(recovered\_cache.low()\ >>\ alpha)\ |\ high\_to\_middle,}
+\DoxyCodeLine{01067\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ((middle\_low.low()\ >>\ alpha)\ |\ middle\_to\_low)\};}
+\DoxyCodeLine{01068\ \ \ \ \ FMT\_ASSERT(recovered\_cache.low()\ +\ 1\ !=\ 0,\ \textcolor{stringliteral}{"{}"{}});}
+\DoxyCodeLine{01069\ \ \ \ \ \textcolor{keywordflow}{return}\ \{recovered\_cache.high(),\ recovered\_cache.low()\ +\ 1\};}
+\DoxyCodeLine{01070\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{01071\ \ \ \}}
+\DoxyCodeLine{01072\ }
+\DoxyCodeLine{01073\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structdetail_1_1dragonbox_1_1cache__accessor_3_01double_01_4_1_1compute__mul__result}{compute\_mul\_result}}\ \{}
+\DoxyCodeLine{01074\ \ \ \ \ carrier\_uint\ result;}
+\DoxyCodeLine{01075\ \ \ \ \ \textcolor{keywordtype}{bool}\ is\_integer;}
+\DoxyCodeLine{01076\ \ \ \};}
+\DoxyCodeLine{01077\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structdetail_1_1dragonbox_1_1cache__accessor_3_01double_01_4_1_1compute__mul__parity__result}{compute\_mul\_parity\_result}}\ \{}
+\DoxyCodeLine{01078\ \ \ \ \ \textcolor{keywordtype}{bool}\ parity;}
+\DoxyCodeLine{01079\ \ \ \ \ \textcolor{keywordtype}{bool}\ is\_integer;}
+\DoxyCodeLine{01080\ \ \ \};}
+\DoxyCodeLine{01081\ }
+\DoxyCodeLine{01082\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{auto}\ compute\_mul(carrier\_uint\ u,}
+\DoxyCodeLine{01083\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ cache\_entry\_type\&\ cache)\ \textcolor{keyword}{noexcept}}
+\DoxyCodeLine{01084\ \ \ \ \ \ \ -\/>\ \mbox{\hyperlink{structdetail_1_1dragonbox_1_1cache__accessor_3_01double_01_4_1_1compute__mul__result}{compute\_mul\_result}}\ \{}
+\DoxyCodeLine{01085\ \ \ \ \ \textcolor{keyword}{auto}\ r\ =\ umul192\_upper128(u,\ cache);}
+\DoxyCodeLine{01086\ \ \ \ \ \textcolor{keywordflow}{return}\ \{r.high(),\ r.low()\ ==\ 0\};}
+\DoxyCodeLine{01087\ \ \ \}}
+\DoxyCodeLine{01088\ }
+\DoxyCodeLine{01089\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{auto}\ compute\_delta(cache\_entry\_type\ \textcolor{keyword}{const}\&\ cache,\ \textcolor{keywordtype}{int}\ beta)\ \textcolor{keyword}{noexcept}}
+\DoxyCodeLine{01090\ \ \ \ \ \ \ -\/>\ uint32\_t\ \{}
+\DoxyCodeLine{01091\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(cache.high()\ >>\ (64\ -\/\ 1\ -\/\ beta));}
+\DoxyCodeLine{01092\ \ \ \}}
+\DoxyCodeLine{01093\ }
+\DoxyCodeLine{01094\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{auto}\ compute\_mul\_parity(carrier\_uint\ two\_f,}
+\DoxyCodeLine{01095\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ cache\_entry\_type\&\ cache,}
+\DoxyCodeLine{01096\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ beta)\ \textcolor{keyword}{noexcept}}
+\DoxyCodeLine{01097\ \ \ \ \ \ \ -\/>\ compute\_mul\_parity\_result\ \{}
+\DoxyCodeLine{01098\ \ \ \ \ FMT\_ASSERT(beta\ >=\ 1,\ \textcolor{stringliteral}{"{}"{}});}
+\DoxyCodeLine{01099\ \ \ \ \ FMT\_ASSERT(beta\ <\ 64,\ \textcolor{stringliteral}{"{}"{}});}
+\DoxyCodeLine{01100\ }
+\DoxyCodeLine{01101\ \ \ \ \ \textcolor{keyword}{auto}\ r\ =\ umul192\_lower128(two\_f,\ cache);}
+\DoxyCodeLine{01102\ \ \ \ \ \textcolor{keywordflow}{return}\ \{((r.high()\ >>\ (64\ -\/\ beta))\ \&\ 1)\ !=\ 0,}
+\DoxyCodeLine{01103\ \ \ \ \ \ \ \ \ \ \ \ \ ((r.high()\ <<\ beta)\ |\ (r.low()\ >>\ (64\ -\/\ beta)))\ ==\ 0\};}
+\DoxyCodeLine{01104\ \ \ \}}
+\DoxyCodeLine{01105\ }
+\DoxyCodeLine{01106\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{auto}\ compute\_left\_endpoint\_for\_shorter\_interval\_case(}
+\DoxyCodeLine{01107\ \ \ \ \ \ \ \textcolor{keyword}{const}\ cache\_entry\_type\&\ cache,\ \textcolor{keywordtype}{int}\ beta)\ \textcolor{keyword}{noexcept}\ -\/>\ carrier\_uint\ \{}
+\DoxyCodeLine{01108\ \ \ \ \ \textcolor{keywordflow}{return}\ (cache.high()\ -\/}
+\DoxyCodeLine{01109\ \ \ \ \ \ \ \ \ \ \ \ \ (cache.high()\ >>\ (num\_significand\_bits<double>()\ +\ 2)))\ >>}
+\DoxyCodeLine{01110\ \ \ \ \ \ \ \ \ \ \ \ (64\ -\/\ num\_significand\_bits<double>()\ -\/\ 1\ -\/\ beta);}
+\DoxyCodeLine{01111\ \ \ \}}
+\DoxyCodeLine{01112\ }
+\DoxyCodeLine{01113\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{auto}\ compute\_right\_endpoint\_for\_shorter\_interval\_case(}
+\DoxyCodeLine{01114\ \ \ \ \ \ \ \textcolor{keyword}{const}\ cache\_entry\_type\&\ cache,\ \textcolor{keywordtype}{int}\ beta)\ \textcolor{keyword}{noexcept}\ -\/>\ carrier\_uint\ \{}
+\DoxyCodeLine{01115\ \ \ \ \ \textcolor{keywordflow}{return}\ (cache.high()\ +}
+\DoxyCodeLine{01116\ \ \ \ \ \ \ \ \ \ \ \ \ (cache.high()\ >>\ (num\_significand\_bits<double>()\ +\ 1)))\ >>}
+\DoxyCodeLine{01117\ \ \ \ \ \ \ \ \ \ \ \ (64\ -\/\ num\_significand\_bits<double>()\ -\/\ 1\ -\/\ beta);}
+\DoxyCodeLine{01118\ \ \ \}}
+\DoxyCodeLine{01119\ }
+\DoxyCodeLine{01120\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{auto}\ compute\_round\_up\_for\_shorter\_interval\_case(}
+\DoxyCodeLine{01121\ \ \ \ \ \ \ \textcolor{keyword}{const}\ cache\_entry\_type\&\ cache,\ \textcolor{keywordtype}{int}\ beta)\ \textcolor{keyword}{noexcept}\ -\/>\ carrier\_uint\ \{}
+\DoxyCodeLine{01122\ \ \ \ \ \textcolor{keywordflow}{return}\ ((cache.high()\ >>\ (64\ -\/\ num\_significand\_bits<double>()\ -\/\ 2\ -\/\ beta))\ +}
+\DoxyCodeLine{01123\ \ \ \ \ \ \ \ \ \ \ \ \ 1)\ /}
+\DoxyCodeLine{01124\ \ \ \ \ \ \ \ \ \ \ \ 2;}
+\DoxyCodeLine{01125\ \ \ \}}
+\DoxyCodeLine{01126\ \};}
+\DoxyCodeLine{01127\ }
+\DoxyCodeLine{01128\ FMT\_FUNC\ \textcolor{keyword}{auto}\ get\_cached\_power(\textcolor{keywordtype}{int}\ k)\ \textcolor{keyword}{noexcept}\ -\/>\ uint128\_fallback\ \{}
+\DoxyCodeLine{01129\ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{structdetail_1_1dragonbox_1_1cache__accessor}{cache\_accessor<double>::get\_cached\_power}}(k);}
+\DoxyCodeLine{01130\ \}}
+\DoxyCodeLine{01131\ }
+\DoxyCodeLine{01132\ \textcolor{comment}{//\ Various\ integer\ checks}}
+\DoxyCodeLine{01133\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{01134\ \textcolor{keyword}{auto}\ is\_left\_endpoint\_integer\_shorter\_interval(\textcolor{keywordtype}{int}\ exponent)\ \textcolor{keyword}{noexcept}\ -\/>\ \textcolor{keywordtype}{bool}\ \{}
+\DoxyCodeLine{01135\ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ case\_shorter\_interval\_left\_endpoint\_lower\_threshold\ =\ 2;}
+\DoxyCodeLine{01136\ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ case\_shorter\_interval\_left\_endpoint\_upper\_threshold\ =\ 3;}
+\DoxyCodeLine{01137\ \ \ \textcolor{keywordflow}{return}\ exponent\ >=\ case\_shorter\_interval\_left\_endpoint\_lower\_threshold\ \&\&}
+\DoxyCodeLine{01138\ \ \ \ \ \ \ \ \ \ exponent\ <=\ case\_shorter\_interval\_left\_endpoint\_upper\_threshold;}
+\DoxyCodeLine{01139\ \}}
+\DoxyCodeLine{01140\ }
+\DoxyCodeLine{01141\ \textcolor{comment}{//\ Remove\ trailing\ zeros\ from\ n\ and\ return\ the\ number\ of\ zeros\ removed\ (float)}}
+\DoxyCodeLine{01142\ FMT\_INLINE\ \textcolor{keywordtype}{int}\ remove\_trailing\_zeros(uint32\_t\&\ n,\ \textcolor{keywordtype}{int}\ s\ =\ 0)\ noexcept\ \{}
+\DoxyCodeLine{01143\ \ \ FMT\_ASSERT(n\ !=\ 0,\ \textcolor{stringliteral}{"{}"{}});}
+\DoxyCodeLine{01144\ \ \ \textcolor{comment}{//\ Modular\ inverse\ of\ 5\ (mod\ 2\string^32):\ (mod\_inv\_5\ *\ 5)\ mod\ 2\string^32\ =\ 1.}}
+\DoxyCodeLine{01145\ \ \ \textcolor{keyword}{constexpr}\ uint32\_t\ mod\_inv\_5\ =\ 0xcccccccd;}
+\DoxyCodeLine{01146\ \ \ \textcolor{keyword}{constexpr}\ uint32\_t\ mod\_inv\_25\ =\ 0xc28f5c29;\ \ \textcolor{comment}{//\ =\ mod\_inv\_5\ *\ mod\_inv\_5}}
+\DoxyCodeLine{01147\ }
+\DoxyCodeLine{01148\ \ \ \textcolor{keywordflow}{while}\ (\textcolor{keyword}{true})\ \{}
+\DoxyCodeLine{01149\ \ \ \ \ \textcolor{keyword}{auto}\ q\ =\ rotr(n\ *\ mod\_inv\_25,\ 2);}
+\DoxyCodeLine{01150\ \ \ \ \ \textcolor{keywordflow}{if}\ (q\ >\ max\_value<uint32\_t>()\ /\ 100)\ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{01151\ \ \ \ \ n\ =\ q;}
+\DoxyCodeLine{01152\ \ \ \ \ s\ +=\ 2;}
+\DoxyCodeLine{01153\ \ \ \}}
+\DoxyCodeLine{01154\ \ \ \textcolor{keyword}{auto}\ q\ =\ rotr(n\ *\ mod\_inv\_5,\ 1);}
+\DoxyCodeLine{01155\ \ \ \textcolor{keywordflow}{if}\ (q\ <=\ max\_value<uint32\_t>()\ /\ 10)\ \{}
+\DoxyCodeLine{01156\ \ \ \ \ n\ =\ q;}
+\DoxyCodeLine{01157\ \ \ \ \ s\ |=\ 1;}
+\DoxyCodeLine{01158\ \ \ \}}
+\DoxyCodeLine{01159\ \ \ \textcolor{keywordflow}{return}\ s;}
+\DoxyCodeLine{01160\ \}}
+\DoxyCodeLine{01161\ }
+\DoxyCodeLine{01162\ \textcolor{comment}{//\ Removes\ trailing\ zeros\ and\ returns\ the\ number\ of\ zeros\ removed\ (double)}}
+\DoxyCodeLine{01163\ FMT\_INLINE\ \textcolor{keywordtype}{int}\ remove\_trailing\_zeros(uint64\_t\&\ n)\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{01164\ \ \ FMT\_ASSERT(n\ !=\ 0,\ \textcolor{stringliteral}{"{}"{}});}
+\DoxyCodeLine{01165\ }
+\DoxyCodeLine{01166\ \ \ \textcolor{comment}{//\ This\ magic\ number\ is\ ceil(2\string^90\ /\ 10\string^8).}}
+\DoxyCodeLine{01167\ \ \ \textcolor{keyword}{constexpr}\ uint64\_t\ magic\_number\ =\ 12379400392853802749ull;}
+\DoxyCodeLine{01168\ \ \ \textcolor{keyword}{auto}\ nm\ =\ umul128(n,\ magic\_number);}
+\DoxyCodeLine{01169\ }
+\DoxyCodeLine{01170\ \ \ \textcolor{comment}{//\ Is\ n\ is\ divisible\ by\ 10\string^8?}}
+\DoxyCodeLine{01171\ \ \ \textcolor{keywordflow}{if}\ ((nm.high()\ \&\ ((1ull\ <<\ (90\ -\/\ 64))\ -\/\ 1))\ ==\ 0\ \&\&\ nm.low()\ <\ magic\_number)\ \{}
+\DoxyCodeLine{01172\ \ \ \ \ \textcolor{comment}{//\ If\ yes,\ work\ with\ the\ quotient...}}
+\DoxyCodeLine{01173\ \ \ \ \ \textcolor{keyword}{auto}\ n32\ =\ \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(nm.high()\ >>\ (90\ -\/\ 64));}
+\DoxyCodeLine{01174\ \ \ \ \ \textcolor{comment}{//\ ...\ and\ use\ the\ 32\ bit\ variant\ of\ the\ function}}
+\DoxyCodeLine{01175\ \ \ \ \ \textcolor{keywordtype}{int}\ s\ =\ remove\_trailing\_zeros(n32,\ 8);}
+\DoxyCodeLine{01176\ \ \ \ \ n\ =\ n32;}
+\DoxyCodeLine{01177\ \ \ \ \ \textcolor{keywordflow}{return}\ s;}
+\DoxyCodeLine{01178\ \ \ \}}
+\DoxyCodeLine{01179\ }
+\DoxyCodeLine{01180\ \ \ \textcolor{comment}{//\ If\ n\ is\ not\ divisible\ by\ 10\string^8,\ work\ with\ n\ itself.}}
+\DoxyCodeLine{01181\ \ \ \textcolor{keyword}{constexpr}\ uint64\_t\ mod\_inv\_5\ =\ 0xcccccccccccccccd;}
+\DoxyCodeLine{01182\ \ \ \textcolor{keyword}{constexpr}\ uint64\_t\ mod\_inv\_25\ =\ 0x8f5c28f5c28f5c29;\ \ \textcolor{comment}{//\ mod\_inv\_5\ *\ mod\_inv\_5}}
+\DoxyCodeLine{01183\ }
+\DoxyCodeLine{01184\ \ \ \textcolor{keywordtype}{int}\ s\ =\ 0;}
+\DoxyCodeLine{01185\ \ \ \textcolor{keywordflow}{while}\ (\textcolor{keyword}{true})\ \{}
+\DoxyCodeLine{01186\ \ \ \ \ \textcolor{keyword}{auto}\ q\ =\ rotr(n\ *\ mod\_inv\_25,\ 2);}
+\DoxyCodeLine{01187\ \ \ \ \ \textcolor{keywordflow}{if}\ (q\ >\ max\_value<uint64\_t>()\ /\ 100)\ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{01188\ \ \ \ \ n\ =\ q;}
+\DoxyCodeLine{01189\ \ \ \ \ s\ +=\ 2;}
+\DoxyCodeLine{01190\ \ \ \}}
+\DoxyCodeLine{01191\ \ \ \textcolor{keyword}{auto}\ q\ =\ rotr(n\ *\ mod\_inv\_5,\ 1);}
+\DoxyCodeLine{01192\ \ \ \textcolor{keywordflow}{if}\ (q\ <=\ max\_value<uint64\_t>()\ /\ 10)\ \{}
+\DoxyCodeLine{01193\ \ \ \ \ n\ =\ q;}
+\DoxyCodeLine{01194\ \ \ \ \ s\ |=\ 1;}
+\DoxyCodeLine{01195\ \ \ \}}
+\DoxyCodeLine{01196\ }
+\DoxyCodeLine{01197\ \ \ \textcolor{keywordflow}{return}\ s;}
+\DoxyCodeLine{01198\ \}}
+\DoxyCodeLine{01199\ }
+\DoxyCodeLine{01200\ \textcolor{comment}{//\ The\ main\ algorithm\ for\ shorter\ interval\ case}}
+\DoxyCodeLine{01201\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{01202\ FMT\_INLINE\ \mbox{\hyperlink{structdetail_1_1dragonbox_1_1decimal__fp}{decimal\_fp<T>}}\ shorter\_interval\_case(\textcolor{keywordtype}{int}\ exponent)\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{01203\ \ \ \mbox{\hyperlink{structdetail_1_1dragonbox_1_1decimal__fp}{decimal\_fp<T>}}\ ret\_value;}
+\DoxyCodeLine{01204\ \ \ \textcolor{comment}{//\ Compute\ k\ and\ beta}}
+\DoxyCodeLine{01205\ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ minus\_k\ =\ floor\_log10\_pow2\_minus\_log10\_4\_over\_3(exponent);}
+\DoxyCodeLine{01206\ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ beta\ =\ exponent\ +\ floor\_log2\_pow10(-\/minus\_k);}
+\DoxyCodeLine{01207\ }
+\DoxyCodeLine{01208\ \ \ \textcolor{comment}{//\ Compute\ xi\ and\ zi}}
+\DoxyCodeLine{01209\ \ \ \textcolor{keyword}{using\ }cache\_entry\_type\ =\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{structdetail_1_1dragonbox_1_1cache__accessor}{cache\_accessor<T>::cache\_entry\_type}};}
+\DoxyCodeLine{01210\ \ \ \textcolor{keyword}{const}\ cache\_entry\_type\ cache\ =\ \mbox{\hyperlink{structdetail_1_1dragonbox_1_1cache__accessor}{cache\_accessor<T>::get\_cached\_power}}(-\/minus\_k);}
+\DoxyCodeLine{01211\ }
+\DoxyCodeLine{01212\ \ \ \textcolor{keyword}{auto}\ xi\ =\ \mbox{\hyperlink{structdetail_1_1dragonbox_1_1cache__accessor}{cache\_accessor<T>::compute\_left\_endpoint\_for\_shorter\_interval\_case}}(}
+\DoxyCodeLine{01213\ \ \ \ \ \ \ cache,\ beta);}
+\DoxyCodeLine{01214\ \ \ \textcolor{keyword}{auto}\ zi\ =\ \mbox{\hyperlink{structdetail_1_1dragonbox_1_1cache__accessor}{cache\_accessor<T>::compute\_right\_endpoint\_for\_shorter\_interval\_case}}(}
+\DoxyCodeLine{01215\ \ \ \ \ \ \ cache,\ beta);}
+\DoxyCodeLine{01216\ }
+\DoxyCodeLine{01217\ \ \ \textcolor{comment}{//\ If\ the\ left\ endpoint\ is\ not\ an\ integer,\ increase\ it}}
+\DoxyCodeLine{01218\ \ \ \textcolor{keywordflow}{if}\ (!is\_left\_endpoint\_integer\_shorter\_interval<T>(exponent))\ ++xi;}
+\DoxyCodeLine{01219\ }
+\DoxyCodeLine{01220\ \ \ \textcolor{comment}{//\ Try\ bigger\ divisor}}
+\DoxyCodeLine{01221\ \ \ ret\_value.significand\ =\ zi\ /\ 10;}
+\DoxyCodeLine{01222\ }
+\DoxyCodeLine{01223\ \ \ \textcolor{comment}{//\ If\ succeed,\ remove\ trailing\ zeros\ if\ necessary\ and\ return}}
+\DoxyCodeLine{01224\ \ \ \textcolor{keywordflow}{if}\ (ret\_value.significand\ *\ 10\ >=\ xi)\ \{}
+\DoxyCodeLine{01225\ \ \ \ \ ret\_value.exponent\ =\ minus\_k\ +\ 1;}
+\DoxyCodeLine{01226\ \ \ \ \ ret\_value.exponent\ +=\ remove\_trailing\_zeros(ret\_value.significand);}
+\DoxyCodeLine{01227\ \ \ \ \ \textcolor{keywordflow}{return}\ ret\_value;}
+\DoxyCodeLine{01228\ \ \ \}}
+\DoxyCodeLine{01229\ }
+\DoxyCodeLine{01230\ \ \ \textcolor{comment}{//\ Otherwise,\ compute\ the\ round-\/up\ of\ y}}
+\DoxyCodeLine{01231\ \ \ ret\_value.significand\ =}
+\DoxyCodeLine{01232\ \ \ \ \ \ \ \mbox{\hyperlink{structdetail_1_1dragonbox_1_1cache__accessor}{cache\_accessor<T>::compute\_round\_up\_for\_shorter\_interval\_case}}(cache,}
+\DoxyCodeLine{01233\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ beta);}
+\DoxyCodeLine{01234\ \ \ ret\_value.exponent\ =\ minus\_k;}
+\DoxyCodeLine{01235\ }
+\DoxyCodeLine{01236\ \ \ \textcolor{comment}{//\ When\ tie\ occurs,\ choose\ one\ of\ them\ according\ to\ the\ rule}}
+\DoxyCodeLine{01237\ \ \ \textcolor{keywordflow}{if}\ (exponent\ >=\ \mbox{\hyperlink{structdetail_1_1dragonbox_1_1float__info}{float\_info<T>::shorter\_interval\_tie\_lower\_threshold}}\ \&\&}
+\DoxyCodeLine{01238\ \ \ \ \ \ \ exponent\ <=\ \mbox{\hyperlink{structdetail_1_1dragonbox_1_1float__info}{float\_info<T>::shorter\_interval\_tie\_upper\_threshold}})\ \{}
+\DoxyCodeLine{01239\ \ \ \ \ ret\_value.significand\ =\ ret\_value.significand\ \%\ 2\ ==\ 0}
+\DoxyCodeLine{01240\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ?\ ret\_value.significand}
+\DoxyCodeLine{01241\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ ret\_value.significand\ -\/\ 1;}
+\DoxyCodeLine{01242\ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (ret\_value.significand\ <\ xi)\ \{}
+\DoxyCodeLine{01243\ \ \ \ \ ++ret\_value.significand;}
+\DoxyCodeLine{01244\ \ \ \}}
+\DoxyCodeLine{01245\ \ \ \textcolor{keywordflow}{return}\ ret\_value;}
+\DoxyCodeLine{01246\ \}}
+\DoxyCodeLine{01247\ }
+\DoxyCodeLine{01248\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>\ \textcolor{keyword}{auto}\ to\_decimal(T\ x)\ \textcolor{keyword}{noexcept}\ -\/>\ \mbox{\hyperlink{structdetail_1_1dragonbox_1_1decimal__fp}{decimal\_fp<T>}}\ \{}
+\DoxyCodeLine{01249\ \ \ \textcolor{comment}{//\ Step\ 1:\ integer\ promotion\ \&\ Schubfach\ multiplier\ calculation.}}
+\DoxyCodeLine{01250\ }
+\DoxyCodeLine{01251\ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{structdetail_1_1dragonbox_1_1float__info}{carrier\_uint}}\ =\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{structdetail_1_1dragonbox_1_1float__info}{float\_info<T>::carrier\_uint}};}
+\DoxyCodeLine{01252\ \ \ \textcolor{keyword}{using\ }cache\_entry\_type\ =\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{structdetail_1_1dragonbox_1_1cache__accessor}{cache\_accessor<T>::cache\_entry\_type}};}
+\DoxyCodeLine{01253\ \ \ \textcolor{keyword}{auto}\ br\ =\ bit\_cast<carrier\_uint>(x);}
+\DoxyCodeLine{01254\ }
+\DoxyCodeLine{01255\ \ \ \textcolor{comment}{//\ Extract\ significand\ bits\ and\ exponent\ bits.}}
+\DoxyCodeLine{01256\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structdetail_1_1dragonbox_1_1float__info}{carrier\_uint}}\ significand\_mask\ =}
+\DoxyCodeLine{01257\ \ \ \ \ \ \ (\textcolor{keyword}{static\_cast<}\mbox{\hyperlink{structdetail_1_1dragonbox_1_1float__info}{carrier\_uint}}\textcolor{keyword}{>}(1)\ <<\ num\_significand\_bits<T>())\ -\/\ 1;}
+\DoxyCodeLine{01258\ \ \ \mbox{\hyperlink{structdetail_1_1dragonbox_1_1float__info}{carrier\_uint}}\ significand\ =\ (br\ \&\ significand\_mask);}
+\DoxyCodeLine{01259\ \ \ \textcolor{keywordtype}{int}\ exponent\ =}
+\DoxyCodeLine{01260\ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}((br\ \&\ exponent\_mask<T>())\ >>\ num\_significand\_bits<T>());}
+\DoxyCodeLine{01261\ }
+\DoxyCodeLine{01262\ \ \ \textcolor{keywordflow}{if}\ (exponent\ !=\ 0)\ \{\ \ \textcolor{comment}{//\ Check\ if\ normal.}}
+\DoxyCodeLine{01263\ \ \ \ \ exponent\ -\/=\ exponent\_bias<T>()\ +\ num\_significand\_bits<T>();}
+\DoxyCodeLine{01264\ }
+\DoxyCodeLine{01265\ \ \ \ \ \textcolor{comment}{//\ Shorter\ interval\ case;\ proceed\ like\ Schubfach.}}
+\DoxyCodeLine{01266\ \ \ \ \ \textcolor{comment}{//\ In\ fact,\ when\ exponent\ ==\ 1\ and\ significand\ ==\ 0,\ the\ interval\ is}}
+\DoxyCodeLine{01267\ \ \ \ \ \textcolor{comment}{//\ regular.\ However,\ it\ can\ be\ shown\ that\ the\ end-\/results\ are\ anyway\ same.}}
+\DoxyCodeLine{01268\ \ \ \ \ \textcolor{keywordflow}{if}\ (significand\ ==\ 0)\ \textcolor{keywordflow}{return}\ shorter\_interval\_case<T>(exponent);}
+\DoxyCodeLine{01269\ }
+\DoxyCodeLine{01270\ \ \ \ \ significand\ |=\ (\textcolor{keyword}{static\_cast<}\mbox{\hyperlink{structdetail_1_1dragonbox_1_1float__info}{carrier\_uint}}\textcolor{keyword}{>}(1)\ <<\ num\_significand\_bits<T>());}
+\DoxyCodeLine{01271\ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{01272\ \ \ \ \ \textcolor{comment}{//\ Subnormal\ case;\ the\ interval\ is\ always\ regular.}}
+\DoxyCodeLine{01273\ \ \ \ \ \textcolor{keywordflow}{if}\ (significand\ ==\ 0)\ \textcolor{keywordflow}{return}\ \{0,\ 0\};}
+\DoxyCodeLine{01274\ \ \ \ \ exponent\ =}
+\DoxyCodeLine{01275\ \ \ \ \ \ \ \ \ std::numeric\_limits<T>::min\_exponent\ -\/\ num\_significand\_bits<T>()\ -\/\ 1;}
+\DoxyCodeLine{01276\ \ \ \}}
+\DoxyCodeLine{01277\ }
+\DoxyCodeLine{01278\ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ include\_left\_endpoint\ =\ (significand\ \%\ 2\ ==\ 0);}
+\DoxyCodeLine{01279\ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ include\_right\_endpoint\ =\ include\_left\_endpoint;}
+\DoxyCodeLine{01280\ }
+\DoxyCodeLine{01281\ \ \ \textcolor{comment}{//\ Compute\ k\ and\ beta.}}
+\DoxyCodeLine{01282\ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ minus\_k\ =\ floor\_log10\_pow2(exponent)\ -\/\ \mbox{\hyperlink{structdetail_1_1dragonbox_1_1float__info}{float\_info<T>::kappa}};}
+\DoxyCodeLine{01283\ \ \ \textcolor{keyword}{const}\ cache\_entry\_type\ cache\ =\ \mbox{\hyperlink{structdetail_1_1dragonbox_1_1cache__accessor}{cache\_accessor<T>::get\_cached\_power}}(-\/minus\_k);}
+\DoxyCodeLine{01284\ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ beta\ =\ exponent\ +\ floor\_log2\_pow10(-\/minus\_k);}
+\DoxyCodeLine{01285\ }
+\DoxyCodeLine{01286\ \ \ \textcolor{comment}{//\ Compute\ zi\ and\ deltai.}}
+\DoxyCodeLine{01287\ \ \ \textcolor{comment}{//\ 10\string^kappa\ <=\ deltai\ <\ 10\string^(kappa\ +\ 1)}}
+\DoxyCodeLine{01288\ \ \ \textcolor{keyword}{const}\ uint32\_t\ deltai\ =\ \mbox{\hyperlink{structdetail_1_1dragonbox_1_1cache__accessor}{cache\_accessor<T>::compute\_delta}}(cache,\ beta);}
+\DoxyCodeLine{01289\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{structdetail_1_1dragonbox_1_1float__info}{carrier\_uint}}\ two\_fc\ =\ significand\ <<\ 1;}
+\DoxyCodeLine{01290\ }
+\DoxyCodeLine{01291\ \ \ \textcolor{comment}{//\ For\ the\ case\ of\ binary32,\ the\ result\ of\ integer\ check\ is\ not\ correct\ for}}
+\DoxyCodeLine{01292\ \ \ \textcolor{comment}{//\ 29711844\ *\ 2\string^-\/82}}
+\DoxyCodeLine{01293\ \ \ \textcolor{comment}{//\ =\ 6.1442653300000000008655037797566933477355632930994033813476...\ *\ 10\string^-\/18}}
+\DoxyCodeLine{01294\ \ \ \textcolor{comment}{//\ and\ 29711844\ *\ 2\string^-\/81}}
+\DoxyCodeLine{01295\ \ \ \textcolor{comment}{//\ =\ 1.2288530660000000001731007559513386695471126586198806762695...\ *\ 10\string^-\/17,}}
+\DoxyCodeLine{01296\ \ \ \textcolor{comment}{//\ and\ they\ are\ the\ unique\ counterexamples.\ However,\ since\ 29711844\ is\ even,}}
+\DoxyCodeLine{01297\ \ \ \textcolor{comment}{//\ this\ does\ not\ cause\ any\ problem\ for\ the\ endpoints\ calculations;\ it\ can\ only}}
+\DoxyCodeLine{01298\ \ \ \textcolor{comment}{//\ cause\ a\ problem\ when\ we\ need\ to\ perform\ integer\ check\ for\ the\ center.}}
+\DoxyCodeLine{01299\ \ \ \textcolor{comment}{//\ Fortunately,\ with\ these\ inputs,\ that\ branch\ is\ never\ executed,\ so\ we\ are}}
+\DoxyCodeLine{01300\ \ \ \textcolor{comment}{//\ fine.}}
+\DoxyCodeLine{01301\ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{structdetail_1_1dragonbox_1_1cache__accessor}{cache\_accessor<T>::compute\_mul\_result}}\ z\_mul\ =}
+\DoxyCodeLine{01302\ \ \ \ \ \ \ \mbox{\hyperlink{structdetail_1_1dragonbox_1_1cache__accessor}{cache\_accessor<T>::compute\_mul}}((two\_fc\ |\ 1)\ <<\ beta,\ cache);}
+\DoxyCodeLine{01303\ }
+\DoxyCodeLine{01304\ \ \ \textcolor{comment}{//\ Step\ 2:\ Try\ larger\ divisor;\ remove\ trailing\ zeros\ if\ necessary.}}
+\DoxyCodeLine{01305\ }
+\DoxyCodeLine{01306\ \ \ \textcolor{comment}{//\ Using\ an\ upper\ bound\ on\ zi,\ we\ might\ be\ able\ to\ optimize\ the\ division}}
+\DoxyCodeLine{01307\ \ \ \textcolor{comment}{//\ better\ than\ the\ compiler;\ we\ are\ computing\ zi\ /\ big\_divisor\ here.}}
+\DoxyCodeLine{01308\ \ \ \mbox{\hyperlink{structdetail_1_1dragonbox_1_1decimal__fp}{decimal\_fp<T>}}\ ret\_value;}
+\DoxyCodeLine{01309\ \ \ ret\_value.significand\ =\ divide\_by\_10\_to\_kappa\_plus\_1(z\_mul.result);}
+\DoxyCodeLine{01310\ \ \ uint32\_t\ r\ =\ \textcolor{keyword}{static\_cast<}uint32\_t\textcolor{keyword}{>}(z\_mul.result\ -\/\ \mbox{\hyperlink{structdetail_1_1dragonbox_1_1float__info}{float\_info<T>::big\_divisor}}\ *}
+\DoxyCodeLine{01311\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ret\_value.significand);}
+\DoxyCodeLine{01312\ }
+\DoxyCodeLine{01313\ \ \ \textcolor{keywordflow}{if}\ (r\ <\ deltai)\ \{}
+\DoxyCodeLine{01314\ \ \ \ \ \textcolor{comment}{//\ Exclude\ the\ right\ endpoint\ if\ necessary.}}
+\DoxyCodeLine{01315\ \ \ \ \ \textcolor{keywordflow}{if}\ (r\ ==\ 0\ \&\&\ (z\_mul.is\_integer\ \&\ !include\_right\_endpoint))\ \{}
+\DoxyCodeLine{01316\ \ \ \ \ \ \ -\/-\/ret\_value.significand;}
+\DoxyCodeLine{01317\ \ \ \ \ \ \ r\ =\ \mbox{\hyperlink{structdetail_1_1dragonbox_1_1float__info}{float\_info<T>::big\_divisor}};}
+\DoxyCodeLine{01318\ \ \ \ \ \ \ \textcolor{keywordflow}{goto}\ small\_divisor\_case\_label;}
+\DoxyCodeLine{01319\ \ \ \ \ \}}
+\DoxyCodeLine{01320\ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (r\ >\ deltai)\ \{}
+\DoxyCodeLine{01321\ \ \ \ \ \textcolor{keywordflow}{goto}\ small\_divisor\_case\_label;}
+\DoxyCodeLine{01322\ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{01323\ \ \ \ \ \textcolor{comment}{//\ r\ ==\ deltai;\ compare\ fractional\ parts.}}
+\DoxyCodeLine{01324\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{structdetail_1_1dragonbox_1_1cache__accessor}{cache\_accessor<T>::compute\_mul\_parity\_result}}\ x\_mul\ =}
+\DoxyCodeLine{01325\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structdetail_1_1dragonbox_1_1cache__accessor}{cache\_accessor<T>::compute\_mul\_parity}}(two\_fc\ -\/\ 1,\ cache,\ beta);}
+\DoxyCodeLine{01326\ }
+\DoxyCodeLine{01327\ \ \ \ \ \textcolor{keywordflow}{if}\ (!(x\_mul.parity\ |\ (x\_mul.is\_integer\ \&\ include\_left\_endpoint)))}
+\DoxyCodeLine{01328\ \ \ \ \ \ \ \textcolor{keywordflow}{goto}\ small\_divisor\_case\_label;}
+\DoxyCodeLine{01329\ \ \ \}}
+\DoxyCodeLine{01330\ \ \ ret\_value.exponent\ =\ minus\_k\ +\ \mbox{\hyperlink{structdetail_1_1dragonbox_1_1float__info}{float\_info<T>::kappa}}\ +\ 1;}
+\DoxyCodeLine{01331\ }
+\DoxyCodeLine{01332\ \ \ \textcolor{comment}{//\ We\ may\ need\ to\ remove\ trailing\ zeros.}}
+\DoxyCodeLine{01333\ \ \ ret\_value.exponent\ +=\ remove\_trailing\_zeros(ret\_value.significand);}
+\DoxyCodeLine{01334\ \ \ \textcolor{keywordflow}{return}\ ret\_value;}
+\DoxyCodeLine{01335\ }
+\DoxyCodeLine{01336\ \ \ \textcolor{comment}{//\ Step\ 3:\ Find\ the\ significand\ with\ the\ smaller\ divisor.}}
+\DoxyCodeLine{01337\ }
+\DoxyCodeLine{01338\ small\_divisor\_case\_label:}
+\DoxyCodeLine{01339\ \ \ ret\_value.significand\ *=\ 10;}
+\DoxyCodeLine{01340\ \ \ ret\_value.exponent\ =\ minus\_k\ +\ \mbox{\hyperlink{structdetail_1_1dragonbox_1_1float__info}{float\_info<T>::kappa}};}
+\DoxyCodeLine{01341\ }
+\DoxyCodeLine{01342\ \ \ uint32\_t\ dist\ =\ r\ -\/\ (deltai\ /\ 2)\ +\ (\mbox{\hyperlink{structdetail_1_1dragonbox_1_1float__info}{float\_info<T>::small\_divisor}}\ /\ 2);}
+\DoxyCodeLine{01343\ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ approx\_y\_parity\ =}
+\DoxyCodeLine{01344\ \ \ \ \ \ \ ((dist\ \string^\ (\mbox{\hyperlink{structdetail_1_1dragonbox_1_1float__info}{float\_info<T>::small\_divisor}}\ /\ 2))\ \&\ 1)\ !=\ 0;}
+\DoxyCodeLine{01345\ }
+\DoxyCodeLine{01346\ \ \ \textcolor{comment}{//\ Is\ dist\ divisible\ by\ 10\string^kappa?}}
+\DoxyCodeLine{01347\ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\ divisible\_by\_small\_divisor\ =}
+\DoxyCodeLine{01348\ \ \ \ \ \ \ check\_divisibility\_and\_divide\_by\_pow10<float\_info<T>::kappa>(dist);}
+\DoxyCodeLine{01349\ }
+\DoxyCodeLine{01350\ \ \ \textcolor{comment}{//\ Add\ dist\ /\ 10\string^kappa\ to\ the\ significand.}}
+\DoxyCodeLine{01351\ \ \ ret\_value.significand\ +=\ dist;}
+\DoxyCodeLine{01352\ }
+\DoxyCodeLine{01353\ \ \ \textcolor{keywordflow}{if}\ (!divisible\_by\_small\_divisor)\ \textcolor{keywordflow}{return}\ ret\_value;}
+\DoxyCodeLine{01354\ }
+\DoxyCodeLine{01355\ \ \ \textcolor{comment}{//\ Check\ z\string^(f)\ >=\ epsilon\string^(f).}}
+\DoxyCodeLine{01356\ \ \ \textcolor{comment}{//\ We\ have\ either\ yi\ ==\ zi\ -\/\ epsiloni\ or\ yi\ ==\ (zi\ -\/\ epsiloni)\ -\/\ 1,}}
+\DoxyCodeLine{01357\ \ \ \textcolor{comment}{//\ where\ yi\ ==\ zi\ -\/\ epsiloni\ if\ and\ only\ if\ z\string^(f)\ >=\ epsilon\string^(f).}}
+\DoxyCodeLine{01358\ \ \ \textcolor{comment}{//\ Since\ there\ are\ only\ 2\ possibilities,\ we\ only\ need\ to\ care\ about\ the}}
+\DoxyCodeLine{01359\ \ \ \textcolor{comment}{//\ parity.\ Also,\ zi\ and\ r\ should\ have\ the\ same\ parity\ since\ the\ divisor}}
+\DoxyCodeLine{01360\ \ \ \textcolor{comment}{//\ is\ an\ even\ number.}}
+\DoxyCodeLine{01361\ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ y\_mul\ =\ \mbox{\hyperlink{structdetail_1_1dragonbox_1_1cache__accessor}{cache\_accessor<T>::compute\_mul\_parity}}(two\_fc,\ cache,\ beta);}
+\DoxyCodeLine{01362\ }
+\DoxyCodeLine{01363\ \ \ \textcolor{comment}{//\ If\ z\string^(f)\ >=\ epsilon\string^(f),\ we\ might\ have\ a\ tie\ when\ z\string^(f)\ ==\ epsilon\string^(f),}}
+\DoxyCodeLine{01364\ \ \ \textcolor{comment}{//\ or\ equivalently,\ when\ y\ is\ an\ integer.}}
+\DoxyCodeLine{01365\ \ \ \textcolor{keywordflow}{if}\ (y\_mul.parity\ !=\ approx\_y\_parity)}
+\DoxyCodeLine{01366\ \ \ \ \ -\/-\/ret\_value.significand;}
+\DoxyCodeLine{01367\ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (y\_mul.is\_integer\ \&\ (ret\_value.significand\ \%\ 2\ !=\ 0))}
+\DoxyCodeLine{01368\ \ \ \ \ -\/-\/ret\_value.significand;}
+\DoxyCodeLine{01369\ \ \ \textcolor{keywordflow}{return}\ ret\_value;}
+\DoxyCodeLine{01370\ \}}
+\DoxyCodeLine{01371\ \}\ \ \textcolor{comment}{//\ namespace\ dragonbox}}
+\DoxyCodeLine{01372\ \}\ \ \textcolor{comment}{//\ namespace\ detail}}
+\DoxyCodeLine{01373\ }
+\DoxyCodeLine{01374\ \textcolor{keyword}{template}\ <>\ \textcolor{keyword}{struct\ }formatter<\mbox{\hyperlink{namespacedetail}{detail}}::bigint>\ \{}
+\DoxyCodeLine{01375\ \ \ FMT\_CONSTEXPR\ \textcolor{keyword}{auto}\ parse(format\_parse\_context\&\ ctx)}
+\DoxyCodeLine{01376\ \ \ \ \ \ \ -\/>\ format\_parse\_context::iterator\ \{}
+\DoxyCodeLine{01377\ \ \ \ \ \textcolor{keywordflow}{return}\ ctx.begin();}
+\DoxyCodeLine{01378\ \ \ \}}
+\DoxyCodeLine{01379\ }
+\DoxyCodeLine{01380\ \ \ \textcolor{keyword}{auto}\ format(\textcolor{keyword}{const}\ \mbox{\hyperlink{classdetail_1_1bigint}{detail::bigint}}\&\ n,\ format\_context\&\ ctx)\ \textcolor{keyword}{const}}
+\DoxyCodeLine{01381\ \ \ \ \ \ \ -\/>\ format\_context::iterator\ \{}
+\DoxyCodeLine{01382\ \ \ \ \ \textcolor{keyword}{auto}\ out\ =\ ctx.out();}
+\DoxyCodeLine{01383\ \ \ \ \ \textcolor{keywordtype}{bool}\ first\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{01384\ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ i\ =\ n.bigits\_.size();\ i\ >\ 0;\ -\/-\/i)\ \{}
+\DoxyCodeLine{01385\ \ \ \ \ \ \ \textcolor{keyword}{auto}\ value\ =\ n.bigits\_[i\ -\/\ 1u];}
+\DoxyCodeLine{01386\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (first)\ \{}
+\DoxyCodeLine{01387\ \ \ \ \ \ \ \ \ out\ =\ fmt::format\_to(out,\ FMT\_STRING(\textcolor{stringliteral}{"{}\{:x\}"{}}),\ value);}
+\DoxyCodeLine{01388\ \ \ \ \ \ \ \ \ first\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{01389\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{01390\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01391\ \ \ \ \ \ \ out\ =\ fmt::format\_to(out,\ FMT\_STRING(\textcolor{stringliteral}{"{}\{:08x\}"{}}),\ value);}
+\DoxyCodeLine{01392\ \ \ \ \ \}}
+\DoxyCodeLine{01393\ \ \ \ \ \textcolor{keywordflow}{if}\ (n.exp\_\ >\ 0)}
+\DoxyCodeLine{01394\ \ \ \ \ \ \ out\ =\ fmt::format\_to(out,\ FMT\_STRING(\textcolor{stringliteral}{"{}p\{\}"{}}),}
+\DoxyCodeLine{01395\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ n.exp\_\ *\ detail::bigint::bigit\_bits);}
+\DoxyCodeLine{01396\ \ \ \ \ \textcolor{keywordflow}{return}\ out;}
+\DoxyCodeLine{01397\ \ \ \}}
+\DoxyCodeLine{01398\ \};}
+\DoxyCodeLine{01399\ }
+\DoxyCodeLine{01400\ FMT\_FUNC\ detail::utf8\_to\_utf16::utf8\_to\_utf16(string\_view\ s)\ \{}
+\DoxyCodeLine{01401\ \ \ for\_each\_codepoint(s,\ [\textcolor{keyword}{this}](uint32\_t\ cp,\ string\_view)\ \{}
+\DoxyCodeLine{01402\ \ \ \ \ \textcolor{keywordflow}{if}\ (cp\ ==\ invalid\_code\_point)\ FMT\_THROW(std::runtime\_error(\textcolor{stringliteral}{"{}invalid\ utf8"{}}));}
+\DoxyCodeLine{01403\ \ \ \ \ \textcolor{keywordflow}{if}\ (cp\ <=\ 0xFFFF)\ \{}
+\DoxyCodeLine{01404\ \ \ \ \ \ \ buffer\_.push\_back(\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{wchar\_t}\textcolor{keyword}{>}(cp));}
+\DoxyCodeLine{01405\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{01406\ \ \ \ \ \ \ cp\ -\/=\ 0x10000;}
+\DoxyCodeLine{01407\ \ \ \ \ \ \ buffer\_.push\_back(\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{wchar\_t}\textcolor{keyword}{>}(0xD800\ +\ (cp\ >>\ 10)));}
+\DoxyCodeLine{01408\ \ \ \ \ \ \ buffer\_.push\_back(\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{wchar\_t}\textcolor{keyword}{>}(0xDC00\ +\ (cp\ \&\ 0x3FF)));}
+\DoxyCodeLine{01409\ \ \ \ \ \}}
+\DoxyCodeLine{01410\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{01411\ \ \ \});}
+\DoxyCodeLine{01412\ \ \ buffer\_.push\_back(0);}
+\DoxyCodeLine{01413\ \}}
+\DoxyCodeLine{01414\ }
+\DoxyCodeLine{01415\ FMT\_FUNC\ \textcolor{keywordtype}{void}\ format\_system\_error(detail::buffer<char>\&\ out,\ \textcolor{keywordtype}{int}\ error\_code,}
+\DoxyCodeLine{01416\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ message)\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{01417\ \ \ FMT\_TRY\ \{}
+\DoxyCodeLine{01418\ \ \ \ \ \textcolor{keyword}{auto}\ ec\ =\ std::error\_code(error\_code,\ std::generic\_category());}
+\DoxyCodeLine{01419\ \ \ \ \ detail::write(appender(out),\ std::system\_error(ec,\ message).what());}
+\DoxyCodeLine{01420\ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{01421\ \ \ \}}
+\DoxyCodeLine{01422\ \ \ FMT\_CATCH(...)\ \{\}}
+\DoxyCodeLine{01423\ \ \ format\_error\_code(out,\ error\_code,\ message);}
+\DoxyCodeLine{01424\ \}}
+\DoxyCodeLine{01425\ }
+\DoxyCodeLine{01426\ FMT\_FUNC\ \textcolor{keywordtype}{void}\ report\_system\_error(\textcolor{keywordtype}{int}\ error\_code,}
+\DoxyCodeLine{01427\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ message)\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{01428\ \ \ report\_error(format\_system\_error,\ error\_code,\ message);}
+\DoxyCodeLine{01429\ \}}
+\DoxyCodeLine{01430\ }
+\DoxyCodeLine{01431\ FMT\_FUNC\ \textcolor{keyword}{auto}\ vformat(string\_view\ fmt,\ format\_args\ args)\ -\/>\ std::string\ \{}
+\DoxyCodeLine{01432\ \ \ \textcolor{comment}{//\ Don't\ optimize\ the\ "{}\{\}"{}\ case\ to\ keep\ the\ binary\ size\ small\ and\ because\ it}}
+\DoxyCodeLine{01433\ \ \ \textcolor{comment}{//\ can\ be\ better\ optimized\ in\ fmt::format\ anyway.}}
+\DoxyCodeLine{01434\ \ \ \textcolor{keyword}{auto}\ \mbox{\hyperlink{classdetail_1_1buffer}{buffer}}\ =\ memory\_buffer();}
+\DoxyCodeLine{01435\ \ \ detail::vformat\_to(\mbox{\hyperlink{classdetail_1_1buffer}{buffer}},\ fmt,\ args);}
+\DoxyCodeLine{01436\ \ \ \textcolor{keywordflow}{return}\ to\_string(\mbox{\hyperlink{classdetail_1_1buffer}{buffer}});}
+\DoxyCodeLine{01437\ \}}
+\DoxyCodeLine{01438\ }
+\DoxyCodeLine{01439\ \textcolor{keyword}{namespace\ }detail\ \{}
+\DoxyCodeLine{01440\ }
+\DoxyCodeLine{01441\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ T>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structdetail_1_1span}{span}}\ \{}
+\DoxyCodeLine{01442\ \ \ T*\ data;}
+\DoxyCodeLine{01443\ \ \ \textcolor{keywordtype}{size\_t}\ size;}
+\DoxyCodeLine{01444\ \};}
+\DoxyCodeLine{01445\ }
+\DoxyCodeLine{01446\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ F>\ \textcolor{keyword}{auto}\ flockfile(F*\ f)\ -\/>\ \textcolor{keyword}{decltype}(\_lock\_file(f))\ \{}
+\DoxyCodeLine{01447\ \ \ \_lock\_file(f);}
+\DoxyCodeLine{01448\ \}}
+\DoxyCodeLine{01449\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ F>\ \textcolor{keyword}{auto}\ funlockfile(F*\ f)\ -\/>\ \textcolor{keyword}{decltype}(\_unlock\_file(f))\ \{}
+\DoxyCodeLine{01450\ \ \ \_unlock\_file(f);}
+\DoxyCodeLine{01451\ \}}
+\DoxyCodeLine{01452\ }
+\DoxyCodeLine{01453\ \textcolor{preprocessor}{\#ifndef\ getc\_unlocked}}
+\DoxyCodeLine{01454\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ F>\ \textcolor{keyword}{auto}\ getc\_unlocked(F*\ f)\ -\/>\ \textcolor{keyword}{decltype}(\_fgetc\_nolock(f))\ \{}
+\DoxyCodeLine{01455\ \ \ \textcolor{keywordflow}{return}\ \_fgetc\_nolock(f);}
+\DoxyCodeLine{01456\ \}}
+\DoxyCodeLine{01457\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{01458\ }
+\DoxyCodeLine{01459\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ F\ =\ FILE,\ \textcolor{keyword}{typename}\ Enable\ =\ \textcolor{keywordtype}{void}>}
+\DoxyCodeLine{01460\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structdetail_1_1has__flockfile}{has\_flockfile}}\ :\ std::false\_type\ \{\};}
+\DoxyCodeLine{01461\ }
+\DoxyCodeLine{01462\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ F>}
+\DoxyCodeLine{01463\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structdetail_1_1has__flockfile}{has\_flockfile}}<F,\ void\_t<decltype(flockfile(\&std::declval<F\&>()))>>}
+\DoxyCodeLine{01464\ \ \ \ \ :\ std::true\_type\ \{\};}
+\DoxyCodeLine{01465\ }
+\DoxyCodeLine{01466\ \textcolor{comment}{//\ A\ FILE\ wrapper.\ F\ is\ FILE\ defined\ as\ a\ template\ parameter\ to\ make\ system\ API}}
+\DoxyCodeLine{01467\ \textcolor{comment}{//\ detection\ work.}}
+\DoxyCodeLine{01468\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ F>\ \textcolor{keyword}{class\ }file\_base\ \{}
+\DoxyCodeLine{01469\ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{01470\ \ \ F*\ file\_;}
+\DoxyCodeLine{01471\ }
+\DoxyCodeLine{01472\ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{01473\ \ \ file\_base(F*\ file)\ :\ file\_(file)\ \{\}}
+\DoxyCodeLine{01474\ \ \ \textcolor{keyword}{operator}\ F*()\ \textcolor{keyword}{const}\ \{\ \textcolor{keywordflow}{return}\ file\_;\ \}}
+\DoxyCodeLine{01475\ }
+\DoxyCodeLine{01476\ \ \ \textcolor{comment}{//\ Reads\ a\ code\ unit\ from\ the\ stream.}}
+\DoxyCodeLine{01477\ \ \ \textcolor{keyword}{auto}\ get()\ -\/>\ \textcolor{keywordtype}{int}\ \{}
+\DoxyCodeLine{01478\ \ \ \ \ \textcolor{keywordtype}{int}\ result\ =\ getc\_unlocked(file\_);}
+\DoxyCodeLine{01479\ \ \ \ \ \textcolor{keywordflow}{if}\ (result\ ==\ EOF\ \&\&\ ferror(file\_)\ !=\ 0)}
+\DoxyCodeLine{01480\ \ \ \ \ \ \ FMT\_THROW(system\_error(errno,\ FMT\_STRING(\textcolor{stringliteral}{"{}getc\ failed"{}})));}
+\DoxyCodeLine{01481\ \ \ \ \ \textcolor{keywordflow}{return}\ result;}
+\DoxyCodeLine{01482\ \ \ \}}
+\DoxyCodeLine{01483\ }
+\DoxyCodeLine{01484\ \ \ \textcolor{comment}{//\ Puts\ the\ code\ unit\ back\ into\ the\ stream\ buffer.}}
+\DoxyCodeLine{01485\ \ \ \textcolor{keywordtype}{void}\ unget(\textcolor{keywordtype}{char}\ c)\ \{}
+\DoxyCodeLine{01486\ \ \ \ \ \textcolor{keywordflow}{if}\ (ungetc(c,\ file\_)\ ==\ EOF)}
+\DoxyCodeLine{01487\ \ \ \ \ \ \ FMT\_THROW(system\_error(errno,\ FMT\_STRING(\textcolor{stringliteral}{"{}ungetc\ failed"{}})));}
+\DoxyCodeLine{01488\ \ \ \}}
+\DoxyCodeLine{01489\ }
+\DoxyCodeLine{01490\ \ \ \textcolor{keywordtype}{void}\ flush()\ \{\ fflush(this-\/>file\_);\ \}}
+\DoxyCodeLine{01491\ \};}
+\DoxyCodeLine{01492\ }
+\DoxyCodeLine{01493\ \textcolor{comment}{//\ A\ FILE\ wrapper\ for\ glibc.}}
+\DoxyCodeLine{01494\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ F>\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classdetail_1_1glibc__file}{glibc\_file}}\ :\ \textcolor{keyword}{public}\ file\_base<F>\ \{}
+\DoxyCodeLine{01495\ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{01496\ \ \ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{01497\ \ \ \ \ line\_buffered\ =\ 0x200,\ \ \textcolor{comment}{//\ \_IO\_LINE\_BUF}}
+\DoxyCodeLine{01498\ \ \ \ \ unbuffered\ =\ 2\ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \_IO\_UNBUFFERED}}
+\DoxyCodeLine{01499\ \ \ \};}
+\DoxyCodeLine{01500\ }
+\DoxyCodeLine{01501\ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{01502\ \ \ \textcolor{keyword}{using\ }file\_base<F>::file\_base;}
+\DoxyCodeLine{01503\ }
+\DoxyCodeLine{01504\ \ \ \textcolor{keyword}{auto}\ is\_buffered()\ \textcolor{keyword}{const}\ -\/>\ \textcolor{keywordtype}{bool}\ \{}
+\DoxyCodeLine{01505\ \ \ \ \ \textcolor{keywordflow}{return}\ (this-\/>file\_-\/>\_flags\ \&\ unbuffered)\ ==\ 0;}
+\DoxyCodeLine{01506\ \ \ \}}
+\DoxyCodeLine{01507\ }
+\DoxyCodeLine{01508\ \ \ \textcolor{keywordtype}{void}\ init\_buffer()\ \{}
+\DoxyCodeLine{01509\ \ \ \ \ \textcolor{keywordflow}{if}\ (this-\/>file\_-\/>\_IO\_write\_ptr)\ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{01510\ \ \ \ \ \textcolor{comment}{//\ Force\ buffer\ initialization\ by\ placing\ and\ removing\ a\ char\ in\ a\ buffer.}}
+\DoxyCodeLine{01511\ \ \ \ \ putc\_unlocked(0,\ this-\/>file\_);}
+\DoxyCodeLine{01512\ \ \ \ \ -\/-\/this-\/>file\_-\/>\_IO\_write\_ptr;}
+\DoxyCodeLine{01513\ \ \ \}}
+\DoxyCodeLine{01514\ }
+\DoxyCodeLine{01515\ \ \ \textcolor{comment}{//\ Returns\ the\ file's\ read\ buffer.}}
+\DoxyCodeLine{01516\ \ \ \textcolor{keyword}{auto}\ get\_read\_buffer()\ \textcolor{keyword}{const}\ -\/>\ \mbox{\hyperlink{structdetail_1_1span}{span<const\ char>}}\ \{}
+\DoxyCodeLine{01517\ \ \ \ \ \textcolor{keyword}{auto}\ ptr\ =\ this-\/>file\_-\/>\_IO\_read\_ptr;}
+\DoxyCodeLine{01518\ \ \ \ \ \textcolor{keywordflow}{return}\ \{ptr,\ to\_unsigned(this-\/>file\_-\/>\_IO\_read\_end\ -\/\ ptr)\};}
+\DoxyCodeLine{01519\ \ \ \}}
+\DoxyCodeLine{01520\ }
+\DoxyCodeLine{01521\ \ \ \textcolor{comment}{//\ Returns\ the\ file's\ write\ buffer.}}
+\DoxyCodeLine{01522\ \ \ \textcolor{keyword}{auto}\ get\_write\_buffer()\ \textcolor{keyword}{const}\ -\/>\ \mbox{\hyperlink{structdetail_1_1span}{span<char>}}\ \{}
+\DoxyCodeLine{01523\ \ \ \ \ \textcolor{keyword}{auto}\ ptr\ =\ this-\/>file\_-\/>\_IO\_write\_ptr;}
+\DoxyCodeLine{01524\ \ \ \ \ \textcolor{keywordflow}{return}\ \{ptr,\ to\_unsigned(this-\/>file\_-\/>\_IO\_buf\_end\ -\/\ ptr)\};}
+\DoxyCodeLine{01525\ \ \ \}}
+\DoxyCodeLine{01526\ }
+\DoxyCodeLine{01527\ \ \ \textcolor{keywordtype}{void}\ advance\_write\_buffer(\textcolor{keywordtype}{size\_t}\ size)\ \{\ this-\/>file\_-\/>\_IO\_write\_ptr\ +=\ size;\ \}}
+\DoxyCodeLine{01528\ }
+\DoxyCodeLine{01529\ \ \ \textcolor{keywordtype}{bool}\ needs\_flush()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{01530\ \ \ \ \ \textcolor{keywordflow}{if}\ ((this-\/>file\_-\/>\_flags\ \&\ line\_buffered)\ ==\ 0)\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{01531\ \ \ \ \ \textcolor{keywordtype}{char}*\ end\ =\ this-\/>file\_-\/>\_IO\_write\_end;}
+\DoxyCodeLine{01532\ \ \ \ \ \textcolor{keywordflow}{return}\ memchr(end,\ \textcolor{charliteral}{'\(\backslash\)n'},\ to\_unsigned(this-\/>file\_-\/>\_IO\_write\_ptr\ -\/\ end));}
+\DoxyCodeLine{01533\ \ \ \}}
+\DoxyCodeLine{01534\ }
+\DoxyCodeLine{01535\ \ \ \textcolor{keywordtype}{void}\ flush()\ \{\ fflush\_unlocked(this-\/>file\_);\ \}}
+\DoxyCodeLine{01536\ \};}
+\DoxyCodeLine{01537\ }
+\DoxyCodeLine{01538\ \textcolor{comment}{//\ A\ FILE\ wrapper\ for\ Apple's\ libc.}}
+\DoxyCodeLine{01539\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ F>\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classdetail_1_1apple__file}{apple\_file}}\ :\ \textcolor{keyword}{public}\ file\_base<F>\ \{}
+\DoxyCodeLine{01540\ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{01541\ \ \ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{01542\ \ \ \ \ line\_buffered\ =\ 1,\ \ \textcolor{comment}{//\ \_\_SNBF}}
+\DoxyCodeLine{01543\ \ \ \ \ unbuffered\ =\ 2\ \ \ \ \ \ \textcolor{comment}{//\ \_\_SLBF}}
+\DoxyCodeLine{01544\ \ \ \};}
+\DoxyCodeLine{01545\ }
+\DoxyCodeLine{01546\ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{01547\ \ \ \textcolor{keyword}{using\ }file\_base<F>::file\_base;}
+\DoxyCodeLine{01548\ }
+\DoxyCodeLine{01549\ \ \ \textcolor{keyword}{auto}\ is\_buffered()\ \textcolor{keyword}{const}\ -\/>\ \textcolor{keywordtype}{bool}\ \{}
+\DoxyCodeLine{01550\ \ \ \ \ \textcolor{keywordflow}{return}\ (this-\/>file\_-\/>\_flags\ \&\ unbuffered)\ ==\ 0;}
+\DoxyCodeLine{01551\ \ \ \}}
+\DoxyCodeLine{01552\ }
+\DoxyCodeLine{01553\ \ \ \textcolor{keywordtype}{void}\ init\_buffer()\ \{}
+\DoxyCodeLine{01554\ \ \ \ \ \textcolor{keywordflow}{if}\ (this-\/>file\_-\/>\_p)\ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{01555\ \ \ \ \ \textcolor{comment}{//\ Force\ buffer\ initialization\ by\ placing\ and\ removing\ a\ char\ in\ a\ buffer.}}
+\DoxyCodeLine{01556\ \ \ \ \ putc\_unlocked(0,\ this-\/>file\_);}
+\DoxyCodeLine{01557\ \ \ \ \ -\/-\/this-\/>file\_-\/>\_p;}
+\DoxyCodeLine{01558\ \ \ \ \ ++this-\/>file\_-\/>\_w;}
+\DoxyCodeLine{01559\ \ \ \}}
+\DoxyCodeLine{01560\ }
+\DoxyCodeLine{01561\ \ \ \textcolor{keyword}{auto}\ get\_read\_buffer()\ \textcolor{keyword}{const}\ -\/>\ \mbox{\hyperlink{structdetail_1_1span}{span<const\ char>}}\ \{}
+\DoxyCodeLine{01562\ \ \ \ \ \textcolor{keywordflow}{return}\ \{\textcolor{keyword}{reinterpret\_cast<}\textcolor{keywordtype}{char}*\textcolor{keyword}{>}(this-\/>file\_-\/>\_p),}
+\DoxyCodeLine{01563\ \ \ \ \ \ \ \ \ \ \ \ \ to\_unsigned(this-\/>file\_-\/>\_r)\};}
+\DoxyCodeLine{01564\ \ \ \}}
+\DoxyCodeLine{01565\ }
+\DoxyCodeLine{01566\ \ \ \textcolor{keyword}{auto}\ get\_write\_buffer()\ \textcolor{keyword}{const}\ -\/>\ \mbox{\hyperlink{structdetail_1_1span}{span<char>}}\ \{}
+\DoxyCodeLine{01567\ \ \ \ \ \textcolor{keywordflow}{return}\ \{\textcolor{keyword}{reinterpret\_cast<}\textcolor{keywordtype}{char}*\textcolor{keyword}{>}(this-\/>file\_-\/>\_p),}
+\DoxyCodeLine{01568\ \ \ \ \ \ \ \ \ \ \ \ \ to\_unsigned(this-\/>file\_-\/>\_bf.\_base\ +\ this-\/>file\_-\/>\_bf.\_size\ -\/}
+\DoxyCodeLine{01569\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ this-\/>file\_-\/>\_p)\};}
+\DoxyCodeLine{01570\ \ \ \}}
+\DoxyCodeLine{01571\ }
+\DoxyCodeLine{01572\ \ \ \textcolor{keywordtype}{void}\ advance\_write\_buffer(\textcolor{keywordtype}{size\_t}\ size)\ \{}
+\DoxyCodeLine{01573\ \ \ \ \ this-\/>file\_-\/>\_p\ +=\ size;}
+\DoxyCodeLine{01574\ \ \ \ \ this-\/>file\_-\/>\_w\ -\/=\ size;}
+\DoxyCodeLine{01575\ \ \ \}}
+\DoxyCodeLine{01576\ }
+\DoxyCodeLine{01577\ \ \ \textcolor{keywordtype}{bool}\ needs\_flush()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{01578\ \ \ \ \ \textcolor{keywordflow}{if}\ ((this-\/>file\_-\/>\_flags\ \&\ line\_buffered)\ ==\ 0)\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{01579\ \ \ \ \ \textcolor{keywordflow}{return}\ memchr(this-\/>file\_-\/>\_p\ +\ this-\/>file\_-\/>\_w,\ \textcolor{charliteral}{'\(\backslash\)n'},}
+\DoxyCodeLine{01580\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ to\_unsigned(-\/this-\/>file\_-\/>\_w));}
+\DoxyCodeLine{01581\ \ \ \}}
+\DoxyCodeLine{01582\ \};}
+\DoxyCodeLine{01583\ }
+\DoxyCodeLine{01584\ \textcolor{comment}{//\ A\ fallback\ FILE\ wrapper.}}
+\DoxyCodeLine{01585\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ F>\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classdetail_1_1fallback__file}{fallback\_file}}\ :\ \textcolor{keyword}{public}\ file\_base<F>\ \{}
+\DoxyCodeLine{01586\ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{01587\ \ \ \textcolor{keywordtype}{char}\ next\_;\ \ \textcolor{comment}{//\ The\ next\ unconsumed\ character\ in\ the\ buffer.}}
+\DoxyCodeLine{01588\ \ \ \textcolor{keywordtype}{bool}\ has\_next\_\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{01589\ }
+\DoxyCodeLine{01590\ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{01591\ \ \ \textcolor{keyword}{using\ }file\_base<F>::file\_base;}
+\DoxyCodeLine{01592\ }
+\DoxyCodeLine{01593\ \ \ \textcolor{keyword}{auto}\ is\_buffered()\ \textcolor{keyword}{const}\ -\/>\ \textcolor{keywordtype}{bool}\ \{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};\ \}}
+\DoxyCodeLine{01594\ \ \ \textcolor{keyword}{auto}\ needs\_flush()\ \textcolor{keyword}{const}\ -\/>\ \textcolor{keywordtype}{bool}\ \{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};\ \}}
+\DoxyCodeLine{01595\ \ \ \textcolor{keywordtype}{void}\ init\_buffer()\ \{\}}
+\DoxyCodeLine{01596\ }
+\DoxyCodeLine{01597\ \ \ \textcolor{keyword}{auto}\ get\_read\_buffer()\ \textcolor{keyword}{const}\ -\/>\ \mbox{\hyperlink{structdetail_1_1span}{span<const\ char>}}\ \{}
+\DoxyCodeLine{01598\ \ \ \ \ \textcolor{keywordflow}{return}\ \{\&next\_,\ has\_next\_\ ?\ 1u\ :\ 0u\};}
+\DoxyCodeLine{01599\ \ \ \}}
+\DoxyCodeLine{01600\ }
+\DoxyCodeLine{01601\ \ \ \textcolor{keyword}{auto}\ get\_write\_buffer()\ \textcolor{keyword}{const}\ -\/>\ \mbox{\hyperlink{structdetail_1_1span}{span<char>}}\ \{\ \textcolor{keywordflow}{return}\ \{\textcolor{keyword}{nullptr},\ 0\};\ \}}
+\DoxyCodeLine{01602\ }
+\DoxyCodeLine{01603\ \ \ \textcolor{keywordtype}{void}\ advance\_write\_buffer(\textcolor{keywordtype}{size\_t})\ \{\}}
+\DoxyCodeLine{01604\ }
+\DoxyCodeLine{01605\ \ \ \textcolor{keyword}{auto}\ get()\ -\/>\ \textcolor{keywordtype}{int}\ \{}
+\DoxyCodeLine{01606\ \ \ \ \ has\_next\_\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{01607\ \ \ \ \ \textcolor{keywordflow}{return}\ file\_base<F>::get();}
+\DoxyCodeLine{01608\ \ \ \}}
+\DoxyCodeLine{01609\ }
+\DoxyCodeLine{01610\ \ \ \textcolor{keywordtype}{void}\ unget(\textcolor{keywordtype}{char}\ c)\ \{}
+\DoxyCodeLine{01611\ \ \ \ \ file\_base<F>::unget(c);}
+\DoxyCodeLine{01612\ \ \ \ \ next\_\ =\ c;}
+\DoxyCodeLine{01613\ \ \ \ \ has\_next\_\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{01614\ \ \ \}}
+\DoxyCodeLine{01615\ \};}
+\DoxyCodeLine{01616\ }
+\DoxyCodeLine{01617\ \textcolor{preprocessor}{\#ifndef\ FMT\_USE\_FALLBACK\_FILE}}
+\DoxyCodeLine{01618\ \textcolor{preprocessor}{\#\ \ define\ FMT\_USE\_FALLBACK\_FILE\ 1}}
+\DoxyCodeLine{01619\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{01620\ }
+\DoxyCodeLine{01621\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ F,}
+\DoxyCodeLine{01622\ \ \ \ \ \ \ \ \ \ \ FMT\_ENABLE\_IF(\textcolor{keyword}{sizeof}(F::\_p)\ !=\ 0\ \&\&\ !FMT\_USE\_FALLBACK\_FILE)>}
+\DoxyCodeLine{01623\ \textcolor{keyword}{auto}\ get\_file(F*\ f,\ \textcolor{keywordtype}{int})\ -\/>\ \mbox{\hyperlink{classdetail_1_1apple__file}{apple\_file<F>}}\ \{}
+\DoxyCodeLine{01624\ \ \ \textcolor{keywordflow}{return}\ f;}
+\DoxyCodeLine{01625\ \}}
+\DoxyCodeLine{01626\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ F,}
+\DoxyCodeLine{01627\ \ \ \ \ \ \ \ \ \ \ FMT\_ENABLE\_IF(\textcolor{keyword}{sizeof}(F::\_IO\_read\_ptr)\ !=\ 0\ \&\&\ !FMT\_USE\_FALLBACK\_FILE)>}
+\DoxyCodeLine{01628\ \textcolor{keyword}{inline}\ \textcolor{keyword}{auto}\ get\_file(F*\ f,\ \textcolor{keywordtype}{int})\ -\/>\ glibc\_file<F>\ \{}
+\DoxyCodeLine{01629\ \ \ \textcolor{keywordflow}{return}\ f;}
+\DoxyCodeLine{01630\ \}}
+\DoxyCodeLine{01631\ }
+\DoxyCodeLine{01632\ \textcolor{keyword}{inline}\ \textcolor{keyword}{auto}\ get\_file(FILE*\ f,\ ...)\ -\/>\ \mbox{\hyperlink{classdetail_1_1fallback__file}{fallback\_file<FILE>}}\ \{\ \textcolor{keywordflow}{return}\ f;\ \}}
+\DoxyCodeLine{01633\ }
+\DoxyCodeLine{01634\ \textcolor{keyword}{using\ }file\_ref\ =\ \textcolor{keyword}{decltype}(get\_file(\textcolor{keyword}{static\_cast<}FILE*\textcolor{keyword}{>}(\textcolor{keyword}{nullptr}),\ 0));}
+\DoxyCodeLine{01635\ }
+\DoxyCodeLine{01636\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ F\ =\ FILE,\ \textcolor{keyword}{typename}\ Enable\ =\ \textcolor{keywordtype}{void}>}
+\DoxyCodeLine{01637\ \textcolor{keyword}{class\ }file\_print\_buffer\ :\ \textcolor{keyword}{public}\ buffer<char>\ \{}
+\DoxyCodeLine{01638\ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{01639\ \ \ \textcolor{keyword}{explicit}\ file\_print\_buffer(F*)\ :\ buffer(\textcolor{keyword}{nullptr},\ \textcolor{keywordtype}{size\_t}())\ \{\}}
+\DoxyCodeLine{01640\ \};}
+\DoxyCodeLine{01641\ }
+\DoxyCodeLine{01642\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ F>}
+\DoxyCodeLine{01643\ \textcolor{keyword}{class\ }file\_print\_buffer<F,\ enable\_if\_t<\mbox{\hyperlink{structdetail_1_1has__flockfile}{has\_flockfile}}<F>::\mbox{\hyperlink{classdetail_1_1value}{value}}>>}
+\DoxyCodeLine{01644\ \ \ \ \ :\ \textcolor{keyword}{public}\ buffer<char>\ \{}
+\DoxyCodeLine{01645\ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{01646\ \ \ file\_ref\ file\_;}
+\DoxyCodeLine{01647\ }
+\DoxyCodeLine{01648\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ grow(buffer<char>\&\ base,\ \textcolor{keywordtype}{size\_t})\ \{}
+\DoxyCodeLine{01649\ \ \ \ \ \textcolor{keyword}{auto}\&\ self\ =\ \textcolor{keyword}{static\_cast<}file\_print\_buffer\&\textcolor{keyword}{>}(base);}
+\DoxyCodeLine{01650\ \ \ \ \ self.file\_.advance\_write\_buffer(self.size());}
+\DoxyCodeLine{01651\ \ \ \ \ \textcolor{keywordflow}{if}\ (self.file\_.get\_write\_buffer().size\ ==\ 0)\ self.file\_.flush();}
+\DoxyCodeLine{01652\ \ \ \ \ \textcolor{keyword}{auto}\ buf\ =\ self.file\_.get\_write\_buffer();}
+\DoxyCodeLine{01653\ \ \ \ \ FMT\_ASSERT(buf.size\ >\ 0,\ \textcolor{stringliteral}{"{}"{}});}
+\DoxyCodeLine{01654\ \ \ \ \ self.set(buf.data,\ buf.size);}
+\DoxyCodeLine{01655\ \ \ \ \ self.clear();}
+\DoxyCodeLine{01656\ \ \ \}}
+\DoxyCodeLine{01657\ }
+\DoxyCodeLine{01658\ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{01659\ \ \ \textcolor{keyword}{explicit}\ file\_print\_buffer(F*\ f)\ :\ buffer(grow,\ \textcolor{keywordtype}{size\_t}()),\ file\_(f)\ \{}
+\DoxyCodeLine{01660\ \ \ \ \ flockfile(f);}
+\DoxyCodeLine{01661\ \ \ \ \ file\_.init\_buffer();}
+\DoxyCodeLine{01662\ \ \ \ \ \textcolor{keyword}{auto}\ buf\ =\ file\_.get\_write\_buffer();}
+\DoxyCodeLine{01663\ \ \ \ \ \mbox{\hyperlink{classdetail_1_1buffer_a5c82aec716b07079ac88194eb9aa7feb}{set}}(buf.data,\ buf.size);}
+\DoxyCodeLine{01664\ \ \ \}}
+\DoxyCodeLine{01665\ \ \ \string~file\_print\_buffer()\ \{}
+\DoxyCodeLine{01666\ \ \ \ \ file\_.advance\_write\_buffer(\mbox{\hyperlink{classdetail_1_1buffer_a8685285932360c284d19003fc4ba3edc}{size}}());}
+\DoxyCodeLine{01667\ \ \ \ \ \textcolor{keywordtype}{bool}\ flush\ =\ file\_.needs\_flush();}
+\DoxyCodeLine{01668\ \ \ \ \ F*\ f\ =\ file\_;\ \ \ \ \textcolor{comment}{//\ Make\ funlockfile\ depend\ on\ the\ template\ parameter\ F}}
+\DoxyCodeLine{01669\ \ \ \ \ funlockfile(f);\ \ \textcolor{comment}{//\ for\ the\ system\ API\ detection\ to\ work.}}
+\DoxyCodeLine{01670\ \ \ \ \ \textcolor{keywordflow}{if}\ (flush)\ fflush(file\_);}
+\DoxyCodeLine{01671\ \ \ \}}
+\DoxyCodeLine{01672\ \};}
+\DoxyCodeLine{01673\ }
+\DoxyCodeLine{01674\ \textcolor{preprocessor}{\#if\ !defined(\_WIN32)\ ||\ defined(FMT\_USE\_WRITE\_CONSOLE)}}
+\DoxyCodeLine{01675\ FMT\_FUNC\ \textcolor{keyword}{auto}\ write\_console(\textcolor{keywordtype}{int},\ string\_view)\ -\/>\ \textcolor{keywordtype}{bool}\ \{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};\ \}}
+\DoxyCodeLine{01676\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{01677\ \textcolor{keyword}{using\ }dword\ =\ conditional\_t<\textcolor{keyword}{sizeof}(long)\ ==\ 4,\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long},\ \textcolor{keywordtype}{unsigned}>;}
+\DoxyCodeLine{01678\ \textcolor{keyword}{extern}\ \textcolor{stringliteral}{"{}C"{}}\ \_\_declspec(dllimport)\ \textcolor{keywordtype}{int}\ \_\_stdcall\ WriteConsoleW(\ \ \textcolor{comment}{//}}
+\DoxyCodeLine{01679\ \ \ \ \ \textcolor{keywordtype}{void}*,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{void}*,\ dword,\ dword*,\ \textcolor{keywordtype}{void}*);}
+\DoxyCodeLine{01680\ }
+\DoxyCodeLine{01681\ FMT\_FUNC\ \textcolor{keywordtype}{bool}\ write\_console(\textcolor{keywordtype}{int}\ fd,\ string\_view\ text)\ \{}
+\DoxyCodeLine{01682\ \ \ \textcolor{keyword}{auto}\ u16\ =\ utf8\_to\_utf16(text);}
+\DoxyCodeLine{01683\ \ \ \textcolor{keywordflow}{return}\ WriteConsoleW(\textcolor{keyword}{reinterpret\_cast<}\textcolor{keywordtype}{void}*\textcolor{keyword}{>}(\_get\_osfhandle(fd)),\ u16.c\_str(),}
+\DoxyCodeLine{01684\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{static\_cast<}dword\textcolor{keyword}{>}(u16.size()),\ \textcolor{keyword}{nullptr},\ \textcolor{keyword}{nullptr})\ !=\ 0;}
+\DoxyCodeLine{01685\ \}}
+\DoxyCodeLine{01686\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{01687\ }
+\DoxyCodeLine{01688\ \textcolor{preprocessor}{\#ifdef\ \_WIN32}}
+\DoxyCodeLine{01689\ \textcolor{comment}{//\ Print\ assuming\ legacy\ (non-\/Unicode)\ encoding.}}
+\DoxyCodeLine{01690\ FMT\_FUNC\ \textcolor{keywordtype}{void}\ vprint\_mojibake(std::FILE*\ f,\ string\_view\ fmt,\ format\_args\ args,}
+\DoxyCodeLine{01691\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ newline)\ \{}
+\DoxyCodeLine{01692\ \ \ \textcolor{keyword}{auto}\ \mbox{\hyperlink{classdetail_1_1buffer}{buffer}}\ =\ memory\_buffer();}
+\DoxyCodeLine{01693\ \ \ detail::vformat\_to(\mbox{\hyperlink{classdetail_1_1buffer}{buffer}},\ fmt,\ args);}
+\DoxyCodeLine{01694\ \ \ \textcolor{keywordflow}{if}\ (newline)\ \mbox{\hyperlink{classdetail_1_1buffer}{buffer}}.push\_back(\textcolor{charliteral}{'\(\backslash\)n'});}
+\DoxyCodeLine{01695\ \ \ fwrite\_fully(\mbox{\hyperlink{classdetail_1_1buffer}{buffer}}.\mbox{\hyperlink{classdetail_1_1buffer_aeb33e0a2d2be2bbca9e0236c148089c8}{data}}(),\ \mbox{\hyperlink{classdetail_1_1buffer}{buffer}}.\mbox{\hyperlink{classdetail_1_1buffer_a8685285932360c284d19003fc4ba3edc}{size}}(),\ f);}
+\DoxyCodeLine{01696\ \}}
+\DoxyCodeLine{01697\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{01698\ }
+\DoxyCodeLine{01699\ FMT\_FUNC\ \textcolor{keywordtype}{void}\ print(std::FILE*\ f,\ string\_view\ text)\ \{}
+\DoxyCodeLine{01700\ \textcolor{preprocessor}{\#if\ defined(\_WIN32)\ \&\&\ !defined(FMT\_USE\_WRITE\_CONSOLE)}}
+\DoxyCodeLine{01701\ \ \ \textcolor{keywordtype}{int}\ fd\ =\ \_fileno(f);}
+\DoxyCodeLine{01702\ \ \ \textcolor{keywordflow}{if}\ (\_isatty(fd))\ \{}
+\DoxyCodeLine{01703\ \ \ \ \ std::fflush(f);}
+\DoxyCodeLine{01704\ \ \ \ \ \textcolor{keywordflow}{if}\ (write\_console(fd,\ text))\ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{01705\ \ \ \}}
+\DoxyCodeLine{01706\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{01707\ \ \ fwrite\_fully(text.\mbox{\hyperlink{classbasic__string__view_a39cdfe061dc6d64a3adc230b62d8a026}{data}}(),\ text.\mbox{\hyperlink{classbasic__string__view_a216bbe1b012b590698d7bb4e96d1af3f}{size}}(),\ f);}
+\DoxyCodeLine{01708\ \}}
+\DoxyCodeLine{01709\ \}\ \ \textcolor{comment}{//\ namespace\ detail}}
+\DoxyCodeLine{01710\ }
+\DoxyCodeLine{01711\ FMT\_FUNC\ \textcolor{keywordtype}{void}\ vprint\_buffered(std::FILE*\ f,\ string\_view\ fmt,\ format\_args\ args)\ \{}
+\DoxyCodeLine{01712\ \ \ \textcolor{keyword}{auto}\ \mbox{\hyperlink{classdetail_1_1buffer}{buffer}}\ =\ memory\_buffer();}
+\DoxyCodeLine{01713\ \ \ detail::vformat\_to(\mbox{\hyperlink{classdetail_1_1buffer}{buffer}},\ fmt,\ args);}
+\DoxyCodeLine{01714\ \ \ detail::print(f,\ \{\mbox{\hyperlink{classdetail_1_1buffer}{buffer}}.\mbox{\hyperlink{classdetail_1_1buffer_aeb33e0a2d2be2bbca9e0236c148089c8}{data}}(),\ \mbox{\hyperlink{classdetail_1_1buffer}{buffer}}.\mbox{\hyperlink{classdetail_1_1buffer_a8685285932360c284d19003fc4ba3edc}{size}}()\});}
+\DoxyCodeLine{01715\ \}}
+\DoxyCodeLine{01716\ }
+\DoxyCodeLine{01717\ FMT\_FUNC\ \textcolor{keywordtype}{void}\ vprint(std::FILE*\ f,\ string\_view\ fmt,\ format\_args\ args)\ \{}
+\DoxyCodeLine{01718\ \ \ \textcolor{keywordflow}{if}\ (!detail::file\_ref(f).is\_buffered()\ ||\ !detail::has\_flockfile<>())}
+\DoxyCodeLine{01719\ \ \ \ \ \textcolor{keywordflow}{return}\ vprint\_buffered(f,\ fmt,\ args);}
+\DoxyCodeLine{01720\ \ \ \textcolor{keyword}{auto}\&\&\ \mbox{\hyperlink{classdetail_1_1buffer}{buffer}}\ =\ detail::file\_print\_buffer<>(f);}
+\DoxyCodeLine{01721\ \ \ \textcolor{keywordflow}{return}\ detail::vformat\_to(\mbox{\hyperlink{classdetail_1_1buffer}{buffer}},\ fmt,\ args);}
+\DoxyCodeLine{01722\ \}}
+\DoxyCodeLine{01723\ }
+\DoxyCodeLine{01724\ FMT\_FUNC\ \textcolor{keywordtype}{void}\ vprintln(std::FILE*\ f,\ string\_view\ fmt,\ format\_args\ args)\ \{}
+\DoxyCodeLine{01725\ \ \ \textcolor{keyword}{auto}\ \mbox{\hyperlink{classdetail_1_1buffer}{buffer}}\ =\ memory\_buffer();}
+\DoxyCodeLine{01726\ \ \ detail::vformat\_to(\mbox{\hyperlink{classdetail_1_1buffer}{buffer}},\ fmt,\ args);}
+\DoxyCodeLine{01727\ \ \ \mbox{\hyperlink{classdetail_1_1buffer}{buffer}}.push\_back(\textcolor{charliteral}{'\(\backslash\)n'});}
+\DoxyCodeLine{01728\ \ \ detail::print(f,\ \{\mbox{\hyperlink{classdetail_1_1buffer}{buffer}}.\mbox{\hyperlink{classdetail_1_1buffer_aeb33e0a2d2be2bbca9e0236c148089c8}{data}}(),\ \mbox{\hyperlink{classdetail_1_1buffer}{buffer}}.\mbox{\hyperlink{classdetail_1_1buffer_a8685285932360c284d19003fc4ba3edc}{size}}()\});}
+\DoxyCodeLine{01729\ \}}
+\DoxyCodeLine{01730\ }
+\DoxyCodeLine{01731\ FMT\_FUNC\ \textcolor{keywordtype}{void}\ vprint(string\_view\ fmt,\ format\_args\ args)\ \{}
+\DoxyCodeLine{01732\ \ \ vprint(stdout,\ fmt,\ args);}
+\DoxyCodeLine{01733\ \}}
+\DoxyCodeLine{01734\ }
+\DoxyCodeLine{01735\ \textcolor{keyword}{namespace\ }detail\ \{}
+\DoxyCodeLine{01736\ }
+\DoxyCodeLine{01737\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structdetail_1_1singleton}{singleton}}\ \{}
+\DoxyCodeLine{01738\ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ upper;}
+\DoxyCodeLine{01739\ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ lower\_count;}
+\DoxyCodeLine{01740\ \};}
+\DoxyCodeLine{01741\ }
+\DoxyCodeLine{01742\ \textcolor{keyword}{inline}\ \textcolor{keyword}{auto}\ is\_printable(uint16\_t\ x,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{structdetail_1_1singleton}{singleton}}*\ singletons,}
+\DoxyCodeLine{01743\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ singletons\_size,}
+\DoxyCodeLine{01744\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}*\ singleton\_lowers,}
+\DoxyCodeLine{01745\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}*\ normal,\ \textcolor{keywordtype}{size\_t}\ normal\_size)}
+\DoxyCodeLine{01746\ \ \ \ \ -\/>\ \textcolor{keywordtype}{bool}\ \{}
+\DoxyCodeLine{01747\ \ \ \textcolor{keyword}{auto}\ upper\ =\ x\ >>\ 8;}
+\DoxyCodeLine{01748\ \ \ \textcolor{keyword}{auto}\ lower\_start\ =\ 0;}
+\DoxyCodeLine{01749\ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ singletons\_size;\ ++i)\ \{}
+\DoxyCodeLine{01750\ \ \ \ \ \textcolor{keyword}{auto}\ s\ =\ singletons[i];}
+\DoxyCodeLine{01751\ \ \ \ \ \textcolor{keyword}{auto}\ lower\_end\ =\ lower\_start\ +\ s.lower\_count;}
+\DoxyCodeLine{01752\ \ \ \ \ \textcolor{keywordflow}{if}\ (upper\ <\ s.upper)\ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{01753\ \ \ \ \ \textcolor{keywordflow}{if}\ (upper\ ==\ s.upper)\ \{}
+\DoxyCodeLine{01754\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ j\ =\ lower\_start;\ j\ <\ lower\_end;\ ++j)\ \{}
+\DoxyCodeLine{01755\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (singleton\_lowers[j]\ ==\ (x\ \&\ 0xff))\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{01756\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01757\ \ \ \ \ \}}
+\DoxyCodeLine{01758\ \ \ \ \ lower\_start\ =\ lower\_end;}
+\DoxyCodeLine{01759\ \ \ \}}
+\DoxyCodeLine{01760\ }
+\DoxyCodeLine{01761\ \ \ \textcolor{keyword}{auto}\ xsigned\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(x);}
+\DoxyCodeLine{01762\ \ \ \textcolor{keyword}{auto}\ current\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{01763\ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{size\_t}\ i\ =\ 0;\ i\ <\ normal\_size;\ ++i)\ \{}
+\DoxyCodeLine{01764\ \ \ \ \ \textcolor{keyword}{auto}\ v\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(normal[i]);}
+\DoxyCodeLine{01765\ \ \ \ \ \textcolor{keyword}{auto}\ len\ =\ (v\ \&\ 0x80)\ !=\ 0\ ?\ (v\ \&\ 0x7f)\ <<\ 8\ |\ normal[++i]\ :\ v;}
+\DoxyCodeLine{01766\ \ \ \ \ xsigned\ -\/=\ len;}
+\DoxyCodeLine{01767\ \ \ \ \ \textcolor{keywordflow}{if}\ (xsigned\ <\ 0)\ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{01768\ \ \ \ \ current\ =\ !current;}
+\DoxyCodeLine{01769\ \ \ \}}
+\DoxyCodeLine{01770\ \ \ \textcolor{keywordflow}{return}\ current;}
+\DoxyCodeLine{01771\ \}}
+\DoxyCodeLine{01772\ }
+\DoxyCodeLine{01773\ \textcolor{comment}{//\ This\ code\ is\ generated\ by\ support/printable.py.}}
+\DoxyCodeLine{01774\ FMT\_FUNC\ \textcolor{keyword}{auto}\ is\_printable(uint32\_t\ cp)\ -\/>\ \textcolor{keywordtype}{bool}\ \{}
+\DoxyCodeLine{01775\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \mbox{\hyperlink{structdetail_1_1singleton}{singleton}}\ singletons0[]\ =\ \{}
+\DoxyCodeLine{01776\ \ \ \ \ \ \ \{0x00,\ 1\},\ \ \{0x03,\ 5\},\ \ \{0x05,\ 6\},\ \ \{0x06,\ 3\},\ \ \{0x07,\ 6\},\ \ \{0x08,\ 8\},}
+\DoxyCodeLine{01777\ \ \ \ \ \ \ \{0x09,\ 17\},\ \{0x0a,\ 28\},\ \{0x0b,\ 25\},\ \{0x0c,\ 20\},\ \{0x0d,\ 16\},\ \{0x0e,\ 13\},}
+\DoxyCodeLine{01778\ \ \ \ \ \ \ \{0x0f,\ 4\},\ \ \{0x10,\ 3\},\ \ \{0x12,\ 18\},\ \{0x13,\ 9\},\ \ \{0x16,\ 1\},\ \ \{0x17,\ 5\},}
+\DoxyCodeLine{01779\ \ \ \ \ \ \ \{0x18,\ 2\},\ \ \{0x19,\ 3\},\ \ \{0x1a,\ 7\},\ \ \{0x1c,\ 2\},\ \ \{0x1d,\ 1\},\ \ \{0x1f,\ 22\},}
+\DoxyCodeLine{01780\ \ \ \ \ \ \ \{0x20,\ 3\},\ \ \{0x2b,\ 3\},\ \ \{0x2c,\ 2\},\ \ \{0x2d,\ 11\},\ \{0x2e,\ 1\},\ \ \{0x30,\ 3\},}
+\DoxyCodeLine{01781\ \ \ \ \ \ \ \{0x31,\ 2\},\ \ \{0x32,\ 1\},\ \ \{0xa7,\ 2\},\ \ \{0xa9,\ 2\},\ \ \{0xaa,\ 4\},\ \ \{0xab,\ 8\},}
+\DoxyCodeLine{01782\ \ \ \ \ \ \ \{0xfa,\ 2\},\ \ \{0xfb,\ 5\},\ \ \{0xfd,\ 4\},\ \ \{0xfe,\ 3\},\ \ \{0xff,\ 9\},}
+\DoxyCodeLine{01783\ \ \ \};}
+\DoxyCodeLine{01784\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ singletons0\_lower[]\ =\ \{}
+\DoxyCodeLine{01785\ \ \ \ \ \ \ 0xad,\ 0x78,\ 0x79,\ 0x8b,\ 0x8d,\ 0xa2,\ 0x30,\ 0x57,\ 0x58,\ 0x8b,\ 0x8c,\ 0x90,}
+\DoxyCodeLine{01786\ \ \ \ \ \ \ 0x1c,\ 0x1d,\ 0xdd,\ 0x0e,\ 0x0f,\ 0x4b,\ 0x4c,\ 0xfb,\ 0xfc,\ 0x2e,\ 0x2f,\ 0x3f,}
+\DoxyCodeLine{01787\ \ \ \ \ \ \ 0x5c,\ 0x5d,\ 0x5f,\ 0xb5,\ 0xe2,\ 0x84,\ 0x8d,\ 0x8e,\ 0x91,\ 0x92,\ 0xa9,\ 0xb1,}
+\DoxyCodeLine{01788\ \ \ \ \ \ \ 0xba,\ 0xbb,\ 0xc5,\ 0xc6,\ 0xc9,\ 0xca,\ 0xde,\ 0xe4,\ 0xe5,\ 0xff,\ 0x00,\ 0x04,}
+\DoxyCodeLine{01789\ \ \ \ \ \ \ 0x11,\ 0x12,\ 0x29,\ 0x31,\ 0x34,\ 0x37,\ 0x3a,\ 0x3b,\ 0x3d,\ 0x49,\ 0x4a,\ 0x5d,}
+\DoxyCodeLine{01790\ \ \ \ \ \ \ 0x84,\ 0x8e,\ 0x92,\ 0xa9,\ 0xb1,\ 0xb4,\ 0xba,\ 0xbb,\ 0xc6,\ 0xca,\ 0xce,\ 0xcf,}
+\DoxyCodeLine{01791\ \ \ \ \ \ \ 0xe4,\ 0xe5,\ 0x00,\ 0x04,\ 0x0d,\ 0x0e,\ 0x11,\ 0x12,\ 0x29,\ 0x31,\ 0x34,\ 0x3a,}
+\DoxyCodeLine{01792\ \ \ \ \ \ \ 0x3b,\ 0x45,\ 0x46,\ 0x49,\ 0x4a,\ 0x5e,\ 0x64,\ 0x65,\ 0x84,\ 0x91,\ 0x9b,\ 0x9d,}
+\DoxyCodeLine{01793\ \ \ \ \ \ \ 0xc9,\ 0xce,\ 0xcf,\ 0x0d,\ 0x11,\ 0x29,\ 0x45,\ 0x49,\ 0x57,\ 0x64,\ 0x65,\ 0x8d,}
+\DoxyCodeLine{01794\ \ \ \ \ \ \ 0x91,\ 0xa9,\ 0xb4,\ 0xba,\ 0xbb,\ 0xc5,\ 0xc9,\ 0xdf,\ 0xe4,\ 0xe5,\ 0xf0,\ 0x0d,}
+\DoxyCodeLine{01795\ \ \ \ \ \ \ 0x11,\ 0x45,\ 0x49,\ 0x64,\ 0x65,\ 0x80,\ 0x84,\ 0xb2,\ 0xbc,\ 0xbe,\ 0xbf,\ 0xd5,}
+\DoxyCodeLine{01796\ \ \ \ \ \ \ 0xd7,\ 0xf0,\ 0xf1,\ 0x83,\ 0x85,\ 0x8b,\ 0xa4,\ 0xa6,\ 0xbe,\ 0xbf,\ 0xc5,\ 0xc7,}
+\DoxyCodeLine{01797\ \ \ \ \ \ \ 0xce,\ 0xcf,\ 0xda,\ 0xdb,\ 0x48,\ 0x98,\ 0xbd,\ 0xcd,\ 0xc6,\ 0xce,\ 0xcf,\ 0x49,}
+\DoxyCodeLine{01798\ \ \ \ \ \ \ 0x4e,\ 0x4f,\ 0x57,\ 0x59,\ 0x5e,\ 0x5f,\ 0x89,\ 0x8e,\ 0x8f,\ 0xb1,\ 0xb6,\ 0xb7,}
+\DoxyCodeLine{01799\ \ \ \ \ \ \ 0xbf,\ 0xc1,\ 0xc6,\ 0xc7,\ 0xd7,\ 0x11,\ 0x16,\ 0x17,\ 0x5b,\ 0x5c,\ 0xf6,\ 0xf7,}
+\DoxyCodeLine{01800\ \ \ \ \ \ \ 0xfe,\ 0xff,\ 0x80,\ 0x0d,\ 0x6d,\ 0x71,\ 0xde,\ 0xdf,\ 0x0e,\ 0x0f,\ 0x1f,\ 0x6e,}
+\DoxyCodeLine{01801\ \ \ \ \ \ \ 0x6f,\ 0x1c,\ 0x1d,\ 0x5f,\ 0x7d,\ 0x7e,\ 0xae,\ 0xaf,\ 0xbb,\ 0xbc,\ 0xfa,\ 0x16,}
+\DoxyCodeLine{01802\ \ \ \ \ \ \ 0x17,\ 0x1e,\ 0x1f,\ 0x46,\ 0x47,\ 0x4e,\ 0x4f,\ 0x58,\ 0x5a,\ 0x5c,\ 0x5e,\ 0x7e,}
+\DoxyCodeLine{01803\ \ \ \ \ \ \ 0x7f,\ 0xb5,\ 0xc5,\ 0xd4,\ 0xd5,\ 0xdc,\ 0xf0,\ 0xf1,\ 0xf5,\ 0x72,\ 0x73,\ 0x8f,}
+\DoxyCodeLine{01804\ \ \ \ \ \ \ 0x74,\ 0x75,\ 0x96,\ 0x2f,\ 0x5f,\ 0x26,\ 0x2e,\ 0x2f,\ 0xa7,\ 0xaf,\ 0xb7,\ 0xbf,}
+\DoxyCodeLine{01805\ \ \ \ \ \ \ 0xc7,\ 0xcf,\ 0xd7,\ 0xdf,\ 0x9a,\ 0x40,\ 0x97,\ 0x98,\ 0x30,\ 0x8f,\ 0x1f,\ 0xc0,}
+\DoxyCodeLine{01806\ \ \ \ \ \ \ 0xc1,\ 0xce,\ 0xff,\ 0x4e,\ 0x4f,\ 0x5a,\ 0x5b,\ 0x07,\ 0x08,\ 0x0f,\ 0x10,\ 0x27,}
+\DoxyCodeLine{01807\ \ \ \ \ \ \ 0x2f,\ 0xee,\ 0xef,\ 0x6e,\ 0x6f,\ 0x37,\ 0x3d,\ 0x3f,\ 0x42,\ 0x45,\ 0x90,\ 0x91,}
+\DoxyCodeLine{01808\ \ \ \ \ \ \ 0xfe,\ 0xff,\ 0x53,\ 0x67,\ 0x75,\ 0xc8,\ 0xc9,\ 0xd0,\ 0xd1,\ 0xd8,\ 0xd9,\ 0xe7,}
+\DoxyCodeLine{01809\ \ \ \ \ \ \ 0xfe,\ 0xff,}
+\DoxyCodeLine{01810\ \ \ \};}
+\DoxyCodeLine{01811\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \mbox{\hyperlink{structdetail_1_1singleton}{singleton}}\ singletons1[]\ =\ \{}
+\DoxyCodeLine{01812\ \ \ \ \ \ \ \{0x00,\ 6\},\ \ \{0x01,\ 1\},\ \{0x03,\ 1\},\ \ \{0x04,\ 2\},\ \{0x08,\ 8\},\ \ \{0x09,\ 2\},}
+\DoxyCodeLine{01813\ \ \ \ \ \ \ \{0x0a,\ 5\},\ \ \{0x0b,\ 2\},\ \{0x0e,\ 4\},\ \ \{0x10,\ 1\},\ \{0x11,\ 2\},\ \ \{0x12,\ 5\},}
+\DoxyCodeLine{01814\ \ \ \ \ \ \ \{0x13,\ 17\},\ \{0x14,\ 1\},\ \{0x15,\ 2\},\ \ \{0x17,\ 2\},\ \{0x19,\ 13\},\ \{0x1c,\ 5\},}
+\DoxyCodeLine{01815\ \ \ \ \ \ \ \{0x1d,\ 8\},\ \ \{0x24,\ 1\},\ \{0x6a,\ 3\},\ \ \{0x6b,\ 2\},\ \{0xbc,\ 2\},\ \ \{0xd1,\ 2\},}
+\DoxyCodeLine{01816\ \ \ \ \ \ \ \{0xd4,\ 12\},\ \{0xd5,\ 9\},\ \{0xd6,\ 2\},\ \ \{0xd7,\ 2\},\ \{0xda,\ 1\},\ \ \{0xe0,\ 5\},}
+\DoxyCodeLine{01817\ \ \ \ \ \ \ \{0xe1,\ 2\},\ \ \{0xe8,\ 2\},\ \{0xee,\ 32\},\ \{0xf0,\ 4\},\ \{0xf8,\ 2\},\ \ \{0xf9,\ 2\},}
+\DoxyCodeLine{01818\ \ \ \ \ \ \ \{0xfa,\ 2\},\ \ \{0xfb,\ 1\},}
+\DoxyCodeLine{01819\ \ \ \};}
+\DoxyCodeLine{01820\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ singletons1\_lower[]\ =\ \{}
+\DoxyCodeLine{01821\ \ \ \ \ \ \ 0x0c,\ 0x27,\ 0x3b,\ 0x3e,\ 0x4e,\ 0x4f,\ 0x8f,\ 0x9e,\ 0x9e,\ 0x9f,\ 0x06,\ 0x07,}
+\DoxyCodeLine{01822\ \ \ \ \ \ \ 0x09,\ 0x36,\ 0x3d,\ 0x3e,\ 0x56,\ 0xf3,\ 0xd0,\ 0xd1,\ 0x04,\ 0x14,\ 0x18,\ 0x36,}
+\DoxyCodeLine{01823\ \ \ \ \ \ \ 0x37,\ 0x56,\ 0x57,\ 0x7f,\ 0xaa,\ 0xae,\ 0xaf,\ 0xbd,\ 0x35,\ 0xe0,\ 0x12,\ 0x87,}
+\DoxyCodeLine{01824\ \ \ \ \ \ \ 0x89,\ 0x8e,\ 0x9e,\ 0x04,\ 0x0d,\ 0x0e,\ 0x11,\ 0x12,\ 0x29,\ 0x31,\ 0x34,\ 0x3a,}
+\DoxyCodeLine{01825\ \ \ \ \ \ \ 0x45,\ 0x46,\ 0x49,\ 0x4a,\ 0x4e,\ 0x4f,\ 0x64,\ 0x65,\ 0x5c,\ 0xb6,\ 0xb7,\ 0x1b,}
+\DoxyCodeLine{01826\ \ \ \ \ \ \ 0x1c,\ 0x07,\ 0x08,\ 0x0a,\ 0x0b,\ 0x14,\ 0x17,\ 0x36,\ 0x39,\ 0x3a,\ 0xa8,\ 0xa9,}
+\DoxyCodeLine{01827\ \ \ \ \ \ \ 0xd8,\ 0xd9,\ 0x09,\ 0x37,\ 0x90,\ 0x91,\ 0xa8,\ 0x07,\ 0x0a,\ 0x3b,\ 0x3e,\ 0x66,}
+\DoxyCodeLine{01828\ \ \ \ \ \ \ 0x69,\ 0x8f,\ 0x92,\ 0x6f,\ 0x5f,\ 0xee,\ 0xef,\ 0x5a,\ 0x62,\ 0x9a,\ 0x9b,\ 0x27,}
+\DoxyCodeLine{01829\ \ \ \ \ \ \ 0x28,\ 0x55,\ 0x9d,\ 0xa0,\ 0xa1,\ 0xa3,\ 0xa4,\ 0xa7,\ 0xa8,\ 0xad,\ 0xba,\ 0xbc,}
+\DoxyCodeLine{01830\ \ \ \ \ \ \ 0xc4,\ 0x06,\ 0x0b,\ 0x0c,\ 0x15,\ 0x1d,\ 0x3a,\ 0x3f,\ 0x45,\ 0x51,\ 0xa6,\ 0xa7,}
+\DoxyCodeLine{01831\ \ \ \ \ \ \ 0xcc,\ 0xcd,\ 0xa0,\ 0x07,\ 0x19,\ 0x1a,\ 0x22,\ 0x25,\ 0x3e,\ 0x3f,\ 0xc5,\ 0xc6,}
+\DoxyCodeLine{01832\ \ \ \ \ \ \ 0x04,\ 0x20,\ 0x23,\ 0x25,\ 0x26,\ 0x28,\ 0x33,\ 0x38,\ 0x3a,\ 0x48,\ 0x4a,\ 0x4c,}
+\DoxyCodeLine{01833\ \ \ \ \ \ \ 0x50,\ 0x53,\ 0x55,\ 0x56,\ 0x58,\ 0x5a,\ 0x5c,\ 0x5e,\ 0x60,\ 0x63,\ 0x65,\ 0x66,}
+\DoxyCodeLine{01834\ \ \ \ \ \ \ 0x6b,\ 0x73,\ 0x78,\ 0x7d,\ 0x7f,\ 0x8a,\ 0xa4,\ 0xaa,\ 0xaf,\ 0xb0,\ 0xc0,\ 0xd0,}
+\DoxyCodeLine{01835\ \ \ \ \ \ \ 0xae,\ 0xaf,\ 0x79,\ 0xcc,\ 0x6e,\ 0x6f,\ 0x93,}
+\DoxyCodeLine{01836\ \ \ \};}
+\DoxyCodeLine{01837\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ normal0[]\ =\ \{}
+\DoxyCodeLine{01838\ \ \ \ \ \ \ 0x00,\ 0x20,\ 0x5f,\ 0x22,\ 0x82,\ 0xdf,\ 0x04,\ 0x82,\ 0x44,\ 0x08,\ 0x1b,\ 0x04,}
+\DoxyCodeLine{01839\ \ \ \ \ \ \ 0x06,\ 0x11,\ 0x81,\ 0xac,\ 0x0e,\ 0x80,\ 0xab,\ 0x35,\ 0x28,\ 0x0b,\ 0x80,\ 0xe0,}
+\DoxyCodeLine{01840\ \ \ \ \ \ \ 0x03,\ 0x19,\ 0x08,\ 0x01,\ 0x04,\ 0x2f,\ 0x04,\ 0x34,\ 0x04,\ 0x07,\ 0x03,\ 0x01,}
+\DoxyCodeLine{01841\ \ \ \ \ \ \ 0x07,\ 0x06,\ 0x07,\ 0x11,\ 0x0a,\ 0x50,\ 0x0f,\ 0x12,\ 0x07,\ 0x55,\ 0x07,\ 0x03,}
+\DoxyCodeLine{01842\ \ \ \ \ \ \ 0x04,\ 0x1c,\ 0x0a,\ 0x09,\ 0x03,\ 0x08,\ 0x03,\ 0x07,\ 0x03,\ 0x02,\ 0x03,\ 0x03,}
+\DoxyCodeLine{01843\ \ \ \ \ \ \ 0x03,\ 0x0c,\ 0x04,\ 0x05,\ 0x03,\ 0x0b,\ 0x06,\ 0x01,\ 0x0e,\ 0x15,\ 0x05,\ 0x3a,}
+\DoxyCodeLine{01844\ \ \ \ \ \ \ 0x03,\ 0x11,\ 0x07,\ 0x06,\ 0x05,\ 0x10,\ 0x07,\ 0x57,\ 0x07,\ 0x02,\ 0x07,\ 0x15,}
+\DoxyCodeLine{01845\ \ \ \ \ \ \ 0x0d,\ 0x50,\ 0x04,\ 0x43,\ 0x03,\ 0x2d,\ 0x03,\ 0x01,\ 0x04,\ 0x11,\ 0x06,\ 0x0f,}
+\DoxyCodeLine{01846\ \ \ \ \ \ \ 0x0c,\ 0x3a,\ 0x04,\ 0x1d,\ 0x25,\ 0x5f,\ 0x20,\ 0x6d,\ 0x04,\ 0x6a,\ 0x25,\ 0x80,}
+\DoxyCodeLine{01847\ \ \ \ \ \ \ 0xc8,\ 0x05,\ 0x82,\ 0xb0,\ 0x03,\ 0x1a,\ 0x06,\ 0x82,\ 0xfd,\ 0x03,\ 0x59,\ 0x07,}
+\DoxyCodeLine{01848\ \ \ \ \ \ \ 0x15,\ 0x0b,\ 0x17,\ 0x09,\ 0x14,\ 0x0c,\ 0x14,\ 0x0c,\ 0x6a,\ 0x06,\ 0x0a,\ 0x06,}
+\DoxyCodeLine{01849\ \ \ \ \ \ \ 0x1a,\ 0x06,\ 0x59,\ 0x07,\ 0x2b,\ 0x05,\ 0x46,\ 0x0a,\ 0x2c,\ 0x04,\ 0x0c,\ 0x04,}
+\DoxyCodeLine{01850\ \ \ \ \ \ \ 0x01,\ 0x03,\ 0x31,\ 0x0b,\ 0x2c,\ 0x04,\ 0x1a,\ 0x06,\ 0x0b,\ 0x03,\ 0x80,\ 0xac,}
+\DoxyCodeLine{01851\ \ \ \ \ \ \ 0x06,\ 0x0a,\ 0x06,\ 0x21,\ 0x3f,\ 0x4c,\ 0x04,\ 0x2d,\ 0x03,\ 0x74,\ 0x08,\ 0x3c,}
+\DoxyCodeLine{01852\ \ \ \ \ \ \ 0x03,\ 0x0f,\ 0x03,\ 0x3c,\ 0x07,\ 0x38,\ 0x08,\ 0x2b,\ 0x05,\ 0x82,\ 0xff,\ 0x11,}
+\DoxyCodeLine{01853\ \ \ \ \ \ \ 0x18,\ 0x08,\ 0x2f,\ 0x11,\ 0x2d,\ 0x03,\ 0x20,\ 0x10,\ 0x21,\ 0x0f,\ 0x80,\ 0x8c,}
+\DoxyCodeLine{01854\ \ \ \ \ \ \ 0x04,\ 0x82,\ 0x97,\ 0x19,\ 0x0b,\ 0x15,\ 0x88,\ 0x94,\ 0x05,\ 0x2f,\ 0x05,\ 0x3b,}
+\DoxyCodeLine{01855\ \ \ \ \ \ \ 0x07,\ 0x02,\ 0x0e,\ 0x18,\ 0x09,\ 0x80,\ 0xb3,\ 0x2d,\ 0x74,\ 0x0c,\ 0x80,\ 0xd6,}
+\DoxyCodeLine{01856\ \ \ \ \ \ \ 0x1a,\ 0x0c,\ 0x05,\ 0x80,\ 0xff,\ 0x05,\ 0x80,\ 0xdf,\ 0x0c,\ 0xee,\ 0x0d,\ 0x03,}
+\DoxyCodeLine{01857\ \ \ \ \ \ \ 0x84,\ 0x8d,\ 0x03,\ 0x37,\ 0x09,\ 0x81,\ 0x5c,\ 0x14,\ 0x80,\ 0xb8,\ 0x08,\ 0x80,}
+\DoxyCodeLine{01858\ \ \ \ \ \ \ 0xcb,\ 0x2a,\ 0x38,\ 0x03,\ 0x0a,\ 0x06,\ 0x38,\ 0x08,\ 0x46,\ 0x08,\ 0x0c,\ 0x06,}
+\DoxyCodeLine{01859\ \ \ \ \ \ \ 0x74,\ 0x0b,\ 0x1e,\ 0x03,\ 0x5a,\ 0x04,\ 0x59,\ 0x09,\ 0x80,\ 0x83,\ 0x18,\ 0x1c,}
+\DoxyCodeLine{01860\ \ \ \ \ \ \ 0x0a,\ 0x16,\ 0x09,\ 0x4c,\ 0x04,\ 0x80,\ 0x8a,\ 0x06,\ 0xab,\ 0xa4,\ 0x0c,\ 0x17,}
+\DoxyCodeLine{01861\ \ \ \ \ \ \ 0x04,\ 0x31,\ 0xa1,\ 0x04,\ 0x81,\ 0xda,\ 0x26,\ 0x07,\ 0x0c,\ 0x05,\ 0x05,\ 0x80,}
+\DoxyCodeLine{01862\ \ \ \ \ \ \ 0xa5,\ 0x11,\ 0x81,\ 0x6d,\ 0x10,\ 0x78,\ 0x28,\ 0x2a,\ 0x06,\ 0x4c,\ 0x04,\ 0x80,}
+\DoxyCodeLine{01863\ \ \ \ \ \ \ 0x8d,\ 0x04,\ 0x80,\ 0xbe,\ 0x03,\ 0x1b,\ 0x03,\ 0x0f,\ 0x0d,}
+\DoxyCodeLine{01864\ \ \ \};}
+\DoxyCodeLine{01865\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ normal1[]\ =\ \{}
+\DoxyCodeLine{01866\ \ \ \ \ \ \ 0x5e,\ 0x22,\ 0x7b,\ 0x05,\ 0x03,\ 0x04,\ 0x2d,\ 0x03,\ 0x66,\ 0x03,\ 0x01,\ 0x2f,}
+\DoxyCodeLine{01867\ \ \ \ \ \ \ 0x2e,\ 0x80,\ 0x82,\ 0x1d,\ 0x03,\ 0x31,\ 0x0f,\ 0x1c,\ 0x04,\ 0x24,\ 0x09,\ 0x1e,}
+\DoxyCodeLine{01868\ \ \ \ \ \ \ 0x05,\ 0x2b,\ 0x05,\ 0x44,\ 0x04,\ 0x0e,\ 0x2a,\ 0x80,\ 0xaa,\ 0x06,\ 0x24,\ 0x04,}
+\DoxyCodeLine{01869\ \ \ \ \ \ \ 0x24,\ 0x04,\ 0x28,\ 0x08,\ 0x34,\ 0x0b,\ 0x01,\ 0x80,\ 0x90,\ 0x81,\ 0x37,\ 0x09,}
+\DoxyCodeLine{01870\ \ \ \ \ \ \ 0x16,\ 0x0a,\ 0x08,\ 0x80,\ 0x98,\ 0x39,\ 0x03,\ 0x63,\ 0x08,\ 0x09,\ 0x30,\ 0x16,}
+\DoxyCodeLine{01871\ \ \ \ \ \ \ 0x05,\ 0x21,\ 0x03,\ 0x1b,\ 0x05,\ 0x01,\ 0x40,\ 0x38,\ 0x04,\ 0x4b,\ 0x05,\ 0x2f,}
+\DoxyCodeLine{01872\ \ \ \ \ \ \ 0x04,\ 0x0a,\ 0x07,\ 0x09,\ 0x07,\ 0x40,\ 0x20,\ 0x27,\ 0x04,\ 0x0c,\ 0x09,\ 0x36,}
+\DoxyCodeLine{01873\ \ \ \ \ \ \ 0x03,\ 0x3a,\ 0x05,\ 0x1a,\ 0x07,\ 0x04,\ 0x0c,\ 0x07,\ 0x50,\ 0x49,\ 0x37,\ 0x33,}
+\DoxyCodeLine{01874\ \ \ \ \ \ \ 0x0d,\ 0x33,\ 0x07,\ 0x2e,\ 0x08,\ 0x0a,\ 0x81,\ 0x26,\ 0x52,\ 0x4e,\ 0x28,\ 0x08,}
+\DoxyCodeLine{01875\ \ \ \ \ \ \ 0x2a,\ 0x56,\ 0x1c,\ 0x14,\ 0x17,\ 0x09,\ 0x4e,\ 0x04,\ 0x1e,\ 0x0f,\ 0x43,\ 0x0e,}
+\DoxyCodeLine{01876\ \ \ \ \ \ \ 0x19,\ 0x07,\ 0x0a,\ 0x06,\ 0x48,\ 0x08,\ 0x27,\ 0x09,\ 0x75,\ 0x0b,\ 0x3f,\ 0x41,}
+\DoxyCodeLine{01877\ \ \ \ \ \ \ 0x2a,\ 0x06,\ 0x3b,\ 0x05,\ 0x0a,\ 0x06,\ 0x51,\ 0x06,\ 0x01,\ 0x05,\ 0x10,\ 0x03,}
+\DoxyCodeLine{01878\ \ \ \ \ \ \ 0x05,\ 0x80,\ 0x8b,\ 0x62,\ 0x1e,\ 0x48,\ 0x08,\ 0x0a,\ 0x80,\ 0xa6,\ 0x5e,\ 0x22,}
+\DoxyCodeLine{01879\ \ \ \ \ \ \ 0x45,\ 0x0b,\ 0x0a,\ 0x06,\ 0x0d,\ 0x13,\ 0x39,\ 0x07,\ 0x0a,\ 0x36,\ 0x2c,\ 0x04,}
+\DoxyCodeLine{01880\ \ \ \ \ \ \ 0x10,\ 0x80,\ 0xc0,\ 0x3c,\ 0x64,\ 0x53,\ 0x0c,\ 0x48,\ 0x09,\ 0x0a,\ 0x46,\ 0x45,}
+\DoxyCodeLine{01881\ \ \ \ \ \ \ 0x1b,\ 0x48,\ 0x08,\ 0x53,\ 0x1d,\ 0x39,\ 0x81,\ 0x07,\ 0x46,\ 0x0a,\ 0x1d,\ 0x03,}
+\DoxyCodeLine{01882\ \ \ \ \ \ \ 0x47,\ 0x49,\ 0x37,\ 0x03,\ 0x0e,\ 0x08,\ 0x0a,\ 0x06,\ 0x39,\ 0x07,\ 0x0a,\ 0x81,}
+\DoxyCodeLine{01883\ \ \ \ \ \ \ 0x36,\ 0x19,\ 0x80,\ 0xb7,\ 0x01,\ 0x0f,\ 0x32,\ 0x0d,\ 0x83,\ 0x9b,\ 0x66,\ 0x75,}
+\DoxyCodeLine{01884\ \ \ \ \ \ \ 0x0b,\ 0x80,\ 0xc4,\ 0x8a,\ 0xbc,\ 0x84,\ 0x2f,\ 0x8f,\ 0xd1,\ 0x82,\ 0x47,\ 0xa1,}
+\DoxyCodeLine{01885\ \ \ \ \ \ \ 0xb9,\ 0x82,\ 0x39,\ 0x07,\ 0x2a,\ 0x04,\ 0x02,\ 0x60,\ 0x26,\ 0x0a,\ 0x46,\ 0x0a,}
+\DoxyCodeLine{01886\ \ \ \ \ \ \ 0x28,\ 0x05,\ 0x13,\ 0x82,\ 0xb0,\ 0x5b,\ 0x65,\ 0x4b,\ 0x04,\ 0x39,\ 0x07,\ 0x11,}
+\DoxyCodeLine{01887\ \ \ \ \ \ \ 0x40,\ 0x05,\ 0x0b,\ 0x02,\ 0x0e,\ 0x97,\ 0xf8,\ 0x08,\ 0x84,\ 0xd6,\ 0x2a,\ 0x09,}
+\DoxyCodeLine{01888\ \ \ \ \ \ \ 0xa2,\ 0xf7,\ 0x81,\ 0x1f,\ 0x31,\ 0x03,\ 0x11,\ 0x04,\ 0x08,\ 0x81,\ 0x8c,\ 0x89,}
+\DoxyCodeLine{01889\ \ \ \ \ \ \ 0x04,\ 0x6b,\ 0x05,\ 0x0d,\ 0x03,\ 0x09,\ 0x07,\ 0x10,\ 0x93,\ 0x60,\ 0x80,\ 0xf6,}
+\DoxyCodeLine{01890\ \ \ \ \ \ \ 0x0a,\ 0x73,\ 0x08,\ 0x6e,\ 0x17,\ 0x46,\ 0x80,\ 0x9a,\ 0x14,\ 0x0c,\ 0x57,\ 0x09,}
+\DoxyCodeLine{01891\ \ \ \ \ \ \ 0x19,\ 0x80,\ 0x87,\ 0x81,\ 0x47,\ 0x03,\ 0x85,\ 0x42,\ 0x0f,\ 0x15,\ 0x85,\ 0x50,}
+\DoxyCodeLine{01892\ \ \ \ \ \ \ 0x2b,\ 0x80,\ 0xd5,\ 0x2d,\ 0x03,\ 0x1a,\ 0x04,\ 0x02,\ 0x81,\ 0x70,\ 0x3a,\ 0x05,}
+\DoxyCodeLine{01893\ \ \ \ \ \ \ 0x01,\ 0x85,\ 0x00,\ 0x80,\ 0xd7,\ 0x29,\ 0x4c,\ 0x04,\ 0x0a,\ 0x04,\ 0x02,\ 0x83,}
+\DoxyCodeLine{01894\ \ \ \ \ \ \ 0x11,\ 0x44,\ 0x4c,\ 0x3d,\ 0x80,\ 0xc2,\ 0x3c,\ 0x06,\ 0x01,\ 0x04,\ 0x55,\ 0x05,}
+\DoxyCodeLine{01895\ \ \ \ \ \ \ 0x1b,\ 0x34,\ 0x02,\ 0x81,\ 0x0e,\ 0x2c,\ 0x04,\ 0x64,\ 0x0c,\ 0x56,\ 0x0a,\ 0x80,}
+\DoxyCodeLine{01896\ \ \ \ \ \ \ 0xae,\ 0x38,\ 0x1d,\ 0x0d,\ 0x2c,\ 0x04,\ 0x09,\ 0x07,\ 0x02,\ 0x0e,\ 0x06,\ 0x80,}
+\DoxyCodeLine{01897\ \ \ \ \ \ \ 0x9a,\ 0x83,\ 0xd8,\ 0x08,\ 0x0d,\ 0x03,\ 0x0d,\ 0x03,\ 0x74,\ 0x0c,\ 0x59,\ 0x07,}
+\DoxyCodeLine{01898\ \ \ \ \ \ \ 0x0c,\ 0x14,\ 0x0c,\ 0x04,\ 0x38,\ 0x08,\ 0x0a,\ 0x06,\ 0x28,\ 0x08,\ 0x22,\ 0x4e,}
+\DoxyCodeLine{01899\ \ \ \ \ \ \ 0x81,\ 0x54,\ 0x0c,\ 0x15,\ 0x03,\ 0x03,\ 0x05,\ 0x07,\ 0x09,\ 0x19,\ 0x07,\ 0x07,}
+\DoxyCodeLine{01900\ \ \ \ \ \ \ 0x09,\ 0x03,\ 0x0d,\ 0x07,\ 0x29,\ 0x80,\ 0xcb,\ 0x25,\ 0x0a,\ 0x84,\ 0x06,}
+\DoxyCodeLine{01901\ \ \ \};}
+\DoxyCodeLine{01902\ \ \ \textcolor{keyword}{auto}\ lower\ =\ \textcolor{keyword}{static\_cast<}uint16\_t\textcolor{keyword}{>}(cp);}
+\DoxyCodeLine{01903\ \ \ \textcolor{keywordflow}{if}\ (cp\ <\ 0x10000)\ \{}
+\DoxyCodeLine{01904\ \ \ \ \ \textcolor{keywordflow}{return}\ is\_printable(lower,\ singletons0,}
+\DoxyCodeLine{01905\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{sizeof}(singletons0)\ /\ \textcolor{keyword}{sizeof}(*singletons0),}
+\DoxyCodeLine{01906\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ singletons0\_lower,\ normal0,\ \textcolor{keyword}{sizeof}(normal0));}
+\DoxyCodeLine{01907\ \ \ \}}
+\DoxyCodeLine{01908\ \ \ \textcolor{keywordflow}{if}\ (cp\ <\ 0x20000)\ \{}
+\DoxyCodeLine{01909\ \ \ \ \ \textcolor{keywordflow}{return}\ is\_printable(lower,\ singletons1,}
+\DoxyCodeLine{01910\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{sizeof}(singletons1)\ /\ \textcolor{keyword}{sizeof}(*singletons1),}
+\DoxyCodeLine{01911\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ singletons1\_lower,\ normal1,\ \textcolor{keyword}{sizeof}(normal1));}
+\DoxyCodeLine{01912\ \ \ \}}
+\DoxyCodeLine{01913\ \ \ \textcolor{keywordflow}{if}\ (0x2a6de\ <=\ cp\ \&\&\ cp\ <\ 0x2a700)\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{01914\ \ \ \textcolor{keywordflow}{if}\ (0x2b735\ <=\ cp\ \&\&\ cp\ <\ 0x2b740)\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{01915\ \ \ \textcolor{keywordflow}{if}\ (0x2b81e\ <=\ cp\ \&\&\ cp\ <\ 0x2b820)\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{01916\ \ \ \textcolor{keywordflow}{if}\ (0x2cea2\ <=\ cp\ \&\&\ cp\ <\ 0x2ceb0)\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{01917\ \ \ \textcolor{keywordflow}{if}\ (0x2ebe1\ <=\ cp\ \&\&\ cp\ <\ 0x2f800)\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{01918\ \ \ \textcolor{keywordflow}{if}\ (0x2fa1e\ <=\ cp\ \&\&\ cp\ <\ 0x30000)\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{01919\ \ \ \textcolor{keywordflow}{if}\ (0x3134b\ <=\ cp\ \&\&\ cp\ <\ 0xe0100)\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{01920\ \ \ \textcolor{keywordflow}{if}\ (0xe01f0\ <=\ cp\ \&\&\ cp\ <\ 0x110000)\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{01921\ \ \ \textcolor{keywordflow}{return}\ cp\ <\ 0x110000;}
+\DoxyCodeLine{01922\ \}}
+\DoxyCodeLine{01923\ }
+\DoxyCodeLine{01924\ \}\ \ \textcolor{comment}{//\ namespace\ detail}}
+\DoxyCodeLine{01925\ }
+\DoxyCodeLine{01926\ FMT\_END\_NAMESPACE}
+\DoxyCodeLine{01927\ }
+\DoxyCodeLine{01928\ \textcolor{preprocessor}{\#endif\ \ }\textcolor{comment}{//\ FMT\_FORMAT\_INL\_H\_}}
+
+\end{DoxyCode}

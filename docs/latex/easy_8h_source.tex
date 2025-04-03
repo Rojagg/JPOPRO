@@ -1,0 +1,131 @@
+\doxysection{easy.\+h}
+\hypertarget{easy_8h_source}{}\label{easy_8h_source}\index{C:/Users/xroja/Desktop/JPO projekt/ProjektJezykiProgramowaniaObiektowego/build/vcpkg\_installed/x64-\/windows/include/curl/easy.h@{C:/Users/xroja/Desktop/JPO projekt/ProjektJezykiProgramowaniaObiektowego/build/vcpkg\_installed/x64-\/windows/include/curl/easy.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ CURLINC\_EASY\_H}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ CURLINC\_EASY\_H}}
+\DoxyCodeLine{00003\ \textcolor{comment}{/***************************************************************************}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \_\ \ \ \_\ \_\_\_\_\ \ \_}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ *\ \ Project\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \_\_\_|\ |\ |\ |\ \ \_\ \(\backslash\)|\ |}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ /\ \_\_|\ |\ |\ |\ |\_)\ |\ |}}
+\DoxyCodeLine{00007\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ |\ (\_\_|\ |\_|\ |\ \ \_\ <|\ |\_\_\_}}
+\DoxyCodeLine{00008\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)\_\_\_|\(\backslash\)\_\_\_/|\_|\ \(\backslash\)\_\(\backslash\)\_\_\_\_\_|}}
+\DoxyCodeLine{00009\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00010\ \textcolor{comment}{\ *\ Copyright\ (C)\ Daniel\ Stenberg,\ <daniel@haxx.se>,\ et\ al.}}
+\DoxyCodeLine{00011\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00012\ \textcolor{comment}{\ *\ This\ software\ is\ licensed\ as\ described\ in\ the\ file\ COPYING,\ which}}
+\DoxyCodeLine{00013\ \textcolor{comment}{\ *\ you\ should\ have\ received\ as\ part\ of\ this\ distribution.\ The\ terms}}
+\DoxyCodeLine{00014\ \textcolor{comment}{\ *\ are\ also\ available\ at\ https://curl.se/docs/copyright.html.}}
+\DoxyCodeLine{00015\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00016\ \textcolor{comment}{\ *\ You\ may\ opt\ to\ use,\ copy,\ modify,\ merge,\ publish,\ distribute\ and/or\ sell}}
+\DoxyCodeLine{00017\ \textcolor{comment}{\ *\ copies\ of\ the\ Software,\ and\ permit\ persons\ to\ whom\ the\ Software\ is}}
+\DoxyCodeLine{00018\ \textcolor{comment}{\ *\ furnished\ to\ do\ so,\ under\ the\ terms\ of\ the\ COPYING\ file.}}
+\DoxyCodeLine{00019\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00020\ \textcolor{comment}{\ *\ This\ software\ is\ distributed\ on\ an\ "{}AS\ IS"{}\ basis,\ WITHOUT\ WARRANTY\ OF\ ANY}}
+\DoxyCodeLine{00021\ \textcolor{comment}{\ *\ KIND,\ either\ express\ or\ implied.}}
+\DoxyCodeLine{00022\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00023\ \textcolor{comment}{\ *\ SPDX-\/License-\/Identifier:\ curl}}
+\DoxyCodeLine{00024\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00025\ \textcolor{comment}{\ ***************************************************************************/}}
+\DoxyCodeLine{00026\ \textcolor{preprocessor}{\#ifdef\ \ \_\_cplusplus}}
+\DoxyCodeLine{00027\ \textcolor{keyword}{extern}\ \textcolor{stringliteral}{"{}C"{}}\ \{}
+\DoxyCodeLine{00028\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ \textcolor{comment}{/*\ Flag\ bits\ in\ the\ curl\_blob\ struct:\ */}}
+\DoxyCodeLine{00031\ \textcolor{preprocessor}{\#define\ CURL\_BLOB\_COPY\ \ \ 1\ }\textcolor{comment}{/*\ tell\ libcurl\ to\ copy\ the\ data\ */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{00032\ \textcolor{preprocessor}{\#define\ CURL\_BLOB\_NOCOPY\ 0\ }\textcolor{comment}{/*\ tell\ libcurl\ to\ NOT\ copy\ the\ data\ */}\textcolor{preprocessor}{}}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structcurl__blob}{curl\_blob}}\ \{}
+\DoxyCodeLine{00035\ \ \ \textcolor{keywordtype}{void}\ *data;}
+\DoxyCodeLine{00036\ \ \ \textcolor{keywordtype}{size\_t}\ len;}
+\DoxyCodeLine{00037\ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ flags;\ \textcolor{comment}{/*\ bit\ 0\ is\ defined,\ the\ rest\ are\ reserved\ and\ should\ be}}
+\DoxyCodeLine{00038\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ left\ zeroes\ */}}
+\DoxyCodeLine{00039\ \};}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ CURL\_EXTERN\ CURL\ *curl\_easy\_init(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{00042\ CURL\_EXTERN\ CURLcode\ curl\_easy\_setopt(CURL\ *curl,\ CURLoption\ option,\ ...);}
+\DoxyCodeLine{00043\ CURL\_EXTERN\ CURLcode\ curl\_easy\_perform(CURL\ *curl);}
+\DoxyCodeLine{00044\ CURL\_EXTERN\ \textcolor{keywordtype}{void}\ curl\_easy\_cleanup(CURL\ *curl);}
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00046\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00047\ \textcolor{comment}{\ *\ NAME\ curl\_easy\_getinfo()}}
+\DoxyCodeLine{00048\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00049\ \textcolor{comment}{\ *\ DESCRIPTION}}
+\DoxyCodeLine{00050\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00051\ \textcolor{comment}{\ *\ Request\ internal\ information\ from\ the\ curl\ session\ with\ this\ function.}}
+\DoxyCodeLine{00052\ \textcolor{comment}{\ *\ The\ third\ argument\ MUST\ be\ pointing\ to\ the\ specific\ type\ of\ the\ used\ option}}
+\DoxyCodeLine{00053\ \textcolor{comment}{\ *\ which\ is\ documented\ in\ each\ manpage\ of\ the\ option.\ The\ data\ pointed\ to}}
+\DoxyCodeLine{00054\ \textcolor{comment}{\ *\ will\ be\ filled\ in\ accordingly\ and\ can\ be\ relied\ upon\ only\ if\ the\ function}}
+\DoxyCodeLine{00055\ \textcolor{comment}{\ *\ returns\ CURLE\_OK.\ This\ function\ is\ intended\ to\ get\ used\ *AFTER*\ a\ performed}}
+\DoxyCodeLine{00056\ \textcolor{comment}{\ *\ transfer,\ all\ results\ from\ this\ function\ are\ undefined\ until\ the\ transfer}}
+\DoxyCodeLine{00057\ \textcolor{comment}{\ *\ is\ completed.}}
+\DoxyCodeLine{00058\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00059\ CURL\_EXTERN\ CURLcode\ curl\_easy\_getinfo(CURL\ *curl,\ CURLINFO\ info,\ ...);}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00061\ }
+\DoxyCodeLine{00062\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00063\ \textcolor{comment}{\ *\ NAME\ curl\_easy\_duphandle()}}
+\DoxyCodeLine{00064\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00065\ \textcolor{comment}{\ *\ DESCRIPTION}}
+\DoxyCodeLine{00066\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00067\ \textcolor{comment}{\ *\ Creates\ a\ new\ curl\ session\ handle\ with\ the\ same\ options\ set\ for\ the\ handle}}
+\DoxyCodeLine{00068\ \textcolor{comment}{\ *\ passed\ in.\ Duplicating\ a\ handle\ could\ only\ be\ a\ matter\ of\ cloning\ data\ and}}
+\DoxyCodeLine{00069\ \textcolor{comment}{\ *\ options,\ internal\ state\ info\ and\ things\ like\ persistent\ connections\ cannot}}
+\DoxyCodeLine{00070\ \textcolor{comment}{\ *\ be\ transferred.\ It\ is\ useful\ in\ multithreaded\ applications\ when\ you\ can\ run}}
+\DoxyCodeLine{00071\ \textcolor{comment}{\ *\ curl\_easy\_duphandle()\ for\ each\ new\ thread\ to\ avoid\ a\ series\ of\ identical}}
+\DoxyCodeLine{00072\ \textcolor{comment}{\ *\ curl\_easy\_setopt()\ invokes\ in\ every\ thread.}}
+\DoxyCodeLine{00073\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00074\ CURL\_EXTERN\ CURL\ *curl\_easy\_duphandle(CURL\ *curl);}
+\DoxyCodeLine{00075\ }
+\DoxyCodeLine{00076\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00077\ \textcolor{comment}{\ *\ NAME\ curl\_easy\_reset()}}
+\DoxyCodeLine{00078\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00079\ \textcolor{comment}{\ *\ DESCRIPTION}}
+\DoxyCodeLine{00080\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00081\ \textcolor{comment}{\ *\ Re-\/initializes\ a\ curl\ handle\ to\ the\ default\ values.\ This\ puts\ back\ the}}
+\DoxyCodeLine{00082\ \textcolor{comment}{\ *\ handle\ to\ the\ same\ state\ as\ it\ was\ in\ when\ it\ was\ just\ created.}}
+\DoxyCodeLine{00083\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00084\ \textcolor{comment}{\ *\ It\ does\ keep:\ live\ connections,\ the\ Session\ ID\ cache,\ the\ DNS\ cache\ and\ the}}
+\DoxyCodeLine{00085\ \textcolor{comment}{\ *\ cookies.}}
+\DoxyCodeLine{00086\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00087\ CURL\_EXTERN\ \textcolor{keywordtype}{void}\ curl\_easy\_reset(CURL\ *curl);}
+\DoxyCodeLine{00088\ }
+\DoxyCodeLine{00089\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00090\ \textcolor{comment}{\ *\ NAME\ curl\_easy\_recv()}}
+\DoxyCodeLine{00091\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00092\ \textcolor{comment}{\ *\ DESCRIPTION}}
+\DoxyCodeLine{00093\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00094\ \textcolor{comment}{\ *\ Receives\ data\ from\ the\ connected\ socket.\ Use\ after\ successful}}
+\DoxyCodeLine{00095\ \textcolor{comment}{\ *\ curl\_easy\_perform()\ with\ CURLOPT\_CONNECT\_ONLY\ option.}}
+\DoxyCodeLine{00096\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00097\ CURL\_EXTERN\ CURLcode\ curl\_easy\_recv(CURL\ *curl,\ \textcolor{keywordtype}{void}\ *buffer,\ \textcolor{keywordtype}{size\_t}\ buflen,}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ *n);}
+\DoxyCodeLine{00099\ }
+\DoxyCodeLine{00100\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00101\ \textcolor{comment}{\ *\ NAME\ curl\_easy\_send()}}
+\DoxyCodeLine{00102\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00103\ \textcolor{comment}{\ *\ DESCRIPTION}}
+\DoxyCodeLine{00104\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00105\ \textcolor{comment}{\ *\ Sends\ data\ over\ the\ connected\ socket.\ Use\ after\ successful}}
+\DoxyCodeLine{00106\ \textcolor{comment}{\ *\ curl\_easy\_perform()\ with\ CURLOPT\_CONNECT\_ONLY\ option.}}
+\DoxyCodeLine{00107\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00108\ CURL\_EXTERN\ CURLcode\ curl\_easy\_send(CURL\ *curl,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{void}\ *buffer,}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{size\_t}\ buflen,\ \textcolor{keywordtype}{size\_t}\ *n);}
+\DoxyCodeLine{00110\ }
+\DoxyCodeLine{00111\ }
+\DoxyCodeLine{00112\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00113\ \textcolor{comment}{\ *\ NAME\ curl\_easy\_upkeep()}}
+\DoxyCodeLine{00114\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00115\ \textcolor{comment}{\ *\ DESCRIPTION}}
+\DoxyCodeLine{00116\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00117\ \textcolor{comment}{\ *\ Performs\ connection\ upkeep\ for\ the\ given\ session\ handle.}}
+\DoxyCodeLine{00118\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00119\ CURL\_EXTERN\ CURLcode\ curl\_easy\_upkeep(CURL\ *curl);}
+\DoxyCodeLine{00120\ }
+\DoxyCodeLine{00121\ \textcolor{preprocessor}{\#ifdef\ \ \_\_cplusplus}}
+\DoxyCodeLine{00122\ \}\ \textcolor{comment}{/*\ end\ of\ extern\ "{}C"{}\ */}}
+\DoxyCodeLine{00123\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00124\ }
+\DoxyCodeLine{00125\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

@@ -1,0 +1,74 @@
+\doxysection{ghc\+::filesystem\+::directory\+\_\+iterator Class Reference}
+\hypertarget{classghc_1_1filesystem_1_1directory__iterator}{}\label{classghc_1_1filesystem_1_1directory__iterator}\index{ghc::filesystem::directory\_iterator@{ghc::filesystem::directory\_iterator}}
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classghc_1_1filesystem_1_1directory__iterator_1_1impl}{impl}}
+\item 
+class \mbox{\hyperlink{classghc_1_1filesystem_1_1directory__iterator_1_1proxy}{proxy}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1directory__iterator_a69a207d4db8e54e71bb0d729f35e287b}\label{classghc_1_1filesystem_1_1directory__iterator_a69a207d4db8e54e71bb0d729f35e287b} 
+using {\bfseries iterator\+\_\+category} = std\+::input\+\_\+iterator\+\_\+tag
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1directory__iterator_acc224b52e6ed466306b0b7e0918d1e5e}\label{classghc_1_1filesystem_1_1directory__iterator_acc224b52e6ed466306b0b7e0918d1e5e} 
+using {\bfseries value\+\_\+type} = \mbox{\hyperlink{classghc_1_1filesystem_1_1directory__entry}{directory\+\_\+entry}}
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1directory__iterator_a3daf7a640ad99c251b77400f534f163b}\label{classghc_1_1filesystem_1_1directory__iterator_a3daf7a640ad99c251b77400f534f163b} 
+using {\bfseries difference\+\_\+type} = std\+::ptrdiff\+\_\+t
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1directory__iterator_a8d169dd7136b4fc73b7a70aadb7ced6a}\label{classghc_1_1filesystem_1_1directory__iterator_a8d169dd7136b4fc73b7a70aadb7ced6a} 
+using {\bfseries pointer} = const \mbox{\hyperlink{classghc_1_1filesystem_1_1directory__entry}{directory\+\_\+entry}}\texorpdfstring{$\ast$}{*}
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1directory__iterator_adb4796fb975260e33845d80c6e5ffdcf}\label{classghc_1_1filesystem_1_1directory__iterator_adb4796fb975260e33845d80c6e5ffdcf} 
+using {\bfseries reference} = const \mbox{\hyperlink{classghc_1_1filesystem_1_1directory__entry}{directory\+\_\+entry}}\&
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1directory__iterator_a136eba5df1a9cd376eb43280536054c2}\label{classghc_1_1filesystem_1_1directory__iterator_a136eba5df1a9cd376eb43280536054c2} 
+{\bfseries directory\+\_\+iterator} (const \mbox{\hyperlink{classghc_1_1filesystem_1_1path}{path}} \&p, std\+::error\+\_\+code \&ec) noexcept
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1directory__iterator_a1f3bb6abb79944cc1819bdf363744cf3}\label{classghc_1_1filesystem_1_1directory__iterator_a1f3bb6abb79944cc1819bdf363744cf3} 
+{\bfseries directory\+\_\+iterator} (const \mbox{\hyperlink{classghc_1_1filesystem_1_1path}{path}} \&p, directory\+\_\+options options, std\+::error\+\_\+code \&ec) noexcept
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1directory__iterator_a373f5937661b26714477a522f65535b2}\label{classghc_1_1filesystem_1_1directory__iterator_a373f5937661b26714477a522f65535b2} 
+{\bfseries directory\+\_\+iterator} (const \mbox{\hyperlink{classghc_1_1filesystem_1_1directory__iterator}{directory\+\_\+iterator}} \&rhs)
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1directory__iterator_a2e3183ea3881bc40e95474f03e8228ed}\label{classghc_1_1filesystem_1_1directory__iterator_a2e3183ea3881bc40e95474f03e8228ed} 
+{\bfseries directory\+\_\+iterator} (\mbox{\hyperlink{classghc_1_1filesystem_1_1directory__iterator}{directory\+\_\+iterator}} \&\&rhs) noexcept
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1directory__iterator_a0661609228adc358a9ef3548ab46335d}\label{classghc_1_1filesystem_1_1directory__iterator_a0661609228adc358a9ef3548ab46335d} 
+\mbox{\hyperlink{classghc_1_1filesystem_1_1directory__iterator}{directory\+\_\+iterator}} \& {\bfseries operator=} (const \mbox{\hyperlink{classghc_1_1filesystem_1_1directory__iterator}{directory\+\_\+iterator}} \&rhs)
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1directory__iterator_a0bc93d177bd2b01547c5c8703865335b}\label{classghc_1_1filesystem_1_1directory__iterator_a0bc93d177bd2b01547c5c8703865335b} 
+\mbox{\hyperlink{classghc_1_1filesystem_1_1directory__iterator}{directory\+\_\+iterator}} \& {\bfseries operator=} (\mbox{\hyperlink{classghc_1_1filesystem_1_1directory__iterator}{directory\+\_\+iterator}} \&\&rhs) noexcept
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1directory__iterator_aac2b9320090f91a8502941582fc78d5a}\label{classghc_1_1filesystem_1_1directory__iterator_aac2b9320090f91a8502941582fc78d5a} 
+const \mbox{\hyperlink{classghc_1_1filesystem_1_1directory__entry}{directory\+\_\+entry}} \& {\bfseries operator\texorpdfstring{$\ast$}{*}} () const
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1directory__iterator_a65e2263fe87b046b4a1caa50119dcf81}\label{classghc_1_1filesystem_1_1directory__iterator_a65e2263fe87b046b4a1caa50119dcf81} 
+const \mbox{\hyperlink{classghc_1_1filesystem_1_1directory__entry}{directory\+\_\+entry}} \texorpdfstring{$\ast$}{*} {\bfseries operator-\/$>$} () const
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1directory__iterator_aa2b7600dc9c42a2080dc8e93aee1e17a}\label{classghc_1_1filesystem_1_1directory__iterator_aa2b7600dc9c42a2080dc8e93aee1e17a} 
+\mbox{\hyperlink{classghc_1_1filesystem_1_1directory__iterator}{directory\+\_\+iterator}} \& {\bfseries increment} (std\+::error\+\_\+code \&ec) noexcept
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1directory__iterator_a75a2ad83262510bab8b752212a071ad6}\label{classghc_1_1filesystem_1_1directory__iterator_a75a2ad83262510bab8b752212a071ad6} 
+bool {\bfseries operator==} (const \mbox{\hyperlink{classghc_1_1filesystem_1_1directory__iterator}{directory\+\_\+iterator}} \&rhs) const
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1directory__iterator_a3c500c1eebe67bfc51b550a4e1bccfb3}\label{classghc_1_1filesystem_1_1directory__iterator_a3c500c1eebe67bfc51b550a4e1bccfb3} 
+bool {\bfseries operator!=} (const \mbox{\hyperlink{classghc_1_1filesystem_1_1directory__iterator}{directory\+\_\+iterator}} \&rhs) const
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1directory__iterator_a3f07d4fea42efb21eaa7645ba0b528b9}\label{classghc_1_1filesystem_1_1directory__iterator_a3f07d4fea42efb21eaa7645ba0b528b9} 
+class {\bfseries recursive\+\_\+directory\+\_\+iterator}
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/xroja/\+Desktop/\+JPO projekt/\+Projekt\+Jezyki\+Programowania\+Obiektowego/build/vcpkg\+\_\+installed/x64-\/windows/include/ghc/filesystem.\+hpp\end{DoxyCompactItemize}

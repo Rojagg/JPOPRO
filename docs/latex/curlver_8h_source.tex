@@ -1,0 +1,85 @@
+\doxysection{curlver.\+h}
+\hypertarget{curlver_8h_source}{}\label{curlver_8h_source}\index{C:/Users/xroja/Desktop/JPO projekt/ProjektJezykiProgramowaniaObiektowego/build/vcpkg\_installed/x64-\/windows/include/curl/curlver.h@{C:/Users/xroja/Desktop/JPO projekt/ProjektJezykiProgramowaniaObiektowego/build/vcpkg\_installed/x64-\/windows/include/curl/curlver.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ CURLINC\_CURLVER\_H}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ CURLINC\_CURLVER\_H}}
+\DoxyCodeLine{00003\ \textcolor{comment}{/***************************************************************************}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \_\ \ \ \_\ \_\_\_\_\ \ \_}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ *\ \ Project\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \_\_\_|\ |\ |\ |\ \ \_\ \(\backslash\)|\ |}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ /\ \_\_|\ |\ |\ |\ |\_)\ |\ |}}
+\DoxyCodeLine{00007\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ |\ (\_\_|\ |\_|\ |\ \ \_\ <|\ |\_\_\_}}
+\DoxyCodeLine{00008\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)\_\_\_|\(\backslash\)\_\_\_/|\_|\ \(\backslash\)\_\(\backslash\)\_\_\_\_\_|}}
+\DoxyCodeLine{00009\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00010\ \textcolor{comment}{\ *\ Copyright\ (C)\ Daniel\ Stenberg,\ <daniel@haxx.se>,\ et\ al.}}
+\DoxyCodeLine{00011\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00012\ \textcolor{comment}{\ *\ This\ software\ is\ licensed\ as\ described\ in\ the\ file\ COPYING,\ which}}
+\DoxyCodeLine{00013\ \textcolor{comment}{\ *\ you\ should\ have\ received\ as\ part\ of\ this\ distribution.\ The\ terms}}
+\DoxyCodeLine{00014\ \textcolor{comment}{\ *\ are\ also\ available\ at\ https://curl.se/docs/copyright.html.}}
+\DoxyCodeLine{00015\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00016\ \textcolor{comment}{\ *\ You\ may\ opt\ to\ use,\ copy,\ modify,\ merge,\ publish,\ distribute\ and/or\ sell}}
+\DoxyCodeLine{00017\ \textcolor{comment}{\ *\ copies\ of\ the\ Software,\ and\ permit\ persons\ to\ whom\ the\ Software\ is}}
+\DoxyCodeLine{00018\ \textcolor{comment}{\ *\ furnished\ to\ do\ so,\ under\ the\ terms\ of\ the\ COPYING\ file.}}
+\DoxyCodeLine{00019\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00020\ \textcolor{comment}{\ *\ This\ software\ is\ distributed\ on\ an\ "{}AS\ IS"{}\ basis,\ WITHOUT\ WARRANTY\ OF\ ANY}}
+\DoxyCodeLine{00021\ \textcolor{comment}{\ *\ KIND,\ either\ express\ or\ implied.}}
+\DoxyCodeLine{00022\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00023\ \textcolor{comment}{\ *\ SPDX-\/License-\/Identifier:\ curl}}
+\DoxyCodeLine{00024\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00025\ \textcolor{comment}{\ ***************************************************************************/}}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \textcolor{comment}{/*\ This\ header\ file\ contains\ nothing\ but\ libcurl\ version\ info,\ generated\ by}}
+\DoxyCodeLine{00028\ \textcolor{comment}{\ \ \ a\ script\ at\ release-\/time.\ This\ was\ made\ its\ own\ header\ file\ in\ 7.11.2\ */}}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ \textcolor{comment}{/*\ This\ is\ the\ global\ package\ copyright\ */}}
+\DoxyCodeLine{00031\ \textcolor{preprocessor}{\#define\ LIBCURL\_COPYRIGHT\ "{}Daniel\ Stenberg,\ <daniel@haxx.se>."{}}}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ \textcolor{comment}{/*\ This\ is\ the\ version\ number\ of\ the\ libcurl\ package\ from\ which\ this\ header}}
+\DoxyCodeLine{00034\ \textcolor{comment}{\ \ \ file\ origins:\ */}}
+\DoxyCodeLine{00035\ \textcolor{preprocessor}{\#define\ LIBCURL\_VERSION\ "{}8.12.1-\/DEV"{}}}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ \textcolor{comment}{/*\ The\ numeric\ version\ number\ is\ also\ available\ "{}in\ parts"{}\ by\ using\ these}}
+\DoxyCodeLine{00038\ \textcolor{comment}{\ \ \ defines:\ */}}
+\DoxyCodeLine{00039\ \textcolor{preprocessor}{\#define\ LIBCURL\_VERSION\_MAJOR\ 8}}
+\DoxyCodeLine{00040\ \textcolor{preprocessor}{\#define\ LIBCURL\_VERSION\_MINOR\ 12}}
+\DoxyCodeLine{00041\ \textcolor{preprocessor}{\#define\ LIBCURL\_VERSION\_PATCH\ 1}}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00043\ \textcolor{comment}{/*\ This\ is\ the\ numeric\ version\ of\ the\ libcurl\ version\ number,\ meant\ for\ easier}}
+\DoxyCodeLine{00044\ \textcolor{comment}{\ \ \ parsing\ and\ comparisons\ by\ programs.\ The\ LIBCURL\_VERSION\_NUM\ define\ will}}
+\DoxyCodeLine{00045\ \textcolor{comment}{\ \ \ always\ follow\ this\ syntax:}}
+\DoxyCodeLine{00046\ \textcolor{comment}{}}
+\DoxyCodeLine{00047\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ 0xXXYYZZ}}
+\DoxyCodeLine{00048\ \textcolor{comment}{}}
+\DoxyCodeLine{00049\ \textcolor{comment}{\ \ \ Where\ XX,\ YY\ and\ ZZ\ are\ the\ main\ version,\ release\ and\ patch\ numbers\ in}}
+\DoxyCodeLine{00050\ \textcolor{comment}{\ \ \ hexadecimal\ (using\ 8\ bits\ each).\ All\ three\ numbers\ are\ always\ represented}}
+\DoxyCodeLine{00051\ \textcolor{comment}{\ \ \ using\ two\ digits.\ 1.2\ would\ appear\ as\ "{}0x010200"{}\ while\ version\ 9.11.7}}
+\DoxyCodeLine{00052\ \textcolor{comment}{\ \ \ appears\ as\ "{}0x090b07"{}.}}
+\DoxyCodeLine{00053\ \textcolor{comment}{}}
+\DoxyCodeLine{00054\ \textcolor{comment}{\ \ \ This\ 6-\/digit\ (24\ bits)\ hexadecimal\ number\ does\ not\ show\ pre-\/release\ number,}}
+\DoxyCodeLine{00055\ \textcolor{comment}{\ \ \ and\ it\ is\ always\ a\ greater\ number\ in\ a\ more\ recent\ release.\ It\ makes}}
+\DoxyCodeLine{00056\ \textcolor{comment}{\ \ \ comparisons\ with\ greater\ than\ and\ less\ than\ work.}}
+\DoxyCodeLine{00057\ \textcolor{comment}{}}
+\DoxyCodeLine{00058\ \textcolor{comment}{\ \ \ Note:\ This\ define\ is\ the\ full\ hex\ number\ and\ \_does\ not\_\ use\ the}}
+\DoxyCodeLine{00059\ \textcolor{comment}{\ \ \ CURL\_VERSION\_BITS()\ macro\ since\ curl's\ own\ configure\ script\ greps\ for\ it}}
+\DoxyCodeLine{00060\ \textcolor{comment}{\ \ \ and\ needs\ it\ to\ contain\ the\ full\ number.}}
+\DoxyCodeLine{00061\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00062\ \textcolor{preprocessor}{\#define\ LIBCURL\_VERSION\_NUM\ 0x080c01}}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00064\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00065\ \textcolor{comment}{\ *\ This\ is\ the\ date\ and\ time\ when\ the\ full\ source\ package\ was\ created.\ The}}
+\DoxyCodeLine{00066\ \textcolor{comment}{\ *\ timestamp\ is\ not\ stored\ in\ git,\ as\ the\ timestamp\ is\ properly\ set\ in\ the}}
+\DoxyCodeLine{00067\ \textcolor{comment}{\ *\ tarballs\ by\ the\ maketgz\ script.}}
+\DoxyCodeLine{00068\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00069\ \textcolor{comment}{\ *\ The\ format\ of\ the\ date\ follows\ this\ template:}}
+\DoxyCodeLine{00070\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00071\ \textcolor{comment}{\ *\ "{}2007-\/11-\/23"{}}}
+\DoxyCodeLine{00072\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00073\ \textcolor{preprocessor}{\#define\ LIBCURL\_TIMESTAMP\ "{}[unreleased]"{}}}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00075\ \textcolor{preprocessor}{\#define\ CURL\_VERSION\_BITS(x,y,z)\ ((x)<<16|(y)<<8|(z))}}
+\DoxyCodeLine{00076\ \textcolor{preprocessor}{\#define\ CURL\_AT\_LEAST\_VERSION(x,y,z)\ \(\backslash\)}}
+\DoxyCodeLine{00077\ \textcolor{preprocessor}{\ \ (LIBCURL\_VERSION\_NUM\ >=\ CURL\_VERSION\_BITS(x,\ y,\ z))}}
+\DoxyCodeLine{00078\ }
+\DoxyCodeLine{00079\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{/*\ CURLINC\_CURLVER\_H\ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

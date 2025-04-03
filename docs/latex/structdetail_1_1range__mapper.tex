@@ -1,0 +1,22 @@
+\doxysection{detail\+::range\+\_\+mapper\texorpdfstring{$<$}{<} Context \texorpdfstring{$>$}{>} Struct Template Reference}
+\hypertarget{structdetail_1_1range__mapper}{}\label{structdetail_1_1range__mapper}\index{detail::range\_mapper$<$ Context $>$@{detail::range\_mapper$<$ Context $>$}}
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structdetail_1_1range__mapper_a15a39d70b6d03623f2e4d2eb75a17bad}\label{structdetail_1_1range__mapper_a15a39d70b6d03623f2e4d2eb75a17bad} 
+using {\bfseries mapper} = \mbox{\hyperlink{structdetail_1_1arg__mapper}{arg\+\_\+mapper}}$<$Context$>$
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{structdetail_1_1range__mapper_acc5a2507629489abbe19a7a6739cfe86}\label{structdetail_1_1range__mapper_acc5a2507629489abbe19a7a6739cfe86} 
+{\footnotesize template$<$typename T, FMT\+\_\+\+ENABLE\+\_\+\+IF(has\+\_\+formatter$<$ remove\+\_\+cvref\+\_\+t$<$ T $>$, Context $>$\+::value)$>$ }\\static auto {\bfseries map} (T \&\&\mbox{\hyperlink{classdetail_1_1value}{value}}) -\/$>$ T \&\&
+\item 
+\Hypertarget{structdetail_1_1range__mapper_a85b15893de2acb32e4b6294451f093fb}\label{structdetail_1_1range__mapper_a85b15893de2acb32e4b6294451f093fb} 
+{\footnotesize template$<$typename T, FMT\+\_\+\+ENABLE\+\_\+\+IF(!has\+\_\+formatter$<$ remove\+\_\+cvref\+\_\+t$<$ T $>$, Context $>$\+::value)$>$ }\\static auto {\bfseries map} (T \&\&\mbox{\hyperlink{classdetail_1_1value}{value}}) -\/$>$ decltype(\mbox{\hyperlink{structdetail_1_1arg__mapper}{mapper}}().map(static\+\_\+cast$<$ T \&\& $>$(\mbox{\hyperlink{classdetail_1_1value}{value}})))
+\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/xroja/\+Desktop/\+JPO projekt/\+Projekt\+Jezyki\+Programowania\+Obiektowego/build/vcpkg\+\_\+installed/x64-\/windows/include/fmt/ranges.\+h\end{DoxyCompactItemize}

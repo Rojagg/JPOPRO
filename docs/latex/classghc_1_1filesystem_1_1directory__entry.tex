@@ -1,0 +1,106 @@
+\doxysection{ghc\+::filesystem\+::directory\+\_\+entry Class Reference}
+\hypertarget{classghc_1_1filesystem_1_1directory__entry}{}\label{classghc_1_1filesystem_1_1directory__entry}\index{ghc::filesystem::directory\_entry@{ghc::filesystem::directory\_entry}}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1directory__entry_a70af1a129a080b12de84fa7db457d6a8}\label{classghc_1_1filesystem_1_1directory__entry_a70af1a129a080b12de84fa7db457d6a8} 
+{\bfseries directory\+\_\+entry} (const \mbox{\hyperlink{classghc_1_1filesystem_1_1directory__entry}{directory\+\_\+entry}} \&)=default
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1directory__entry_af2a563e4c606ea0fef0acd892e853758}\label{classghc_1_1filesystem_1_1directory__entry_af2a563e4c606ea0fef0acd892e853758} 
+{\bfseries directory\+\_\+entry} (\mbox{\hyperlink{classghc_1_1filesystem_1_1directory__entry}{directory\+\_\+entry}} \&\&) noexcept=default
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1directory__entry_ad7da4ea4ed8e5732db89b60f2cd0c767}\label{classghc_1_1filesystem_1_1directory__entry_ad7da4ea4ed8e5732db89b60f2cd0c767} 
+{\bfseries directory\+\_\+entry} (const \mbox{\hyperlink{classghc_1_1filesystem_1_1path}{path}} \&p, std\+::error\+\_\+code \&ec)
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1directory__entry_ad02fa2d264ce5c4f1a01f9242de52d00}\label{classghc_1_1filesystem_1_1directory__entry_ad02fa2d264ce5c4f1a01f9242de52d00} 
+\mbox{\hyperlink{classghc_1_1filesystem_1_1directory__entry}{directory\+\_\+entry}} \& {\bfseries operator=} (const \mbox{\hyperlink{classghc_1_1filesystem_1_1directory__entry}{directory\+\_\+entry}} \&)=default
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1directory__entry_aa9cb09a4d0c29cdaaee1fc41cabdc118}\label{classghc_1_1filesystem_1_1directory__entry_aa9cb09a4d0c29cdaaee1fc41cabdc118} 
+\mbox{\hyperlink{classghc_1_1filesystem_1_1directory__entry}{directory\+\_\+entry}} \& {\bfseries operator=} (\mbox{\hyperlink{classghc_1_1filesystem_1_1directory__entry}{directory\+\_\+entry}} \&\&) noexcept=default
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1directory__entry_a57262c48b0e2b1a25a78aa161875f2b9}\label{classghc_1_1filesystem_1_1directory__entry_a57262c48b0e2b1a25a78aa161875f2b9} 
+void {\bfseries assign} (const \mbox{\hyperlink{classghc_1_1filesystem_1_1path}{path}} \&p, std\+::error\+\_\+code \&ec)
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1directory__entry_ac5cec677bf24be05e984e48fde2da8f7}\label{classghc_1_1filesystem_1_1directory__entry_ac5cec677bf24be05e984e48fde2da8f7} 
+void {\bfseries replace\+\_\+filename} (const \mbox{\hyperlink{classghc_1_1filesystem_1_1path}{path}} \&p, std\+::error\+\_\+code \&ec)
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1directory__entry_a9d07023ef6737ed2bd4e071745b6d01e}\label{classghc_1_1filesystem_1_1directory__entry_a9d07023ef6737ed2bd4e071745b6d01e} 
+void {\bfseries refresh} (std\+::error\+\_\+code \&ec) noexcept
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1directory__entry_af6865b96891bfc3939c97e2869bb6e2b}\label{classghc_1_1filesystem_1_1directory__entry_af6865b96891bfc3939c97e2869bb6e2b} 
+const \mbox{\hyperlink{classghc_1_1filesystem_1_1path}{filesystem\+::path}} \& {\bfseries path} () const noexcept
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1directory__entry_ac4528b8b5e5c9ba231f8d86c29d9deed}\label{classghc_1_1filesystem_1_1directory__entry_ac4528b8b5e5c9ba231f8d86c29d9deed} 
+{\bfseries operator const filesystem\+::path \&} () const noexcept
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1directory__entry_a803b1bc328ebe784f0b7b4abefd86c1b}\label{classghc_1_1filesystem_1_1directory__entry_a803b1bc328ebe784f0b7b4abefd86c1b} 
+bool {\bfseries exists} (std\+::error\+\_\+code \&ec) const noexcept
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1directory__entry_a1d8f605e6ab8c37acdda44c9011e27af}\label{classghc_1_1filesystem_1_1directory__entry_a1d8f605e6ab8c37acdda44c9011e27af} 
+bool {\bfseries is\+\_\+block\+\_\+file} (std\+::error\+\_\+code \&ec) const noexcept
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1directory__entry_a8573c65f539fad026f4b2222f7907d0f}\label{classghc_1_1filesystem_1_1directory__entry_a8573c65f539fad026f4b2222f7907d0f} 
+bool {\bfseries is\+\_\+character\+\_\+file} (std\+::error\+\_\+code \&ec) const noexcept
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1directory__entry_a8a76d625571b7a6273155c7d747baf8e}\label{classghc_1_1filesystem_1_1directory__entry_a8a76d625571b7a6273155c7d747baf8e} 
+bool {\bfseries is\+\_\+directory} (std\+::error\+\_\+code \&ec) const noexcept
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1directory__entry_a2cc3f6f649fb728d28abe0c1994f301e}\label{classghc_1_1filesystem_1_1directory__entry_a2cc3f6f649fb728d28abe0c1994f301e} 
+bool {\bfseries is\+\_\+fifo} (std\+::error\+\_\+code \&ec) const noexcept
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1directory__entry_a8ccc17372b355364ea84461acac880fe}\label{classghc_1_1filesystem_1_1directory__entry_a8ccc17372b355364ea84461acac880fe} 
+bool {\bfseries is\+\_\+other} (std\+::error\+\_\+code \&ec) const noexcept
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1directory__entry_a19d42da8e4c36bb75411794ce66b098b}\label{classghc_1_1filesystem_1_1directory__entry_a19d42da8e4c36bb75411794ce66b098b} 
+bool {\bfseries is\+\_\+regular\+\_\+file} (std\+::error\+\_\+code \&ec) const noexcept
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1directory__entry_afc0fc3fee06b3294e8849543046445e3}\label{classghc_1_1filesystem_1_1directory__entry_afc0fc3fee06b3294e8849543046445e3} 
+bool {\bfseries is\+\_\+socket} (std\+::error\+\_\+code \&ec) const noexcept
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1directory__entry_acc14d42158d2a22beb5b6c3b2a9cfe7e}\label{classghc_1_1filesystem_1_1directory__entry_acc14d42158d2a22beb5b6c3b2a9cfe7e} 
+bool {\bfseries is\+\_\+symlink} (std\+::error\+\_\+code \&ec) const noexcept
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1directory__entry_a00aadff9c4cb9dd3a5959db83b37d019}\label{classghc_1_1filesystem_1_1directory__entry_a00aadff9c4cb9dd3a5959db83b37d019} 
+uintmax\+\_\+t {\bfseries file\+\_\+size} (std\+::error\+\_\+code \&ec) const noexcept
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1directory__entry_aba30cb48fe85f6f3f54eb1cc288dd246}\label{classghc_1_1filesystem_1_1directory__entry_aba30cb48fe85f6f3f54eb1cc288dd246} 
+file\+\_\+time\+\_\+type {\bfseries last\+\_\+write\+\_\+time} (std\+::error\+\_\+code \&ec) const noexcept
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1directory__entry_ad2ff3e82569d06aff954ecd0c6e2cb12}\label{classghc_1_1filesystem_1_1directory__entry_ad2ff3e82569d06aff954ecd0c6e2cb12} 
+\mbox{\hyperlink{classghc_1_1filesystem_1_1file__status}{file\+\_\+status}} {\bfseries status} (std\+::error\+\_\+code \&ec) const noexcept
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1directory__entry_a123ed0455febbd80ff86f13753fd6335}\label{classghc_1_1filesystem_1_1directory__entry_a123ed0455febbd80ff86f13753fd6335} 
+\mbox{\hyperlink{classghc_1_1filesystem_1_1file__status}{file\+\_\+status}} {\bfseries symlink\+\_\+status} (std\+::error\+\_\+code \&ec) const noexcept
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1directory__entry_a23c3b24118ff0ea83afc557990969c6b}\label{classghc_1_1filesystem_1_1directory__entry_a23c3b24118ff0ea83afc557990969c6b} 
+uintmax\+\_\+t {\bfseries hard\+\_\+link\+\_\+count} (std\+::error\+\_\+code \&ec) const noexcept
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1directory__entry_a0e0a79aecac9219c5c951bb0392c91e6}\label{classghc_1_1filesystem_1_1directory__entry_a0e0a79aecac9219c5c951bb0392c91e6} 
+bool {\bfseries operator$<$} (const \mbox{\hyperlink{classghc_1_1filesystem_1_1directory__entry}{directory\+\_\+entry}} \&rhs) const noexcept
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1directory__entry_ae8bbe73ce9bc6426a780fb475c58dc6a}\label{classghc_1_1filesystem_1_1directory__entry_ae8bbe73ce9bc6426a780fb475c58dc6a} 
+bool {\bfseries operator==} (const \mbox{\hyperlink{classghc_1_1filesystem_1_1directory__entry}{directory\+\_\+entry}} \&rhs) const noexcept
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1directory__entry_acf83f0289f0835c35b7d11866ef40486}\label{classghc_1_1filesystem_1_1directory__entry_acf83f0289f0835c35b7d11866ef40486} 
+bool {\bfseries operator!=} (const \mbox{\hyperlink{classghc_1_1filesystem_1_1directory__entry}{directory\+\_\+entry}} \&rhs) const noexcept
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1directory__entry_aaf8a492437f8702956b15a613465b691}\label{classghc_1_1filesystem_1_1directory__entry_aaf8a492437f8702956b15a613465b691} 
+bool {\bfseries operator$<$=} (const \mbox{\hyperlink{classghc_1_1filesystem_1_1directory__entry}{directory\+\_\+entry}} \&rhs) const noexcept
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1directory__entry_a7b31d5c8ec70047485bfc7c63fb87ccb}\label{classghc_1_1filesystem_1_1directory__entry_a7b31d5c8ec70047485bfc7c63fb87ccb} 
+bool {\bfseries operator$>$} (const \mbox{\hyperlink{classghc_1_1filesystem_1_1directory__entry}{directory\+\_\+entry}} \&rhs) const noexcept
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1directory__entry_aa1b0d67060d6638f652393e474a2c508}\label{classghc_1_1filesystem_1_1directory__entry_aa1b0d67060d6638f652393e474a2c508} 
+bool {\bfseries operator$>$=} (const \mbox{\hyperlink{classghc_1_1filesystem_1_1directory__entry}{directory\+\_\+entry}} \&rhs) const noexcept
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1directory__entry_a5be6256bef252bb8713f9b7c81d2fa6c}\label{classghc_1_1filesystem_1_1directory__entry_a5be6256bef252bb8713f9b7c81d2fa6c} 
+class {\bfseries directory\+\_\+iterator}
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/xroja/\+Desktop/\+JPO projekt/\+Projekt\+Jezyki\+Programowania\+Obiektowego/build/vcpkg\+\_\+installed/x64-\/windows/include/ghc/filesystem.\+hpp\end{DoxyCompactItemize}

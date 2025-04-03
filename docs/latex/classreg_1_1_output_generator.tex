@@ -1,0 +1,83 @@
+\doxysection{reg.\+Output\+Generator Class Reference}
+\hypertarget{classreg_1_1_output_generator}{}\label{classreg_1_1_output_generator}\index{reg.OutputGenerator@{reg.OutputGenerator}}
+Inheritance diagram for reg.\+Output\+Generator\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classreg_1_1_output_generator}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classreg_1_1_output_generator_a09dc98fe028fff64422e5182bc767031}\label{classreg_1_1_output_generator_a09dc98fe028fff64422e5182bc767031} 
+{\bfseries \+\_\+\+\_\+init\+\_\+\+\_\+} (self, err\+File=sys.\+stderr, warn\+File=sys.\+stderr, diag\+File=sys.\+stdout)
+\item 
+\mbox{\hyperlink{classreg_1_1_output_generator_a915f68569d79cc3194eca3940415f849}{log\+Msg}} (self, level, \texorpdfstring{$\ast$}{*}args)
+\item 
+\Hypertarget{classreg_1_1_output_generator_aec681cf5a9bf3dec3d1113a6b893ca9b}\label{classreg_1_1_output_generator_aec681cf5a9bf3dec3d1113a6b893ca9b} 
+{\bfseries begin\+File} (self, gen\+Opts)
+\item 
+\Hypertarget{classreg_1_1_output_generator_a69eae656f822b9e6e29f72b672e2bb58}\label{classreg_1_1_output_generator_a69eae656f822b9e6e29f72b672e2bb58} 
+{\bfseries end\+File} (self)
+\item 
+\Hypertarget{classreg_1_1_output_generator_a5a4e96fcf4d37fda06b6df77c354a1cf}\label{classreg_1_1_output_generator_a5a4e96fcf4d37fda06b6df77c354a1cf} 
+{\bfseries begin\+Feature} (self, interface, emit)
+\item 
+\Hypertarget{classreg_1_1_output_generator_a4149b2786c373bb2b82fda44d9419bb3}\label{classreg_1_1_output_generator_a4149b2786c373bb2b82fda44d9419bb3} 
+{\bfseries end\+Feature} (self)
+\item 
+\Hypertarget{classreg_1_1_output_generator_a5a10c1b739414314da4ae8911fbf79d9}\label{classreg_1_1_output_generator_a5a10c1b739414314da4ae8911fbf79d9} 
+{\bfseries gen\+Type} (self, typeinfo, name)
+\item 
+\Hypertarget{classreg_1_1_output_generator_a8207ccde131c30bec4785e579b4372d7}\label{classreg_1_1_output_generator_a8207ccde131c30bec4785e579b4372d7} 
+{\bfseries gen\+Enum} (self, enuminfo, name)
+\item 
+\Hypertarget{classreg_1_1_output_generator_a3dd87813e13595437237080c1f2f6e88}\label{classreg_1_1_output_generator_a3dd87813e13595437237080c1f2f6e88} 
+{\bfseries gen\+Cmd} (self, cmd, name)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classreg_1_1_output_generator_a93927b552138a84e4caa54eb236a7873}\label{classreg_1_1_output_generator_a93927b552138a84e4caa54eb236a7873} 
+{\bfseries out\+File} = None
+\item 
+\Hypertarget{classreg_1_1_output_generator_a0bdbb1fc88aac8917a69af17d1acd993}\label{classreg_1_1_output_generator_a0bdbb1fc88aac8917a69af17d1acd993} 
+{\bfseries err\+File} = err\+File
+\item 
+\Hypertarget{classreg_1_1_output_generator_a2e8bfde3dd62e4d4cf4cd3bfbbb4090f}\label{classreg_1_1_output_generator_a2e8bfde3dd62e4d4cf4cd3bfbbb4090f} 
+{\bfseries warn\+File} = warn\+File
+\item 
+\Hypertarget{classreg_1_1_output_generator_a028780a2f5d53fe69c20035f8736524a}\label{classreg_1_1_output_generator_a028780a2f5d53fe69c20035f8736524a} 
+{\bfseries diag\+File} = diag\+File
+\item 
+\Hypertarget{classreg_1_1_output_generator_acf7e64fd748a5b06ba391843a603c23c}\label{classreg_1_1_output_generator_acf7e64fd748a5b06ba391843a603c23c} 
+{\bfseries feature\+Name} = None
+\item 
+\Hypertarget{classreg_1_1_output_generator_ad39f66bad30284b35d3746b62154a3ef}\label{classreg_1_1_output_generator_ad39f66bad30284b35d3746b62154a3ef} 
+{\bfseries gen\+Opts} = None
+\item 
+\Hypertarget{classreg_1_1_output_generator_afe99bbee00e36def0677087ea9b20d11}\label{classreg_1_1_output_generator_afe99bbee00e36def0677087ea9b20d11} 
+{\bfseries emit} = emit
+\item 
+\Hypertarget{classreg_1_1_output_generator_af1045f53101b7bbca6f536e37c25bd2a}\label{classreg_1_1_output_generator_af1045f53101b7bbca6f536e37c25bd2a} 
+{\bfseries feature\+Extra\+Protect} = interface.\+get(\textquotesingle{}protect\textquotesingle{})
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyVerb}Generate specified API interfaces in a specific style, such as a C header\end{DoxyVerb}
+ 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classreg_1_1_output_generator_a915f68569d79cc3194eca3940415f849}\index{reg.OutputGenerator@{reg.OutputGenerator}!logMsg@{logMsg}}
+\index{logMsg@{logMsg}!reg.OutputGenerator@{reg.OutputGenerator}}
+\doxysubsubsection{\texorpdfstring{logMsg()}{logMsg()}}
+{\footnotesize\ttfamily \label{classreg_1_1_output_generator_a915f68569d79cc3194eca3940415f849} 
+reg.\+Output\+Generator.\+log\+Msg (\begin{DoxyParamCaption}\item[{}]{self}{, }\item[{}]{level}{, }\item[{\texorpdfstring{$\ast$}{*}}]{args}{}\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Log a message at the given level. Can be ignored or log to a file\end{DoxyVerb}
+ 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/xroja/\+Desktop/\+JPO projekt/\+Projekt\+Jezyki\+Programowania\+Obiektowego/build/vcpkg\+\_\+installed/x64-\/windows/share/opengl/reg.\+py\end{DoxyCompactItemize}

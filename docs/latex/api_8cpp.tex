@@ -1,0 +1,123 @@
+\doxysection{C\+:/\+Users/xroja/\+Desktop/\+JPO projekt/\+Projekt\+Jezyki\+Programowania\+Obiektowego/src/api.cpp File Reference}
+\hypertarget{api_8cpp}{}\label{api_8cpp}\index{C:/Users/xroja/Desktop/JPO projekt/ProjektJezykiProgramowaniaObiektowego/src/api.cpp@{C:/Users/xroja/Desktop/JPO projekt/ProjektJezykiProgramowaniaObiektowego/src/api.cpp}}
+
+
+This file handles the communication with API.  
+
+
+{\ttfamily \#include "{}api.\+h"{}}\newline
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+size\+\_\+t \mbox{\hyperlink{api_8cpp_ac34f779e080cf2d1b308cc4c8f69eb47}{write\+\_\+callback}} (void \texorpdfstring{$\ast$}{*}contents, size\+\_\+t size, size\+\_\+t amount, std\+::string \texorpdfstring{$\ast$}{*}output)
+\begin{DoxyCompactList}\small\item\em This function is important for below functions It is Write\+Function that calculates the size of incoming data from API, and convert them into the table of chars. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{api_8cpp_aa9bc57ee7194c7407fbf5f2e519bd8d0}{get\+Localization}} (std\+::string city, std\+::string street, std\+::string number)
+\begin{DoxyCompactList}\small\item\em Get the Localization based on specific data(city, street, number) and forrward it into file\+: "{}../data/specific\+\_\+place.\+json"{}. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{api_8cpp_a84631e48832ced5746f0c707b811b870}{get\+Data}} ()
+\begin{DoxyCompactList}\small\item\em This function get the information about avery avaiable station from API and forward it into file "{}../data/data\+\_\+station.\+json"{}. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{api_8cpp_a3eb792290c090d00bcd5b4b17fbb4b46}{get\+Station\+Data}} (int id)
+\begin{DoxyCompactList}\small\item\em This function get the detailed information about single station from API and forward it into file "{}../data/single\+\_\+station.\+json"{}. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{api_8cpp_afe1cbe08104bd99c3c9cdd7984803952}{get\+Sensor\+Data}} (int id)
+\begin{DoxyCompactList}\small\item\em This function get the detailed information about single sensor from API and forward it into file "{}../data/single\+\_\+sensor.\+json"{}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This file handles the communication with API. 
+
+\begin{DoxyAuthor}{Author}
+Szymon Półgęsek 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+0.\+1 
+\end{DoxyVersion}
+\begin{DoxyDate}{Date}
+2025-\/03-\/31
+\end{DoxyDate}
+\begin{DoxyCopyright}{Copyright}
+Copyright (c) 2025 
+\end{DoxyCopyright}
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{api_8cpp_a84631e48832ced5746f0c707b811b870}\index{api.cpp@{api.cpp}!getData@{getData}}
+\index{getData@{getData}!api.cpp@{api.cpp}}
+\doxysubsubsection{\texorpdfstring{getData()}{getData()}}
+{\footnotesize\ttfamily \label{api_8cpp_a84631e48832ced5746f0c707b811b870} 
+int get\+Data (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+This function get the information about avery avaiable station from API and forward it into file "{}../data/data\+\_\+station.\+json"{}. 
+
+\begin{DoxyReturn}{Returns}
+int 
+\end{DoxyReturn}
+\Hypertarget{api_8cpp_aa9bc57ee7194c7407fbf5f2e519bd8d0}\index{api.cpp@{api.cpp}!getLocalization@{getLocalization}}
+\index{getLocalization@{getLocalization}!api.cpp@{api.cpp}}
+\doxysubsubsection{\texorpdfstring{getLocalization()}{getLocalization()}}
+{\footnotesize\ttfamily \label{api_8cpp_aa9bc57ee7194c7407fbf5f2e519bd8d0} 
+void get\+Localization (\begin{DoxyParamCaption}\item[{std\+::string}]{city}{, }\item[{std\+::string}]{street}{, }\item[{std\+::string}]{number}{}\end{DoxyParamCaption})}
+
+
+
+Get the Localization based on specific data(city, street, number) and forrward it into file\+: "{}../data/specific\+\_\+place.\+json"{}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em city} & \\
+\hline
+{\em street} & \\
+\hline
+{\em number} & \\
+\hline
+\end{DoxyParams}
+\Hypertarget{api_8cpp_afe1cbe08104bd99c3c9cdd7984803952}\index{api.cpp@{api.cpp}!getSensorData@{getSensorData}}
+\index{getSensorData@{getSensorData}!api.cpp@{api.cpp}}
+\doxysubsubsection{\texorpdfstring{getSensorData()}{getSensorData()}}
+{\footnotesize\ttfamily \label{api_8cpp_afe1cbe08104bd99c3c9cdd7984803952} 
+void get\+Sensor\+Data (\begin{DoxyParamCaption}\item[{int}]{id}{}\end{DoxyParamCaption})}
+
+
+
+This function get the detailed information about single sensor from API and forward it into file "{}../data/single\+\_\+sensor.\+json"{}. 
+
+\begin{DoxyReturn}{Returns}
+int 
+\end{DoxyReturn}
+\Hypertarget{api_8cpp_a3eb792290c090d00bcd5b4b17fbb4b46}\index{api.cpp@{api.cpp}!getStationData@{getStationData}}
+\index{getStationData@{getStationData}!api.cpp@{api.cpp}}
+\doxysubsubsection{\texorpdfstring{getStationData()}{getStationData()}}
+{\footnotesize\ttfamily \label{api_8cpp_a3eb792290c090d00bcd5b4b17fbb4b46} 
+void get\+Station\+Data (\begin{DoxyParamCaption}\item[{int}]{id}{}\end{DoxyParamCaption})}
+
+
+
+This function get the detailed information about single station from API and forward it into file "{}../data/single\+\_\+station.\+json"{}. 
+
+\begin{DoxyReturn}{Returns}
+int 
+\end{DoxyReturn}
+\Hypertarget{api_8cpp_ac34f779e080cf2d1b308cc4c8f69eb47}\index{api.cpp@{api.cpp}!write\_callback@{write\_callback}}
+\index{write\_callback@{write\_callback}!api.cpp@{api.cpp}}
+\doxysubsubsection{\texorpdfstring{write\_callback()}{write\_callback()}}
+{\footnotesize\ttfamily \label{api_8cpp_ac34f779e080cf2d1b308cc4c8f69eb47} 
+size\+\_\+t write\+\_\+callback (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}}]{contents}{, }\item[{size\+\_\+t}]{size}{, }\item[{size\+\_\+t}]{amount}{, }\item[{std\+::string \texorpdfstring{$\ast$}{*}}]{output}{}\end{DoxyParamCaption})}
+
+
+
+This function is important for below functions It is Write\+Function that calculates the size of incoming data from API, and convert them into the table of chars. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em contents} & -\/ pointer to downloaded data buffer \\
+\hline
+{\em size} & -\/ size of one element \\
+\hline
+{\em amount} & -\/ amount of elements \\
+\hline
+{\em output} & -\/ pointer to place where the received will be stored \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+size\+\_\+t -\/ total number of processed bytes 
+\end{DoxyReturn}

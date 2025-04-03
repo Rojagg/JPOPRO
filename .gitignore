@@ -1,0 +1,17 @@
+# Pliki i katalogi Visual Studio
+.vs/
+.vscode/
+build/
+*.vcxproj.user
+*.suo
+*.log
+
+# Pliki zależności
+*.dll
+*.lib
+*.pdb
+
+# Pliki generowane automatycznie
+Debug/
+Release/
+x64/

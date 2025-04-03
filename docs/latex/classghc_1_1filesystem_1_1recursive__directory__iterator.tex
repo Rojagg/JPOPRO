@@ -1,0 +1,76 @@
+\doxysection{ghc\+::filesystem\+::recursive\+\_\+directory\+\_\+iterator Class Reference}
+\hypertarget{classghc_1_1filesystem_1_1recursive__directory__iterator}{}\label{classghc_1_1filesystem_1_1recursive__directory__iterator}\index{ghc::filesystem::recursive\_directory\_iterator@{ghc::filesystem::recursive\_directory\_iterator}}
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1recursive__directory__iterator_ae48d0a3936920727ae6e22ce0be1c5d4}\label{classghc_1_1filesystem_1_1recursive__directory__iterator_ae48d0a3936920727ae6e22ce0be1c5d4} 
+using {\bfseries iterator\+\_\+category} = std\+::input\+\_\+iterator\+\_\+tag
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1recursive__directory__iterator_a70afa006868fafa104604934988312b8}\label{classghc_1_1filesystem_1_1recursive__directory__iterator_a70afa006868fafa104604934988312b8} 
+using {\bfseries value\+\_\+type} = \mbox{\hyperlink{classghc_1_1filesystem_1_1directory__entry}{directory\+\_\+entry}}
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1recursive__directory__iterator_a532c9c77d89fed90e65ce7068982f960}\label{classghc_1_1filesystem_1_1recursive__directory__iterator_a532c9c77d89fed90e65ce7068982f960} 
+using {\bfseries difference\+\_\+type} = std\+::ptrdiff\+\_\+t
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1recursive__directory__iterator_a51fc8f5817f6bc09abebad466cba40b6}\label{classghc_1_1filesystem_1_1recursive__directory__iterator_a51fc8f5817f6bc09abebad466cba40b6} 
+using {\bfseries pointer} = const \mbox{\hyperlink{classghc_1_1filesystem_1_1directory__entry}{directory\+\_\+entry}}\texorpdfstring{$\ast$}{*}
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1recursive__directory__iterator_abd5347b6a4b9237e0b4051577cfe4ae6}\label{classghc_1_1filesystem_1_1recursive__directory__iterator_abd5347b6a4b9237e0b4051577cfe4ae6} 
+using {\bfseries reference} = const \mbox{\hyperlink{classghc_1_1filesystem_1_1directory__entry}{directory\+\_\+entry}}\&
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1recursive__directory__iterator_a584067e9f26bd646f108f857fd554d76}\label{classghc_1_1filesystem_1_1recursive__directory__iterator_a584067e9f26bd646f108f857fd554d76} 
+{\bfseries recursive\+\_\+directory\+\_\+iterator} (const \mbox{\hyperlink{classghc_1_1filesystem_1_1path}{path}} \&p, directory\+\_\+options options, std\+::error\+\_\+code \&ec) noexcept
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1recursive__directory__iterator_acfe44ef64b5fc8b954733afe00727cbd}\label{classghc_1_1filesystem_1_1recursive__directory__iterator_acfe44ef64b5fc8b954733afe00727cbd} 
+{\bfseries recursive\+\_\+directory\+\_\+iterator} (const \mbox{\hyperlink{classghc_1_1filesystem_1_1path}{path}} \&p, std\+::error\+\_\+code \&ec) noexcept
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1recursive__directory__iterator_ad5140a78ead4b6355a922c11f5f15cc2}\label{classghc_1_1filesystem_1_1recursive__directory__iterator_ad5140a78ead4b6355a922c11f5f15cc2} 
+{\bfseries recursive\+\_\+directory\+\_\+iterator} (const \mbox{\hyperlink{classghc_1_1filesystem_1_1recursive__directory__iterator}{recursive\+\_\+directory\+\_\+iterator}} \&rhs)
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1recursive__directory__iterator_a50e342536729acba77a2b61e42376b7a}\label{classghc_1_1filesystem_1_1recursive__directory__iterator_a50e342536729acba77a2b61e42376b7a} 
+{\bfseries recursive\+\_\+directory\+\_\+iterator} (\mbox{\hyperlink{classghc_1_1filesystem_1_1recursive__directory__iterator}{recursive\+\_\+directory\+\_\+iterator}} \&\&rhs) noexcept
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1recursive__directory__iterator_a67b9456f2f2b27c9c92d5de79e1809f0}\label{classghc_1_1filesystem_1_1recursive__directory__iterator_a67b9456f2f2b27c9c92d5de79e1809f0} 
+directory\+\_\+options {\bfseries options} () const
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1recursive__directory__iterator_a92ab538c973d588296cf137733445a40}\label{classghc_1_1filesystem_1_1recursive__directory__iterator_a92ab538c973d588296cf137733445a40} 
+int {\bfseries depth} () const
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1recursive__directory__iterator_ad54836261349e3ba17e7fed0238d71db}\label{classghc_1_1filesystem_1_1recursive__directory__iterator_ad54836261349e3ba17e7fed0238d71db} 
+bool {\bfseries recursion\+\_\+pending} () const
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1recursive__directory__iterator_aca71506850deb3109bf313e7f6780d8c}\label{classghc_1_1filesystem_1_1recursive__directory__iterator_aca71506850deb3109bf313e7f6780d8c} 
+const \mbox{\hyperlink{classghc_1_1filesystem_1_1directory__entry}{directory\+\_\+entry}} \& {\bfseries operator\texorpdfstring{$\ast$}{*}} () const
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1recursive__directory__iterator_a61db47a665b89e1d6790771a96704801}\label{classghc_1_1filesystem_1_1recursive__directory__iterator_a61db47a665b89e1d6790771a96704801} 
+const \mbox{\hyperlink{classghc_1_1filesystem_1_1directory__entry}{directory\+\_\+entry}} \texorpdfstring{$\ast$}{*} {\bfseries operator-\/$>$} () const
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1recursive__directory__iterator_a549c1f243b2d947df448ce53236ce494}\label{classghc_1_1filesystem_1_1recursive__directory__iterator_a549c1f243b2d947df448ce53236ce494} 
+\mbox{\hyperlink{classghc_1_1filesystem_1_1recursive__directory__iterator}{recursive\+\_\+directory\+\_\+iterator}} \& {\bfseries operator=} (const \mbox{\hyperlink{classghc_1_1filesystem_1_1recursive__directory__iterator}{recursive\+\_\+directory\+\_\+iterator}} \&rhs)
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1recursive__directory__iterator_a68dd014b039a64aff7d5d7c7de7cdced}\label{classghc_1_1filesystem_1_1recursive__directory__iterator_a68dd014b039a64aff7d5d7c7de7cdced} 
+\mbox{\hyperlink{classghc_1_1filesystem_1_1recursive__directory__iterator}{recursive\+\_\+directory\+\_\+iterator}} \& {\bfseries operator=} (\mbox{\hyperlink{classghc_1_1filesystem_1_1recursive__directory__iterator}{recursive\+\_\+directory\+\_\+iterator}} \&\&rhs) noexcept
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1recursive__directory__iterator_a6876ab2e18d0d6b5814b1c1426617ef8}\label{classghc_1_1filesystem_1_1recursive__directory__iterator_a6876ab2e18d0d6b5814b1c1426617ef8} 
+\mbox{\hyperlink{classghc_1_1filesystem_1_1recursive__directory__iterator}{recursive\+\_\+directory\+\_\+iterator}} \& {\bfseries increment} (std\+::error\+\_\+code \&ec) noexcept
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1recursive__directory__iterator_abee0879a7d93a038424d056601ef928a}\label{classghc_1_1filesystem_1_1recursive__directory__iterator_abee0879a7d93a038424d056601ef928a} 
+void {\bfseries pop} (std\+::error\+\_\+code \&ec)
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1recursive__directory__iterator_a4c4d988111f3c1eeb6113841dd2888eb}\label{classghc_1_1filesystem_1_1recursive__directory__iterator_a4c4d988111f3c1eeb6113841dd2888eb} 
+void {\bfseries disable\+\_\+recursion\+\_\+pending} ()
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1recursive__directory__iterator_a7173fb5e2f5aecc98f8398211c185683}\label{classghc_1_1filesystem_1_1recursive__directory__iterator_a7173fb5e2f5aecc98f8398211c185683} 
+bool {\bfseries operator==} (const \mbox{\hyperlink{classghc_1_1filesystem_1_1recursive__directory__iterator}{recursive\+\_\+directory\+\_\+iterator}} \&rhs) const
+\item 
+\Hypertarget{classghc_1_1filesystem_1_1recursive__directory__iterator_ac4d1379f7b03493613aa909d7428eb85}\label{classghc_1_1filesystem_1_1recursive__directory__iterator_ac4d1379f7b03493613aa909d7428eb85} 
+bool {\bfseries operator!=} (const \mbox{\hyperlink{classghc_1_1filesystem_1_1recursive__directory__iterator}{recursive\+\_\+directory\+\_\+iterator}} \&rhs) const
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/xroja/\+Desktop/\+JPO projekt/\+Projekt\+Jezyki\+Programowania\+Obiektowego/build/vcpkg\+\_\+installed/x64-\/windows/include/ghc/filesystem.\+hpp\end{DoxyCompactItemize}

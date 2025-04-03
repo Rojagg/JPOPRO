@@ -1,0 +1,76 @@
+\doxysection{options.\+h}
+\hypertarget{options_8h_source}{}\label{options_8h_source}\index{C:/Users/xroja/Desktop/JPO projekt/ProjektJezykiProgramowaniaObiektowego/build/vcpkg\_installed/x64-\/windows/include/curl/options.h@{C:/Users/xroja/Desktop/JPO projekt/ProjektJezykiProgramowaniaObiektowego/build/vcpkg\_installed/x64-\/windows/include/curl/options.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ CURLINC\_OPTIONS\_H}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ CURLINC\_OPTIONS\_H}}
+\DoxyCodeLine{00003\ \textcolor{comment}{/***************************************************************************}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \_\ \ \ \_\ \_\_\_\_\ \ \_}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ *\ \ Project\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \_\_\_|\ |\ |\ |\ \ \_\ \(\backslash\)|\ |}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ /\ \_\_|\ |\ |\ |\ |\_)\ |\ |}}
+\DoxyCodeLine{00007\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ |\ (\_\_|\ |\_|\ |\ \ \_\ <|\ |\_\_\_}}
+\DoxyCodeLine{00008\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)\_\_\_|\(\backslash\)\_\_\_/|\_|\ \(\backslash\)\_\(\backslash\)\_\_\_\_\_|}}
+\DoxyCodeLine{00009\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00010\ \textcolor{comment}{\ *\ Copyright\ (C)\ Daniel\ Stenberg,\ <daniel@haxx.se>,\ et\ al.}}
+\DoxyCodeLine{00011\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00012\ \textcolor{comment}{\ *\ This\ software\ is\ licensed\ as\ described\ in\ the\ file\ COPYING,\ which}}
+\DoxyCodeLine{00013\ \textcolor{comment}{\ *\ you\ should\ have\ received\ as\ part\ of\ this\ distribution.\ The\ terms}}
+\DoxyCodeLine{00014\ \textcolor{comment}{\ *\ are\ also\ available\ at\ https://curl.se/docs/copyright.html.}}
+\DoxyCodeLine{00015\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00016\ \textcolor{comment}{\ *\ You\ may\ opt\ to\ use,\ copy,\ modify,\ merge,\ publish,\ distribute\ and/or\ sell}}
+\DoxyCodeLine{00017\ \textcolor{comment}{\ *\ copies\ of\ the\ Software,\ and\ permit\ persons\ to\ whom\ the\ Software\ is}}
+\DoxyCodeLine{00018\ \textcolor{comment}{\ *\ furnished\ to\ do\ so,\ under\ the\ terms\ of\ the\ COPYING\ file.}}
+\DoxyCodeLine{00019\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00020\ \textcolor{comment}{\ *\ This\ software\ is\ distributed\ on\ an\ "{}AS\ IS"{}\ basis,\ WITHOUT\ WARRANTY\ OF\ ANY}}
+\DoxyCodeLine{00021\ \textcolor{comment}{\ *\ KIND,\ either\ express\ or\ implied.}}
+\DoxyCodeLine{00022\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00023\ \textcolor{comment}{\ *\ SPDX-\/License-\/Identifier:\ curl}}
+\DoxyCodeLine{00024\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00025\ \textcolor{comment}{\ ***************************************************************************/}}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \textcolor{preprocessor}{\#ifdef\ \ \_\_cplusplus}}
+\DoxyCodeLine{00028\ \textcolor{keyword}{extern}\ \textcolor{stringliteral}{"{}C"{}}\ \{}
+\DoxyCodeLine{00029\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00032\ \ \ CURLOT\_LONG,\ \ \ \ \textcolor{comment}{/*\ long\ (a\ range\ of\ values)\ */}}
+\DoxyCodeLine{00033\ \ \ CURLOT\_VALUES,\ \ \textcolor{comment}{/*\ \ \ \ \ \ (a\ defined\ set\ or\ bitmask)\ */}}
+\DoxyCodeLine{00034\ \ \ CURLOT\_OFF\_T,\ \ \ \textcolor{comment}{/*\ curl\_off\_t\ (a\ range\ of\ values)\ */}}
+\DoxyCodeLine{00035\ \ \ CURLOT\_OBJECT,\ \ \textcolor{comment}{/*\ pointer\ (void\ *)\ */}}
+\DoxyCodeLine{00036\ \ \ CURLOT\_STRING,\ \ \textcolor{comment}{/*\ \ \ \ \ \ \ \ \ (char\ *\ to\ null-\/terminated\ buffer)\ */}}
+\DoxyCodeLine{00037\ \ \ CURLOT\_SLIST,\ \ \ \textcolor{comment}{/*\ \ \ \ \ \ \ \ \ (struct\ curl\_slist\ *)\ */}}
+\DoxyCodeLine{00038\ \ \ CURLOT\_CBPTR,\ \ \ \textcolor{comment}{/*\ \ \ \ \ \ \ \ \ (void\ *\ passed\ as-\/is\ to\ a\ callback)\ */}}
+\DoxyCodeLine{00039\ \ \ CURLOT\_BLOB,\ \ \ \ \textcolor{comment}{/*\ blob\ (struct\ curl\_blob\ *)\ */}}
+\DoxyCodeLine{00040\ \ \ CURLOT\_FUNCTION\ \textcolor{comment}{/*\ function\ pointer\ */}}
+\DoxyCodeLine{00041\ \}\ curl\_easytype;}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00043\ \textcolor{comment}{/*\ Flag\ bits\ */}}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \textcolor{comment}{/*\ "{}alias"{}\ means\ it\ is\ provided\ for\ old\ programs\ to\ remain\ functional,}}
+\DoxyCodeLine{00046\ \textcolor{comment}{\ \ \ we\ prefer\ another\ name\ */}}
+\DoxyCodeLine{00047\ \textcolor{preprocessor}{\#define\ CURLOT\_FLAG\_ALIAS\ (1<<0)}}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00049\ \textcolor{comment}{/*\ The\ CURLOPTTYPE\_*\ id\ ranges\ can\ still\ be\ used\ to\ figure\ out\ what\ type/size}}
+\DoxyCodeLine{00050\ \textcolor{comment}{\ \ \ to\ use\ for\ curl\_easy\_setopt()\ for\ the\ given\ id\ */}}
+\DoxyCodeLine{00051\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structcurl__easyoption}{curl\_easyoption}}\ \{}
+\DoxyCodeLine{00052\ \ \ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *name;}
+\DoxyCodeLine{00053\ \ \ CURLoption\ id;}
+\DoxyCodeLine{00054\ \ \ curl\_easytype\ type;}
+\DoxyCodeLine{00055\ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ flags;}
+\DoxyCodeLine{00056\ \};}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00058\ CURL\_EXTERN\ \textcolor{keyword}{const}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structcurl__easyoption}{curl\_easyoption}}\ *}
+\DoxyCodeLine{00059\ curl\_easy\_option\_by\_name(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *name);}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00061\ CURL\_EXTERN\ \textcolor{keyword}{const}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structcurl__easyoption}{curl\_easyoption}}\ *}
+\DoxyCodeLine{00062\ curl\_easy\_option\_by\_id(CURLoption\ \textcolor{keywordtype}{id});}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00064\ CURL\_EXTERN\ \textcolor{keyword}{const}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structcurl__easyoption}{curl\_easyoption}}\ *}
+\DoxyCodeLine{00065\ curl\_easy\_option\_next(\textcolor{keyword}{const}\ \textcolor{keyword}{struct}\ \mbox{\hyperlink{structcurl__easyoption}{curl\_easyoption}}\ *prev);}
+\DoxyCodeLine{00066\ }
+\DoxyCodeLine{00067\ \textcolor{preprocessor}{\#ifdef\ \_\_cplusplus}}
+\DoxyCodeLine{00068\ \}\ \textcolor{comment}{/*\ end\ of\ extern\ "{}C"{}\ */}}
+\DoxyCodeLine{00069\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00070\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{/*\ CURLINC\_OPTIONS\_H\ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}
