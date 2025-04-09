@@ -13,11 +13,11 @@ ______________________________________________________________________________
 
 1. Install vcpkg 
 	- type in CMD:
-																					
+	'''																				
 	git clone https://github.com/Microsoft/vcpkg.git
 	cd vcpkg
 	./bootstrap-vcpkg.sh
-
+	'''
 
 2. Add vcpkg to enviroment varaibales
 	- add user variable named: "VCPKG_ROOT" with path: C:\Path\To\vcpkgDirectory\vcpkg
@@ -29,8 +29,8 @@ ______________________________________________________________________________
 4. Install packages
 
 	- type in cmd:
-	
+	'''
 	./vcpkg install
-
+	'''
  ______________________________________________________________________________
 
