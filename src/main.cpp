@@ -20,13 +20,7 @@
  */
 int main() {
 
-	//getLocalization("Poznan", "Kaliska", "1");
-	
-
-	//getSensorData(21345);
-	//getStationData(11916);
-	//getLocalization(std::string city, std::string street, std::string number);
-		// Setup window
+		//Initialization of GUI and Window, Render GUI
 		if (!glfwInit())
 			return 1;
 

@@ -1,0 +1,177 @@
+Package: vcpkg-cmake
+Version: 2024-04-23
+Architecture: x64-windows
+Multi-Arch: same
+Abi: 901f09fa886fa62d2bd26165e21e0dc9a8269279225953d0d3253b156fd524ab
+Status: install ok installed
+
+Package: zlib
+Version: 1.3.1
+Depends: vcpkg-cmake
+Architecture: x64-windows
+Multi-Arch: same
+Abi: d07f662977c878c7a96daccf562717c3a0072c2a94cfa25d496b8492c0cdec0d
+Description: A compression library
+Status: install ok installed
+
+Package: vcpkg-cmake-config
+Version: 2024-05-23
+Architecture: x64-windows
+Multi-Arch: same
+Abi: 19de5673c8bc12fdd26f8de63edc6922bdf976a5ffc2792ef642a0cc1d1105c6
+Status: install ok installed
+
+Package: curl
+Version: 8.12.1
+Depends: vcpkg-cmake, vcpkg-cmake-config, zlib
+Architecture: x64-windows
+Multi-Arch: same
+Abi: 77a05e43eba3cf9b99e8ae6e5700d44d05a810df172ddd3f2e137287a03b7023
+Description: A library for transferring data with URLs
+Default-Features: non-http, ssl
+Status: install ok installed
+
+Package: curl
+Feature: non-http
+Architecture: x64-windows
+Multi-Arch: same
+Description: Enables protocols beyond HTTP/HTTPS/HTTP2
+Status: install ok installed
+
+Package: curl
+Feature: schannel
+Architecture: x64-windows
+Multi-Arch: same
+Description: SSL support (Secure Channel)
+Status: install ok installed
+
+Package: curl
+Feature: ssl
+Architecture: x64-windows
+Multi-Arch: same
+Description: Default SSL backend
+Status: install ok installed
+
+Package: curl
+Feature: sspi
+Architecture: x64-windows
+Multi-Arch: same
+Description: SSPI support
+Status: install ok installed
+
+Package: fmt
+Version: 11.0.2
+Port-Version: 1
+Depends: vcpkg-cmake, vcpkg-cmake-config
+Architecture: x64-windows
+Multi-Arch: same
+Abi: 229b172df4c3a91058e4a7a7846c5d1de30aa25f360c2454be24f5170154d7d7
+Description: {fmt} is an open-source formatting library providing a fast and safe alternative to C stdio and C++ iostreams.
+Status: install ok installed
+
+Package: ghc-filesystem
+Version: 1.5.14
+Depends: vcpkg-cmake, vcpkg-cmake-config
+Architecture: x64-windows
+Multi-Arch: same
+Abi: 6ae35fcb468e4727e6841bd206014cf6948bd364114423d00a038d6589a15ed2
+Description: An implementation of C++17 std::filesystem for C++11/C++14/C++17/C++20 on Windows, macOS, Linux and FreeBSD
+Status: install ok installed
+
+Package: egl-registry
+Version: 2024-01-25
+Architecture: x64-windows
+Multi-Arch: same
+Abi: 9180c403f051fcd91524bc741196074533b4ba1efdab1c524989c4e1c7a2c1c1
+Description: EGL API and Extension Registry
+Status: install ok installed
+
+Package: opengl-registry
+Version: 2024-02-10
+Port-Version: 1
+Depends: egl-registry
+Architecture: x64-windows
+Multi-Arch: same
+Abi: 697f5ddb57431aae0aa8c91d4f67e55008c5723e652a5ffc139741c462b43a63
+Description: OpenGL, OpenGL ES, and OpenGL ES-SC API and Extension Registry
+Status: install ok installed
+
+Package: glad
+Version: 0.1.36
+Depends: egl-registry, opengl-registry, vcpkg-cmake, vcpkg-cmake-config
+Architecture: x64-windows
+Multi-Arch: same
+Abi: 816988b0422cc8ab3b9defe8cccc49778d14ac69c4fe7ebc818499a4918a1e2c
+Description: Multi-Language Vulkan/GL/GLES/EGL/GLX/WGL Loader-Generator based on the official specs.
+Default-Features: loader
+Status: install ok installed
+
+Package: glad
+Feature: loader
+Architecture: x64-windows
+Multi-Arch: same
+Description: Generate loader logic.
+Status: install ok installed
+
+Package: glfw3
+Version: 3.4
+Port-Version: 1
+Depends: vcpkg-cmake, vcpkg-cmake-config
+Architecture: x64-windows
+Multi-Arch: same
+Abi: 5dc19367aac43d4445e20a8fc6605b9f0b7718e742524627b1d07338b568b377
+Description: GLFW is a free, Open Source, multi-platform library for OpenGL, OpenGL ES and Vulkan application development. It provides a simple, platform-independent API for creating windows, contexts and surfaces, reading input, handling events, etc.
+Status: install ok installed
+
+Package: gtest
+Version: 1.16.0
+Depends: vcpkg-cmake, vcpkg-cmake-config
+Architecture: x64-windows
+Multi-Arch: same
+Abi: 7f618f4e7c21f10294f13c4f26e2d6660d36152208f1e741d443ec88f19b19e3
+Description: Google Testing and Mocking Framework
+Status: install ok installed
+
+Package: imgui
+Version: 1.91.9
+Depends: vcpkg-cmake, vcpkg-cmake-config
+Architecture: x64-windows
+Multi-Arch: same
+Abi: 30760299156e2193ccc351a6945d1173d95937820ffbd24444907acf3ccc3845
+Description: Bloat-free Immediate Mode Graphical User interface for C++ with minimal dependencies.
+Status: install ok installed
+
+Package: imgui
+Feature: glfw-binding
+Depends: glfw3
+Architecture: x64-windows
+Multi-Arch: same
+Description: Make available GLFW binding
+Status: install ok installed
+
+Package: imgui
+Feature: opengl3-binding
+Architecture: x64-windows
+Multi-Arch: same
+Description: Make available OpenGL3/ES/ES2 (modern) binding
+Status: install ok installed
+
+Package: implot
+Version: 0.16
+Depends: imgui, vcpkg-cmake, vcpkg-cmake-config
+Architecture: x64-windows
+Multi-Arch: same
+Abi: 0729451955a70d773bb5112bfd542a4c8e4e0c6a7a296acba2042e5ef5dd2b16
+Description: Advanced 2D Plotting for Dear ImGui
+Status: install ok installed
+
+Package: nlohmann-json
+Version: 3.11.3
+Port-Version: 1
+Depends: vcpkg-cmake, vcpkg-cmake-config
+Architecture: x64-windows
+Multi-Arch: same
+Abi: 70015ffe23e31e49542e1ad4cb40c7023eb5a4159202c3833a32c042a15aa651
+Description: JSON for Modern C++
+Status: install ok installed
+

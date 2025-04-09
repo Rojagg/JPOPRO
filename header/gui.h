@@ -12,6 +12,7 @@
 #include "api.h"
 #include "searching.h"
 #include <implot.h>
+#include <thread>
 
 class Gui {
 public:

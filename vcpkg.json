@@ -5,6 +5,7 @@
     "ghc-filesystem",
     "glad",
     "glfw3",
+    "gtest",
     {
       "name": "imgui",
       "features": [
@@ -13,7 +14,7 @@
       ]
     },
     "implot",
-    "nlohmann-json",
-    "gtest"
+    "nlohmann-json"
+ 
   ]
 }

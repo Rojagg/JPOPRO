@@ -43,8 +43,15 @@ void findInRange_Specific(double range) {
 	filteredStations_Specific.clear();
 	json localization;
 	std::ifstream file("../data/specific_place.json");
-	file >> localization;
+	if (!file.is_open() || isFileEmpty("../data/specific_place.json")) return;
 
+	try {
+		file >> localization;
+	}
+	catch (const json::parse_error& e) {
+		return;
+	}
+	
 	double x, y;
 	if (localization[0].contains("lat") && localization[0].contains("lon")) {
 		x = std::stod(localization[0]["lat"].get<std::string>());
@@ -53,11 +60,16 @@ void findInRange_Specific(double range) {
 
 		json stations;
 		if (isFileEmpty("../data/data_station.json")) {
-			ImGui::Text("Brak danych");
-			return;
+			getData();
 		}
 		std::ifstream file2("../data/data_station.json");
-		file2 >> stations;
+		if (!file2.is_open() || isFileEmpty("../data/data_station.json")) return;
+		try {
+			file2 >> stations;
+		}
+		catch (const json::parse_error& e) {
+			return;
+		}
 		range = range / 111;
 		
 		for (json& station : stations) {
@@ -116,11 +128,18 @@ void findCity(std::string& name, double& x, double& y) {
 void StationInRange(double range, double x, double y) { //SPYTAĆ CZY WYSTARCZY INFOMRACJA O MIEŚCIE CZY DOKŁADNIEJSZA
 	json Stations;
 	if (isFileEmpty("../data/data_station.json")) {
-		ImGui::Text("Brak danych");
+		getData();
+	}
+	if (isFileEmpty("../data/data_station.json")) {
 		return;
 	}
 	std::ifstream file("../data/data_station.json");
-	file >> Stations;
+	try {
+		file >> Stations;
+	}
+	catch (const json::parse_error& e) {
+		return;
+	}
 	range = range / 111;
 	std::cout << range;
 	for (json station : Stations) {
@@ -147,11 +166,17 @@ void StationInRange(double range, double x, double y) { //SPYTAĆ CZY WYSTARCZY 
 void DisplayAllStations() {
 	json Stations;
 	if (isFileEmpty("../data/data_station.json")) {
-		ImGui::Text("Brak danych");
 		return;
 	}
 	std::ifstream file("../data/data_station.json");
-	file >> Stations;
+	try {
+		file >> Stations;
+	}
+	catch (const json::parse_error& e) {
+		return;
+	}
+	
+	
 	for (auto& station : Stations) {
 		if (ImGui::Selectable(station["stationName"].get<std::string>().c_str())) {
 			getStationData(station["id"].get<int>());
@@ -208,11 +233,16 @@ void DisplayStationsInRange() {
 void displaySensor() {
 	json Sensors;
 	if (isFileEmpty("../data/single_station.json")) {
-		ImGui::Text("Brak danych");
+		
 		return;
 	}
 	std::ifstream file("../data/single_station.json");
-	file >> Sensors;
+	try {
+		file >> Sensors;
+	}
+	catch (const json::parse_error& e) {
+		return;
+	}
 	for (auto &Sensor : Sensors) {
 		if (ImGui::Selectable(Sensor["param"]["paramName"].get<std::string>().c_str())) {
 			getSensorData(Sensor["id"].get<int>());
@@ -228,8 +258,14 @@ void displaySensor() {
 void displayDay() {
 	json Measures;
 	std::ifstream file("../data/single_sensor.json");
-	if (!file) return;
-	file >> Measures;
+	if (!file.is_open()) return;
+	try {
+		file >> Measures;
+	}
+	catch (const json::parse_error& e) {
+		return;
+	}
+	
 
 	static std::string range[2] = {"",""};
 	
@@ -303,7 +339,12 @@ void PrepareData() {
 
 	}
 
-	file >> Measures;
+	try {
+		file >> Measures;
+	}
+	catch (const json::parse_error& e) {
+		return;
+	}
 
 	
 	filteredMeasures.clear();
@@ -330,7 +371,6 @@ void PrepareData() {
 		}
 	}
 
-	std::reverse(values.begin(), values.end());
 
 	ImGui::SetNextWindowSize(ImVec2(700, 300));
 	ImGui::SetNextWindowPos(ImVec2(1025, 330));
@@ -353,6 +393,7 @@ void PrepareData() {
  */
 void Analysis() {
 	if (filteredMeasures.empty()) return;
+
 	json valueMin = filteredMeasures[0];
 	json valueMax = filteredMeasures[0];
 	float average = 0;
@@ -367,10 +408,21 @@ void Analysis() {
 	std::string min = "Minimal value:" + std::to_string(valueMin["value"].get<float>()) + "\n Day: " + valueMin["date"].get<std::string>();
 	std::string max = "Maximal value:" + std::to_string(valueMax["value"].get<float>()) + "\n Day: " + valueMax["date"].get<std::string>();
 	std::string avg = "Average value:" + std::to_string(average/counter);
-	
+	std::string trend;
+	json valueFirst = filteredMeasures[0];
+	json valueLast = filteredMeasures[counter-1];
+	if (valueFirst["value"].get<float>() > valueLast["value"].get<float>())
+		trend = "Trend: Decrease";
+	else if (valueFirst["value"].get<float>() < valueLast["value"].get<float>())
+		trend = "Trend: Increase";
+	else
+		trend = "Trend: Constant";
 	ImGui::Text(min.c_str());
 	ImGui::Text(max.c_str());
 	ImGui::Text(avg.c_str());
+	ImGui::Text(trend.c_str());
+
+	
 }
 
 

@@ -52,9 +52,12 @@ void Gui::Update()
     ImGui::InputDouble("Zasieg", &input);
 
 	if (ImGui::Button("Zatwierdz##A")) {
-		double x = 0, y = 0;
-		findCity(text2, x, y);
-		StationInRange(input, x, y);
+		std::thread thread1([=]() {
+			double x = 0, y = 0;
+			findCity(text2, x, y);
+			StationInRange(input, x, y);
+			});
+		thread1.detach();
 	}
 
 	ImGui::End();
@@ -86,8 +89,11 @@ void Gui::Update()
 	
 
 	if (ImGui::Button("Zatwierdz##B")) {
-		getLocalization(text14, text12, std::to_string(input12));
-		findInRange_Specific(input1);
+		std::thread thread2([=]() {
+			getLocalization(text14, text12, std::to_string(input12));
+			findInRange_Specific(input1);
+			});
+		thread2.detach();
 		
 	}
 	ImGui::End();
@@ -114,8 +120,11 @@ void Gui::Update()
 	ImGui::Begin("Wybór akcji");
 	displayDay();
 	ImGui::End();
-
-	PrepareData();
+	std::thread prepareThread([=]() {
+		PrepareData();
+		});
+	prepareThread.join();
+	
 
 
 	ImGui::SetNextWindowSize(ImVec2(700, 185));
@@ -129,7 +138,8 @@ void Gui::Update()
 	ImGui::SetNextWindowPos(ImVec2(1680, 880));
 	ImGui::Begin("Odswiez dane");
 		if (ImGui::Button("Odswiez")) {
-			getData();
+				getData();
+			
 		}
 		ImGui::End();
 	

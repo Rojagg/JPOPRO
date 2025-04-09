@@ -21,9 +21,9 @@
  * @return size_t - total number of processed bytes
  */
 size_t write_callback(void* contents, size_t size, size_t amount, std::string* output) {
-	size_t totalsize = size * amount; //Obliczamy wielkość danych
-	output->append((char*)contents, totalsize); //pobraliśmy dane z contentes i nie mają określonej postaci, więc rzutujemy na char* i dodajemy do output
-	return totalsize; //Zwracamy całkowity rozmiar
+	size_t totalsize = size * amount; //calculate the size of data
+	output->append((char*)contents, totalsize); //add data on the end of string output
+	return totalsize; //return totalsize
 }
 
 /**
@@ -43,14 +43,14 @@ void getLocalization(std::string city, std::string street, std::string number) {
 	std::string localization = street + "%20" + number + "%20" + city;
 	std::string apiUrl = "https://nominatim.openstreetmap.org/search?q=" + localization + "&format=json&limit=1";
 
-	curl = curl_easy_init();
+	curl = curl_easy_init(); //return pointer to curl session
 	if (curl) {
-		curl_easy_setopt(curl, CURLOPT_URL, apiUrl.c_str());
-		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_callback);
-		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response);
+		curl_easy_setopt(curl, CURLOPT_URL, apiUrl.c_str());	//set url
+		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_callback);//write function
+		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response); //the localization of received data
 		curl_easy_setopt(curl, CURLOPT_USERAGENT, "Mozilla/5.0");
 		
-		result = curl_easy_perform(curl);
+		result = curl_easy_perform(curl); //api request with options above
 		if (result != CURLE_OK) std::cout << "Cannot download data";
 		else {
 			
@@ -66,7 +66,7 @@ void getLocalization(std::string city, std::string street, std::string number) {
 
 	}
 	
-	curl_easy_cleanup(curl);
+	curl_easy_cleanup(curl); //end of curl session - clear option, release resources
 }
 /**
  * @brief 

@@ -1,6 +1,7 @@
 ﻿cmake_minimum_required(VERSION 3.10)
 add_compile_options(/utf-8)
-
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
 project(Aplikacja)
 
 
@@ -24,7 +25,7 @@ target_link_libraries(Aplikacja PRIVATE
   glfw
   imgui::imgui
   implot::implot
-  GTest::gtest
+  GTest::gtest_main
 )
 
 
@@ -38,7 +39,7 @@ target_include_directories(Aplikacja PRIVATE
 
 enable_testing()
 
-add_executable(test_1 tests/test.cpp 
+add_executable(test_1 "tests/test.cpp" 
 "src/api.cpp" "src/Searching.cpp" "header/api.h" "header/searching.h" "src/gui.cpp")
 
 target_link_libraries(test_1 PRIVATE GTest::gtest
@@ -48,7 +49,7 @@ target_link_libraries(test_1 PRIVATE GTest::gtest
   glfw
   imgui::imgui
   implot::implot
-  GTest::gtest
+  GTest::gtest_main
 )
 
 target_include_directories(test_1 PRIVATE 
