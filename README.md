@@ -19,11 +19,11 @@ ______________________________________________________________________________
     ./bootstrap-vcpkg.sh
 
 
-2.Add vcpkg to enviroment varaibales
+2. Add vcpkg to enviroment varaibales
 	-add user variable named: "VCPKG_ROOT" with path: C:\Path\To\vcpkgDirectory\vcpkg
 	-add above varaible to user Varaiable named "PATH"
 
-3.Add vcpkg path to "CMakeUserPresets.json"
+3. Add vcpkg path to "CMakeUserPresets.json"
 	-set environment["VCPKG_ROOT"] to: C:\Path\To\vcpkgDirectory\vcpkg
 
 4.Install packages
