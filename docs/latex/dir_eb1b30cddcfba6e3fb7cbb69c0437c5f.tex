@@ -1,0 +1,47 @@
+\doxysection{C\+:/\+Users/\+Admin/\+Programming/\+Projekt/\+JPOPRO/vcpkg\+\_\+installed/x64-\/windows/include/gtest/internal/custom Directory Reference}
+\hypertarget{dir_eb1b30cddcfba6e3fb7cbb69c0437c5f}{}\label{dir_eb1b30cddcfba6e3fb7cbb69c0437c5f}\index{C:/Users/Admin/Programming/Projekt/JPOPRO/vcpkg\_installed/x64-\/windows/include/gtest/internal/custom Directory Reference@{C:/Users/Admin/Programming/Projekt/JPOPRO/vcpkg\_installed/x64-\/windows/include/gtest/internal/custom Directory Reference}}
+\doxysubsubsection*{Files}
+\begin{DoxyCompactItemize}
+\item 
+file {\bfseries gtest-\/port.\+h}
+\item 
+file {\bfseries gtest-\/printers.\+h}
+\item 
+file {\bfseries gtest.\+h}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+The custom directory is an injection point for custom user configurations.\hypertarget{README.md_autotoc_md6}{}\doxysubsection{\texorpdfstring{Header {\ttfamily gtest.\+h}}{Header {\ttfamily gtest.\+h}}}\label{README.md_autotoc_md6}
+\hypertarget{README.md_autotoc_md7}{}\doxysubsubsection{\texorpdfstring{The following macros can be defined\+:}{The following macros can be defined\+:}}\label{README.md_autotoc_md7}
+
+\begin{DoxyItemize}
+\item {\ttfamily GTEST\+\_\+\+OS\+\_\+\+STACK\+\_\+\+TRACE\+\_\+\+GETTER\+\_\+} -\/ The name of an implementation of {\ttfamily Os\+Stack\+Trace\+Getter\+Interface}.
+\item {\ttfamily GTEST\+\_\+\+CUSTOM\+\_\+\+TEMPDIR\+\_\+\+FUNCTION\+\_\+} -\/ An override for {\ttfamily testing\+::\+Temp\+Dir()}. See {\ttfamily testing\+::\+Temp\+Dir} for semantics and signature.
+\end{DoxyItemize}\hypertarget{README.md_autotoc_md8}{}\doxysubsection{\texorpdfstring{Header {\ttfamily gtest-\/port.\+h}}{Header {\ttfamily gtest-\/port.\+h}}}\label{README.md_autotoc_md8}
+The following macros can be defined\+:\hypertarget{README.md_autotoc_md9}{}\doxysubsubsection{\texorpdfstring{Logging\+:}{Logging\+:}}\label{README.md_autotoc_md9}
+
+\begin{DoxyItemize}
+\item {\ttfamily GTEST\+\_\+\+LOG\+\_\+(severity)}
+\item {\ttfamily GTEST\+\_\+\+CHECK\+\_\+(condition)}
+\item Functions {\ttfamily Log\+To\+Stderr()} and {\ttfamily Flush\+Info\+Log()} have to be provided too.
+\end{DoxyItemize}\hypertarget{README.md_autotoc_md10}{}\doxysubsubsection{\texorpdfstring{Threading\+:}{Threading\+:}}\label{README.md_autotoc_md10}
+
+\begin{DoxyItemize}
+\item {\ttfamily GTEST\+\_\+\+HAS\+\_\+\+NOTIFICATION\+\_\+} -\/ Enabled if Notification is already provided.
+\item {\ttfamily GTEST\+\_\+\+HAS\+\_\+\+MUTEX\+\_\+\+AND\+\_\+\+THREAD\+\_\+\+LOCAL\+\_\+} -\/ Enabled if {\ttfamily Mutex} and {\ttfamily Thread\+Local} are already provided. Must also provide {\ttfamily GTEST\+\_\+\+DECLARE\+\_\+\+STATIC\+\_\+\+MUTEX\+\_\+(mutex)} and {\ttfamily GTEST\+\_\+\+DEFINE\+\_\+\+STATIC\+\_\+\+MUTEX\+\_\+(mutex)}
+\item {\ttfamily GTEST\+\_\+\+EXCLUSIVE\+\_\+\+LOCK\+\_\+\+REQUIRED\+\_\+(locks)}
+\item {\ttfamily GTEST\+\_\+\+LOCK\+\_\+\+EXCLUDED\+\_\+(locks)}
+\end{DoxyItemize}\hypertarget{README.md_autotoc_md11}{}\doxysubsubsection{\texorpdfstring{Underlying library support features}{Underlying library support features}}\label{README.md_autotoc_md11}
+
+\begin{DoxyItemize}
+\item {\ttfamily GTEST\+\_\+\+HAS\+\_\+\+CXXABI\+\_\+\+H\+\_\+}
+\end{DoxyItemize}\hypertarget{README.md_autotoc_md12}{}\doxysubsubsection{\texorpdfstring{Exporting API symbols\+:}{Exporting API symbols\+:}}\label{README.md_autotoc_md12}
+
+\begin{DoxyItemize}
+\item {\ttfamily GTEST\+\_\+\+API\+\_\+} -\/ Specifier for exported symbols.
+\end{DoxyItemize}\hypertarget{README.md_autotoc_md13}{}\doxysubsection{\texorpdfstring{Header {\ttfamily gtest-\/printers.\+h}}{Header {\ttfamily gtest-\/printers.\+h}}}\label{README.md_autotoc_md13}
+
+\begin{DoxyItemize}
+\item See documentation at {\ttfamily \doxylink{gtest-printers_8h_source}{gtest/gtest-\/printers.\+h}} for details on how to define a custom printer. 
+\end{DoxyItemize}

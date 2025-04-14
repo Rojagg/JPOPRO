@@ -114,6 +114,53 @@ int getData() {
 		return 1;
 	}
 }
+
+/**
+ * @brief
+ * This function get the information about avery avaiable station from API and forward it into file "../data/data_station.json"
+ * And return the result of api response as boolean value
+ * 
+ * @return bool 
+ *	false - indicate problem with establish connectrion
+ *  true - establish connection with server
+ */
+bool getDataWithResponse() {
+
+	CURL* curl; //Dane dotyczące połączenia
+	CURLcode result; //Jaka odpowiedz serwera(w sensie błędy itp.)
+	std::string response; //Dane od serwera
+
+
+	curl = curl_easy_init();
+	if (curl) {   //Sprawdzamy czy nie został zwrócony nullptr
+		curl_easy_setopt(curl, CURLOPT_URL, "https://api.gios.gov.pl/pjp-api/rest/station/findAll"); //Wybieramy źródło
+		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_callback); //Wybieramy funkcję do zapisywania danych
+		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response); //Wybieramy miejsce do zapisywania danych
+
+		result = curl_easy_perform(curl); //Zapytanie HTTP get
+		if (result == CURLE_OK) {
+			std::ofstream file("../data/data_station.json");
+
+			if (file.is_open()) {
+				file << response;
+				file.close();
+				return 1;
+			}
+
+		}
+		else {
+			return 0;
+		}
+
+
+		curl_easy_cleanup(curl);
+
+	}
+	else {
+		return 0;
+	}
+}
+
 /**
  * @brief 
  * This function get the detailed information about single station from API and forward it into file "../data/single_station.json"

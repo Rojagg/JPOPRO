@@ -1,5 +1,5 @@
-\doxysection{C\+:/\+Users/xroja/\+Desktop/\+JPO projekt/\+Projekt\+Jezyki\+Programowania\+Obiektowego/src/\+Searching.cpp File Reference}
-\hypertarget{_searching_8cpp}{}\label{_searching_8cpp}\index{C:/Users/xroja/Desktop/JPO projekt/ProjektJezykiProgramowaniaObiektowego/src/Searching.cpp@{C:/Users/xroja/Desktop/JPO projekt/ProjektJezykiProgramowaniaObiektowego/src/Searching.cpp}}
+\doxysection{C\+:/\+Users/\+Admin/\+Programming/\+Projekt/\+JPOPRO/src/\+Searching.cpp File Reference}
+\hypertarget{_searching_8cpp}{}\label{_searching_8cpp}\index{C:/Users/Admin/Programming/Projekt/JPOPRO/src/Searching.cpp@{C:/Users/Admin/Programming/Projekt/JPOPRO/src/Searching.cpp}}
 
 
 This file handles all the operations on data that has been discovered by API.  
@@ -9,11 +9,13 @@ This file handles all the operations on data that has been discovered by API.
 \doxysubsubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
+bool \mbox{\hyperlink{_searching_8cpp_a67adb9d6dc56b9eb5d0f609a6a168a5b}{is\+File\+Empty}} (const std\+::string \&filename)
+\begin{DoxyCompactList}\small\item\em This function checks if the file is empty. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{_searching_8cpp_a77b9c6e12bb57b1ff57aee0e2b470323}{find\+In\+Range\+\_\+\+Specific}} (double range)
 \begin{DoxyCompactList}\small\item\em This function filtering the list of the station due to the user parameter (range) and the place in file "{}"{}../data/specific\+\_\+place.json"{} which includes the geographical latitude and longitude of the specific localization (City, Street, Number) \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{_searching_8cpp_ac4e442a88e5d7a2ddde0ed7db8fabf9e}{find\+City}} (std\+::string \&name, double \&x, double \&y)
+bool \mbox{\hyperlink{_searching_8cpp_a5e37245b0a7176cf7d530650ebfabf74}{find\+City}} (std\+::string \&name, double \&x, double \&y)
 \begin{DoxyCompactList}\small\item\em This function gives the geographical latitide and longitude of the city given in parameter name. \end{DoxyCompactList}\item 
-void \mbox{\hyperlink{_searching_8cpp_a8d69be4edcb42aa09bb109a893e9947c}{Station\+In\+Range}} (double range, double x, double y)
+void \mbox{\hyperlink{_searching_8cpp_a5d9d54a6fc8136e94d05b1986deefaec}{Station\+In\+Range}} (double range, double x, double y, bool is\+Find)
 \begin{DoxyCompactList}\small\item\em This function adding the places which meet the conditions into the vector -\/ filtered\+Stations. \end{DoxyCompactList}\item 
 \Hypertarget{_searching_8cpp_a773df826dd142ac1cf517d7e8dbe363e}\label{_searching_8cpp_a773df826dd142ac1cf517d7e8dbe363e} 
 void {\bfseries Display\+All\+Stations} ()
@@ -79,11 +81,11 @@ void display\+Day (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
 
 This function displays all times of measures available in "{}../data/single\+\_\+sensor.\+json"{}. 
 
-Users can set the range of days that the program uses for analysis and making graph \Hypertarget{_searching_8cpp_ac4e442a88e5d7a2ddde0ed7db8fabf9e}\index{Searching.cpp@{Searching.cpp}!findCity@{findCity}}
+Users can set the range of days that the program uses for analysis and making graph \Hypertarget{_searching_8cpp_a5e37245b0a7176cf7d530650ebfabf74}\index{Searching.cpp@{Searching.cpp}!findCity@{findCity}}
 \index{findCity@{findCity}!Searching.cpp@{Searching.cpp}}
 \doxysubsubsection{\texorpdfstring{findCity()}{findCity()}}
-{\footnotesize\ttfamily \label{_searching_8cpp_ac4e442a88e5d7a2ddde0ed7db8fabf9e} 
-void find\+City (\begin{DoxyParamCaption}\item[{std\+::string \&}]{name}{, }\item[{double \&}]{x}{, }\item[{double \&}]{y}{}\end{DoxyParamCaption})}
+{\footnotesize\ttfamily \label{_searching_8cpp_a5e37245b0a7176cf7d530650ebfabf74} 
+bool find\+City (\begin{DoxyParamCaption}\item[{std\+::string \&}]{name}{, }\item[{double \&}]{x}{, }\item[{double \&}]{y}{}\end{DoxyParamCaption})}
 
 
 
@@ -113,6 +115,21 @@ The stations which meet the conditions is being pushed to vector (filtered\+Meas
 {\em range} & -\/ search radius \\
 \hline
 \end{DoxyParams}
+\Hypertarget{_searching_8cpp_a67adb9d6dc56b9eb5d0f609a6a168a5b}\index{Searching.cpp@{Searching.cpp}!isFileEmpty@{isFileEmpty}}
+\index{isFileEmpty@{isFileEmpty}!Searching.cpp@{Searching.cpp}}
+\doxysubsubsection{\texorpdfstring{isFileEmpty()}{isFileEmpty()}}
+{\footnotesize\ttfamily \label{_searching_8cpp_a67adb9d6dc56b9eb5d0f609a6a168a5b} 
+bool is\+File\+Empty (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{filename}{}\end{DoxyParamCaption})}
+
+
+
+This function checks if the file is empty. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em filename} & -\/ the name of file we checks \\
+\hline
+\end{DoxyParams}
 \Hypertarget{_searching_8cpp_a7b07fc230ec54ac2055936c222e2e69b}\index{Searching.cpp@{Searching.cpp}!PrepareData@{PrepareData}}
 \index{PrepareData@{PrepareData}!Searching.cpp@{Searching.cpp}}
 \doxysubsubsection{\texorpdfstring{PrepareData()}{PrepareData()}}
@@ -123,11 +140,11 @@ void Prepare\+Data (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
 
 This function adds the measures which makes the condition (includes in time\+Range from display\+Day function) to vector(filtered\+\_\+\+Measures) 
 
-After that function generates the Plot \Hypertarget{_searching_8cpp_a8d69be4edcb42aa09bb109a893e9947c}\index{Searching.cpp@{Searching.cpp}!StationInRange@{StationInRange}}
+After that function generates the Plot \Hypertarget{_searching_8cpp_a5d9d54a6fc8136e94d05b1986deefaec}\index{Searching.cpp@{Searching.cpp}!StationInRange@{StationInRange}}
 \index{StationInRange@{StationInRange}!Searching.cpp@{Searching.cpp}}
 \doxysubsubsection{\texorpdfstring{StationInRange()}{StationInRange()}}
-{\footnotesize\ttfamily \label{_searching_8cpp_a8d69be4edcb42aa09bb109a893e9947c} 
-void Station\+In\+Range (\begin{DoxyParamCaption}\item[{double}]{range}{, }\item[{double}]{x}{, }\item[{double}]{y}{}\end{DoxyParamCaption})}
+{\footnotesize\ttfamily \label{_searching_8cpp_a5d9d54a6fc8136e94d05b1986deefaec} 
+void Station\+In\+Range (\begin{DoxyParamCaption}\item[{double}]{range}{, }\item[{double}]{x}{, }\item[{double}]{y}{, }\item[{bool}]{is\+Find}{}\end{DoxyParamCaption})}
 
 
 

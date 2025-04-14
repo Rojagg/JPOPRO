@@ -99,7 +99,7 @@ void findInRange_Specific(double range) {
  * @param x - the value of latitue
  * @param y - the value of latitude
  */
-void findCity(std::string& name, double& x, double& y) {
+bool findCity(std::string& name, double& x, double& y) {
 	json Cities;
 	std::ifstream file("../data/data_cities.json");
 	file >> Cities;
@@ -112,10 +112,10 @@ void findCity(std::string& name, double& x, double& y) {
 			std::cout << "found" << '\n';
 			x = city["Latitude"].get<double>();
 			y = city["Longitude"].get<double>();
-			return;
+			return 1;
 		}
 	}
-	std::cout << "Not found" << '\n';
+	return 0;
 
 }
 /**
@@ -125,8 +125,10 @@ void findCity(std::string& name, double& x, double& y) {
  * @param x - a value of Latitude
  * @param y - a value of Longitude
  */
-void StationInRange(double range, double x, double y) { //SPYTAĆ CZY WYSTARCZY INFOMRACJA O MIEŚCIE CZY DOKŁADNIEJSZA
+void StationInRange(double range, double x, double y, bool isFind) { //SPYTAĆ CZY WYSTARCZY INFOMRACJA O MIEŚCIE CZY DOKŁADNIEJSZA
 	json Stations;
+	filteredStations.clear();
+	if (!isFind) return;
 	if (isFileEmpty("../data/data_station.json")) {
 		getData();
 	}
@@ -200,9 +202,6 @@ void DisplayStationsInRange_Spec() {
 		if (ImGui::Selectable(station["stationName"].get<std::string>().c_str())) {
 			getStationData(station["id"].get<int>());
 		}
-		//ImGui::Text("ID: %d", station["id"].get<int>());
-		//ImGui::Text("Nazwa: %s", station["stationName"].get<std::string>().c_str());
-		//std::cout << station["stationName"].get<std::string>() << '\n';
 	}
 }
 /**
@@ -220,9 +219,6 @@ void DisplayStationsInRange() {
 		if (ImGui::Selectable(station["stationName"].get<std::string>().c_str())) {
 			getStationData(station["id"].get<int>());
 		}
-		//ImGui::Text("ID: %d", station["id"].get<int>());
-		//ImGui::Text("Nazwa: %s", station["stationName"].get<std::string>().c_str());
-		//std::cout << station["stationName"].get<std::string>() << '\n';
 	}
 }
 /**
@@ -324,7 +320,6 @@ void PrepareData() {
 	std::ifstream file("../data/single_sensor.json");
 
 	if (!file) {
-		std::cerr << "Nie można otworzyć pliku!" << std::endl;
 		ImGui::SetNextWindowSize(ImVec2(700, 300));
 		ImGui::SetNextWindowPos(ImVec2(1025, 330));
 		ImGui::Begin("Wykres");
@@ -405,18 +400,18 @@ void Analysis() {
 		average += measure["value"].get<float>();
 		counter++;
 	}
-	std::string min = "Minimal value:" + std::to_string(valueMin["value"].get<float>()) + "\n Day: " + valueMin["date"].get<std::string>();
-	std::string max = "Maximal value:" + std::to_string(valueMax["value"].get<float>()) + "\n Day: " + valueMax["date"].get<std::string>();
-	std::string avg = "Average value:" + std::to_string(average/counter);
+	std::string min = "Minimalna wartosc:" + std::to_string(valueMin["value"].get<float>()) + "\n Day: " + valueMin["date"].get<std::string>();
+	std::string max = "Maksymalna wartosc:" + std::to_string(valueMax["value"].get<float>()) + "\n Day: " + valueMax["date"].get<std::string>();
+	std::string avg = "Srednia wartosc:" + std::to_string(average/counter);
 	std::string trend;
 	json valueFirst = filteredMeasures[0];
 	json valueLast = filteredMeasures[counter-1];
 	if (valueFirst["value"].get<float>() > valueLast["value"].get<float>())
-		trend = "Trend: Decrease";
+		trend = "Trend: Spadek";
 	else if (valueFirst["value"].get<float>() < valueLast["value"].get<float>())
-		trend = "Trend: Increase";
+		trend = "Trend: Wzrost";
 	else
-		trend = "Trend: Constant";
+		trend = "Trend: Stały";
 	ImGui::Text(min.c_str());
 	ImGui::Text(max.c_str());
 	ImGui::Text(avg.c_str());

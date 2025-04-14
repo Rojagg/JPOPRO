@@ -1,5 +1,5 @@
 \doxysection{gui.\+h}
-\hypertarget{gui_8h_source}{}\label{gui_8h_source}\index{C:/Users/xroja/Desktop/JPO projekt/ProjektJezykiProgramowaniaObiektowego/header/gui.h@{C:/Users/xroja/Desktop/JPO projekt/ProjektJezykiProgramowaniaObiektowego/header/gui.h}}
+\hypertarget{gui_8h_source}{}\label{gui_8h_source}\index{C:/Users/Admin/Programming/Projekt/JPOPRO/header/gui.h@{C:/Users/Admin/Programming/Projekt/JPOPRO/header/gui.h}}
 
 \begin{DoxyCode}{0}
 \DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ GUI\_H}}
@@ -11,23 +11,24 @@
 \DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <imgui\_impl\_glfw.h>}}
 \DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <imgui\_impl\_opengl3.h>}}
 \DoxyCodeLine{00009\ \textcolor{preprocessor}{\#define\ GLFW\_INCLUDE\_NONE}}
-\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ "{}GLFW/glfw3.h"{}}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ "{}\mbox{\hyperlink{glfw3_8h}{GLFW/glfw3.h}}"{}}}
 \DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ "{}glad/glad.h"{}}}
 \DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}api.h"{}}}
 \DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}searching.h"{}}}
 \DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ <implot.h>}}
-\DoxyCodeLine{00015\ }
-\DoxyCodeLine{00016\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_gui}{Gui}}\ \{}
-\DoxyCodeLine{00017\ \textcolor{keyword}{public}:}
-\DoxyCodeLine{00018\ \ \ \ \ \textcolor{keywordtype}{void}\ Init(GLFWwindow*\ window,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ glsl\_version);}
-\DoxyCodeLine{00019\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_gui_a3f7c5922b74911f81663a4ea1aedc3b0}{Update}}();}
-\DoxyCodeLine{00020\ \ \ \ \ \textcolor{keywordtype}{void}\ Render();}
-\DoxyCodeLine{00021\ \ \ \ \ \textcolor{keywordtype}{void}\ Shutdown();}
-\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keywordtype}{void}\ NewFrame();}
-\DoxyCodeLine{00023\ \ \ \ \ }
-\DoxyCodeLine{00024\ \};}
-\DoxyCodeLine{00025\ }
-\DoxyCodeLine{00026\ \textcolor{preprocessor}{\#endif}}
-\DoxyCodeLine{00027\ \textcolor{comment}{//ą}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ <thread>}}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_gui}{Gui}}\ \{}
+\DoxyCodeLine{00018\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00019\ \ \ \ \ \textcolor{keywordtype}{void}\ Init(\mbox{\hyperlink{group__window_ga3c96d80d363e67d13a41b5d1821f3242}{GLFWwindow}}*\ window,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ glsl\_version);}
+\DoxyCodeLine{00020\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_gui_a3f7c5922b74911f81663a4ea1aedc3b0}{Update}}();}
+\DoxyCodeLine{00021\ \ \ \ \ \textcolor{keywordtype}{void}\ Render();}
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keywordtype}{void}\ Shutdown();}
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keywordtype}{void}\ NewFrame();}
+\DoxyCodeLine{00024\ \ \ \ \ }
+\DoxyCodeLine{00025\ \};}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00028\ \textcolor{comment}{//ą}}
 
 \end{DoxyCode}

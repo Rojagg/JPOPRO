@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.13.2"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>JPO Projekt: C:/Users/xroja/Desktop/JPO projekt/ProjektJezykiProgramowaniaObiektowego/src/api.cpp File Reference</title>
+<title>JPO Projekt: C:/Users/Admin/Programming/Projekt/JPOPRO/src/api.cpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -123,6 +123,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a84631e48832ced5746f0c707b811b870" id="r_a84631e48832ced5746f0c707b811b870"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a84631e48832ced5746f0c707b811b870">getData</a> ()</td></tr>
 <tr class="memdesc:a84631e48832ced5746f0c707b811b870"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function get the information about avery avaiable station from API and forward it into file "../data/data_station.json".  <br /></td></tr>
 <tr class="separator:a84631e48832ced5746f0c707b811b870"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea6d0e151eebaf44508c19de32ff28c4" id="r_aea6d0e151eebaf44508c19de32ff28c4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aea6d0e151eebaf44508c19de32ff28c4">getDataWithResponse</a> ()</td></tr>
+<tr class="memdesc:aea6d0e151eebaf44508c19de32ff28c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function get the information about avery avaiable station from API and forward it into file "../data/data_station.json" And return the result of api response as boolean value.  <br /></td></tr>
+<tr class="separator:aea6d0e151eebaf44508c19de32ff28c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3eb792290c090d00bcd5b4b17fbb4b46" id="r_a3eb792290c090d00bcd5b4b17fbb4b46"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3eb792290c090d00bcd5b4b17fbb4b46">getStationData</a> (int id)</td></tr>
 <tr class="memdesc:a3eb792290c090d00bcd5b4b17fbb4b46"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function get the detailed information about single station from API and forward it into file "../data/single_station.json".  <br /></td></tr>
 <tr class="separator:a3eb792290c090d00bcd5b4b17fbb4b46"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -154,6 +157,26 @@ Functions</h2></td></tr>
 
 <p>This function get the information about avery avaiable station from API and forward it into file "../data/data_station.json". </p>
 <dl class="section return"><dt>Returns</dt><dd>int </dd></dl>
+
+</div>
+</div>
+<a id="aea6d0e151eebaf44508c19de32ff28c4" name="aea6d0e151eebaf44508c19de32ff28c4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aea6d0e151eebaf44508c19de32ff28c4">&#9670;&#160;</a></span>getDataWithResponse()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool getDataWithResponse </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>This function get the information about avery avaiable station from API and forward it into file "../data/data_station.json" And return the result of api response as boolean value. </p>
+<dl class="section return"><dt>Returns</dt><dd>bool false - indicate problem with establish connectrion true - establish connection with server </dd></dl>
 
 </div>
 </div>

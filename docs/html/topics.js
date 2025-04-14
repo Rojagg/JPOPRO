@@ -1,5 +1,7 @@
 var topics =
 [
+    [ "REQUIERMENTS", "index.html#autotoc_md0", null ],
+    [ "Setup on Windows - step by step", "index.html#autotoc_md1", null ],
     [ "Context reference", "group__context.html", "group__context" ],
     [ "Vulkan support reference", "group__vulkan.html", "group__vulkan" ],
     [ "Initialization, version and error reference", "group__init.html", "group__init" ],

@@ -1,4 +1,42 @@
 \chapter{JPO Projekt}
 \hypertarget{index}{}\label{index}\index{JPO Projekt@{JPO Projekt}}
-\label{index_md__c_1_2_users_2xroja_2_desktop_2_j_p_o_01projekt_2_projekt_jezyki_programowania_obiektowego_2_r_e_a_d_m_e}%
-\Hypertarget{index_md__c_1_2_users_2xroja_2_desktop_2_j_p_o_01projekt_2_projekt_jezyki_programowania_obiektowego_2_r_e_a_d_m_e}%
+\label{index_md__c_1_2_users_2_admin_2_programming_2_projekt_2_j_p_o_p_r_o_2_r_e_a_d_m_e}%
+\Hypertarget{index_md__c_1_2_users_2_admin_2_programming_2_projekt_2_j_p_o_p_r_o_2_r_e_a_d_m_e}%
+ \#\+PROJECT JPO -\/ Szymon Półgęsek
+
+\#\+APPLICATION TO MONITOR AIR QUALITY IN POLAND \DoxyHorRuler{0}
+\hypertarget{index_autotoc_md0}{}\doxysubsection{\texorpdfstring{REQUIERMENTS}{REQUIERMENTS}}\label{index_autotoc_md0}
+
+\begin{DoxyItemize}
+\item C++ version 17 or newer
+\item CMAKE
+\item vcpkg \DoxyHorRuler{0}
+
+\end{DoxyItemize}\hypertarget{index_autotoc_md1}{}\doxysubsection{\texorpdfstring{Setup on Windows -\/ step by step}{Setup on Windows -\/ step by step}}\label{index_autotoc_md1}
+
+\begin{DoxyEnumerate}
+\item Install vcpkg
+\begin{DoxyItemize}
+\item type in CMD\+:
+\end{DoxyItemize}
+
+git clone \href{https://github.com/Microsoft/vcpkg.git}{\texttt{ https\+://github.\+com/\+Microsoft/vcpkg.\+git}} cd vcpkg ./bootstrap-\/vcpkg.sh
+\item Add vcpkg to enviroment varaibales
+\begin{DoxyItemize}
+\item add user variable named\+: "{}\+VCPKG\+\_\+\+ROOT"{} with path\+: C\+:\textbackslash{}\+Path\textbackslash{}\+To\textbackslash{}vcpkg\+Directory\textbackslash{}vcpkg
+\item add above varaible to user Varaiable named "{}\+PATH"{}
+\end{DoxyItemize}
+\item Add vcpkg path to "{}\+CMake\+User\+Presets.\+json"{}
+\begin{DoxyItemize}
+\item set environment\mbox{[}"{}\+VCPKG\+\_\+\+ROOT"{}\mbox{]} to\+: C\+:\textbackslash{}\+Path\textbackslash{}\+To\textbackslash{}vcpkg\+Directory\textbackslash{}vcpkg
+\end{DoxyItemize}
+\item Install packages
+\begin{DoxyItemize}
+\item type in cmd\+:
+\end{DoxyItemize}
+
+./vcpkg install
+\end{DoxyEnumerate}
+
+\DoxyHorRuler{0}
+ 

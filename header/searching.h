@@ -14,10 +14,9 @@ using json = nlohmann::json;
 
 bool isFileEmpty(const std::string& filename);
 
+bool findCity(std::string& name, double& x, double& y);
 
-void findCity(std::string& name, double& x, double& y);
-
-void StationInRange(double range, double x, double y);
+void StationInRange(double range, double x, double y, bool isFind);
 
 void DisplayAllStations();
 

@@ -105,8 +105,41 @@ $(function(){initNavTree('index.html',''); initResizable(true); });
   <div class="headertitle"><div class="title">JPO Projekt </div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="md__c_1_2_users_2xroja_2_desktop_2_j_p_o_01projekt_2_projekt_jezyki_programowania_obiektowego_2_r_e_a_d_m_e"></a></p>
-</div></div><!-- PageDoc -->
+<div class="textblock"><p><a class="anchor" id="md__c_1_2_users_2_admin_2_programming_2_projekt_2_j_p_o_p_r_o_2_r_e_a_d_m_e"></a> #PROJECT JPO - Szymon Półgęsek</p>
+<p>#APPLICATION TO MONITOR AIR QUALITY IN POLAND </p><hr  />
+<h2><a class="anchor" id="autotoc_md0"></a>
+REQUIERMENTS</h2>
+<ul>
+<li>C++ version 17 or newer</li>
+<li>CMAKE</li>
+<li>vcpkg <hr  />
+</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md1"></a>
+Setup on Windows - step by step</h2>
+<ol type="1">
+<li><p class="startli">Install vcpkg</p><ul>
+<li>type in CMD:</li>
+</ul>
+<p class="startli">git clone <a href="https://github.com/Microsoft/vcpkg.git">https://github.com/Microsoft/vcpkg.git</a> cd vcpkg ./bootstrap-vcpkg.sh</p>
+</li>
+<li>Add vcpkg to enviroment varaibales<ul>
+<li>add user variable named: "VCPKG_ROOT" with path: C:\Path\To\vcpkgDirectory\vcpkg</li>
+<li>add above varaible to user Varaiable named "PATH"</li>
+</ul>
+</li>
+<li>Add vcpkg path to "CMakeUserPresets.json"<ul>
+<li>set environment["VCPKG_ROOT"] to: C:\Path\To\vcpkgDirectory\vcpkg</li>
+</ul>
+</li>
+<li><p class="startli">Install packages</p><ul>
+<li>type in cmd:</li>
+</ul>
+<p class="startli">./vcpkg install</p>
+</li>
+</ol>
+<hr  />
+ </div></div><!-- PageDoc -->
 <a href="doxygen_crawl.html"></a>
 </div><!-- contents -->
 </div><!-- doc-content -->

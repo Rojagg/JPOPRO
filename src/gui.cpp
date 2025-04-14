@@ -47,15 +47,15 @@ void Gui::Update()
     static double input = 0.0;
 
 	ImGui::InputText("Miejscowosc", text, sizeof(text));
-        text2 = text; // Aktualizujemy `text2` tylko po zmianie `text`
+        text2 = text; 
 
     ImGui::InputDouble("Zasieg", &input);
 
 	if (ImGui::Button("Zatwierdz##A")) {
 		std::thread thread1([=]() {
 			double x = 0, y = 0;
-			findCity(text2, x, y);
-			StationInRange(input, x, y);
+			bool find = findCity(text2, x, y);
+			StationInRange(input, x, y, find);
 			});
 		thread1.detach();
 	}
@@ -80,10 +80,10 @@ void Gui::Update()
 	static std::string text14;
 
 	ImGui::InputText("Miejscowosc", text13, sizeof(text13));
-	text14 = text13; // Aktualizujemy `text2` tylko po zmianie `text`
+	text14 = text13; 
 
 	ImGui::InputText("Ulica", text11, sizeof(text11));
-	text12 = text11; // Aktualizujemy `text2` tylko po zmianie `text`
+	text12 = text11; 
 	ImGui::InputInt("Numer mieszkania", &input12);
 	ImGui::InputDouble("Zasieg", &input1);
 	
@@ -109,7 +109,7 @@ void Gui::Update()
 
 	ImGui::SetNextWindowSize(ImVec2(375, 250));
 	ImGui::SetNextWindowPos(ImVec2(990, 50));
-	ImGui::Begin("Wybór stacji");
+	ImGui::Begin("Wybór parametru");
 	displaySensor();
 	ImGui::End();
 
@@ -134,13 +134,24 @@ void Gui::Update()
 		ImGui::End();
 
 
-	ImGui::SetNextWindowSize(ImVec2(120, 80));
-	ImGui::SetNextWindowPos(ImVec2(1680, 880));
+	ImGui::SetNextWindowSize(ImVec2(330, 80));
+	ImGui::SetNextWindowPos(ImVec2(1240, 845));
 	ImGui::Begin("Odswiez dane");
+	static bool test = getDataWithResponse();
 		if (ImGui::Button("Odswiez")) {
-				getData();
 			
+				test = getDataWithResponse();
+				
+				
 		}
+		if (test) {
+			ImGui::Text("Nawiazano polaczenie z serwerem");
+		}
+		else {
+			ImGui::Text("Brak polaczenie z serwerem - dane archwialne");
+		}
+
+		
 		ImGui::End();
 	
 	
