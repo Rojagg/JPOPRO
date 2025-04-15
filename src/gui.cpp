@@ -140,7 +140,7 @@ void Gui::Update()
 	//Status of connection with server 
 	ImGui::SetNextWindowSize(ImVec2(330, 80));
 	ImGui::SetNextWindowPos(ImVec2(1240, 845));
-	ImGui::Begin("Odswiez dane");
+	ImGui::Begin("Status");
 	static bool test = getDataWithResponse();
 		if (ImGui::Button("Odswiez")) {
 			
