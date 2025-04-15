@@ -25,10 +25,13 @@ std::string timeRange[2];
  *
  * 
  * @param filename - the name of file we checks
+ * @return bool
+ *  true = empty file or file doesn't exist
+ *  false = File contains data
  */
 bool isFileEmpty(const std::string& filename) {
 	std::ifstream file(filename);
-	return file.peek() == std::ifstream::traits_type::eof();
+	return file.peek() == std::ifstream::traits_type::eof(); //if the next reading character is end of line return 1 == empty file
 }
 
 /**
@@ -46,7 +49,7 @@ void findInRange_Specific(double range) {
 	if (!file.is_open() || isFileEmpty("../data/specific_place.json")) return;
 
 	try {
-		file >> localization;
+		file >> localization;         //Catch the parse error when data is send to json variable
 	}
 	catch (const json::parse_error& e) {
 		return;
@@ -98,6 +101,10 @@ void findInRange_Specific(double range) {
  * @param name - name of city
  * @param x - the value of latitue
  * @param y - the value of latitude
+ * 
+ * @return bool
+ * true - find city the same as string name
+ * false - cannot find city with expected value
  */
 bool findCity(std::string& name, double& x, double& y) {
 	json Cities;
@@ -137,7 +144,7 @@ void StationInRange(double range, double x, double y, bool isFind) { //SPYTAĆ C
 	}
 	std::ifstream file("../data/data_station.json");
 	try {
-		file >> Stations;
+		file >> Stations;            //Catch the parse error when data is send to json variable
 	}
 	catch (const json::parse_error& e) {
 		return;
@@ -172,7 +179,7 @@ void DisplayAllStations() {
 	}
 	std::ifstream file("../data/data_station.json");
 	try {
-		file >> Stations;
+		file >> Stations;      //Catch the parse error when data is send to json variable
 	}
 	catch (const json::parse_error& e) {
 		return;
@@ -234,7 +241,7 @@ void displaySensor() {
 	}
 	std::ifstream file("../data/single_station.json");
 	try {
-		file >> Sensors;
+		file >> Sensors;              //Catch the parse error when data is send to json variable
 	}
 	catch (const json::parse_error& e) {
 		return;
@@ -328,7 +335,7 @@ void PrepareData() {
 			ImPlot::PlotBars("Stężenie", values.data(), values.size());
 			ImPlot::EndPlot();
 		}
-
+		
 		ImGui::End();
 		return;
 

@@ -6,7 +6,7 @@ var searchData=
   ['cache_5faccessor_3c_20float_20_3e_3',['cache_accessor&lt; float &gt;',['../structdetail_1_1dragonbox_1_1cache__accessor_3_01float_01_4.html',1,'detail::dragonbox']]],
   ['cached_5fpower_4',['cached_power',['../structdetail_1_1dtoa__impl_1_1cached__power.html',1,'detail::dtoa_impl']]],
   ['callabletag_5',['CallableTag',['../structtesting_1_1_once_action_3_01_result_07_args_8_8_8_08_4_1_1_std_function_adaptor_1_1_callable_tag.html',1,'testing::OnceAction&lt; Result(Args...)&gt;::StdFunctionAdaptor']]],
-  ['can_20be_20defined_3a_6',['The following macros can be defined:',['../C:/Users/Admin/Programming/Projekt/JPOPRO/vcpkg_installed/x64-windows/include/gtest/internal/custom/README.md#autotoc_md7',1,'']]],
+  ['can_20be_20defined_3a_6',['The following macros can be defined:',['../C:/Users/xroja/Desktop/Zaliczenie/JPOPRO/vcpkg_installed/x64-windows/include/gtest/internal/custom/README.md#autotoc_md7',1,'']]],
   ['capacity_7',['capacity',['../classdetail_1_1buffer.html#ac7ff14268d6b32d3d878291445ff4dd3',1,'detail::buffer']]],
   ['carrier_5fuint_8',['carrier_uint',['../structdetail_1_1dragonbox_1_1float__info.html',1,'detail::dragonbox::carrier_uint&lt; double &gt;'],['../structdetail_1_1dragonbox_1_1float__info.html',1,'detail::dragonbox::carrier_uint&lt; float &gt;']]],
   ['cartesianproductgenerator_9',['CartesianProductGenerator',['../classtesting_1_1internal_1_1_cartesian_product_generator.html',1,'testing::internal']]],

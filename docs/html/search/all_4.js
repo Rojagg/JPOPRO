@@ -13,7 +13,7 @@ var searchData=
   ['defaultvalue_10',['DefaultValue',['../classtesting_1_1_default_value.html',1,'testing']]],
   ['defaultvalue_3c_20t_20_26_20_3e_11',['DefaultValue&lt; T &amp; &gt;',['../classtesting_1_1_default_value_3_01_t_01_6_01_4.html',1,'testing']]],
   ['defaultvalue_3c_20void_20_3e_12',['DefaultValue&lt; void &gt;',['../classtesting_1_1_default_value_3_01void_01_4.html',1,'testing']]],
-  ['defined_3a_13',['The following macros can be defined:',['../C:/Users/Admin/Programming/Projekt/JPOPRO/vcpkg_installed/x64-windows/include/gtest/internal/custom/README.md#autotoc_md7',1,'']]],
+  ['defined_3a_13',['The following macros can be defined:',['../C:/Users/xroja/Desktop/Zaliczenie/JPOPRO/vcpkg_installed/x64-windows/include/gtest/internal/custom/README.md#autotoc_md7',1,'']]],
   ['deleteargaction_14',['DeleteArgAction',['../structtesting_1_1internal_1_1_delete_arg_action.html',1,'testing::internal']]],
   ['deprecated_20list_15',['Deprecated List',['../deprecated.html',1,'']]],
   ['detail_16',['detail',['../namespacedetail.html',1,'']]],

@@ -1,5 +1,5 @@
-\doxysection{C\+:/\+Users/\+Admin/\+Programming/\+Projekt/\+JPOPRO/src/\+Searching.cpp File Reference}
-\hypertarget{_searching_8cpp}{}\label{_searching_8cpp}\index{C:/Users/Admin/Programming/Projekt/JPOPRO/src/Searching.cpp@{C:/Users/Admin/Programming/Projekt/JPOPRO/src/Searching.cpp}}
+\doxysection{C\+:/\+Users/xroja/\+Desktop/\+Zaliczenie/\+JPOPRO/src/\+Searching.cpp File Reference}
+\hypertarget{_searching_8cpp}{}\label{_searching_8cpp}\index{C:/Users/xroja/Desktop/Zaliczenie/JPOPRO/src/Searching.cpp@{C:/Users/xroja/Desktop/Zaliczenie/JPOPRO/src/Searching.cpp}}
 
 
 This file handles all the operations on data that has been discovered by API.  
@@ -97,9 +97,12 @@ This function gives the geographical latitide and longitude of the city given in
 \hline
 {\em x} & -\/ the value of latitue \\
 \hline
-{\em y} & -\/ the value of latitude \\
+{\em y} & -\/ the value of latitude\\
 \hline
 \end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+bool true -\/ find city the same as string name false -\/ cannot find city with expected value 
+\end{DoxyReturn}
 \Hypertarget{_searching_8cpp_a77b9c6e12bb57b1ff57aee0e2b470323}\index{Searching.cpp@{Searching.cpp}!findInRange\_Specific@{findInRange\_Specific}}
 \index{findInRange\_Specific@{findInRange\_Specific}!Searching.cpp@{Searching.cpp}}
 \doxysubsubsection{\texorpdfstring{findInRange\_Specific()}{findInRange\_Specific()}}
@@ -130,6 +133,9 @@ This function checks if the file is empty.
 {\em filename} & -\/ the name of file we checks \\
 \hline
 \end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+bool true = empty file or file doesn\textquotesingle{}t exist false = File contains data 
+\end{DoxyReturn}
 \Hypertarget{_searching_8cpp_a7b07fc230ec54ac2055936c222e2e69b}\index{Searching.cpp@{Searching.cpp}!PrepareData@{PrepareData}}
 \index{PrepareData@{PrepareData}!Searching.cpp@{Searching.cpp}}
 \doxysubsubsection{\texorpdfstring{PrepareData()}{PrepareData()}}

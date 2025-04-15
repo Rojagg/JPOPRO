@@ -18,7 +18,7 @@ var searchData=
   ['analysis_15',['Analysis',['../_searching_8cpp.html#a92db6f5f05d0f8de69b41a90e13f926a',1,'Searching.cpp']]],
   ['and_20error_20reference_16',['Initialization, version and error reference',['../group__init.html',1,'']]],
   ['ansi_5fcolor_5fescape_17',['ansi_color_escape',['../structdetail_1_1ansi__color__escape.html',1,'detail']]],
-  ['api_20symbols_3a_18',['Exporting API symbols:',['../C:/Users/Admin/Programming/Projekt/JPOPRO/vcpkg_installed/x64-windows/include/gtest/internal/custom/README.md#autotoc_md12',1,'']]],
+  ['api_20symbols_3a_18',['Exporting API symbols:',['../C:/Users/xroja/Desktop/Zaliczenie/JPOPRO/vcpkg_installed/x64-windows/include/gtest/internal/custom/README.md#autotoc_md12',1,'']]],
   ['api_2ecpp_19',['api.cpp',['../api_8cpp.html',1,'']]],
   ['apigen_20',['apiGen',['../classreg_1_1_registry.html#a2c1039e5a81aeb49f9475112fd845e8e',1,'reg::Registry']]],
   ['apireset_21',['apiReset',['../classreg_1_1_registry.html#a4d7d2c6f3432269587041f00610333e4',1,'reg::Registry']]],

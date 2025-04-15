@@ -79,11 +79,11 @@ TEST(StationInRange_TEST, NoFilesWithStationDataOREmptyFile) {
 	if (std::filesystem::exists("../data/data_station.json"))
 		std::filesystem::remove("../data/data_station.json");
 
-	EXPECT_NO_THROW(StationInRange(10,1,1));
+	EXPECT_NO_THROW(StationInRange(10,1,1,1));
 
 	std::ofstream file("../data/data_station.json");
 	file.close();
-	EXPECT_NO_THROW(StationInRange(10,1,1));
+	EXPECT_NO_THROW(StationInRange(10,1,1,1));
 	std::filesystem::remove("../data/data_station.json");
 
 }
@@ -94,7 +94,7 @@ TEST(StationInRange_TEST, WrongFormat) {
 	std::ofstream file("../data/data_station.json");
 	file << "{ Test invalid data";
 	file.close();
-	EXPECT_NO_THROW(StationInRange(10,1,1));
+	EXPECT_NO_THROW(StationInRange(10,1,1,1));
 
 	std::filesystem::remove("../data/data_station.json");
 

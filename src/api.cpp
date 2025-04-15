@@ -51,14 +51,13 @@ void getLocalization(std::string city, std::string street, std::string number) {
 		curl_easy_setopt(curl, CURLOPT_USERAGENT, "Mozilla/5.0");
 		
 		result = curl_easy_perform(curl); //api request with options above
-		if (result != CURLE_OK) std::cout << "Cannot download data";
+		if (result != CURLE_OK) return;
 		else {
 			
 			std::ofstream file("../data/specific_place.json");
 			if (file.is_open()) {
 				file << response;
 				file.close();
-				std::cout << "Data download";
 			}
 			
 			
@@ -76,18 +75,18 @@ void getLocalization(std::string city, std::string street, std::string number) {
  */
 int getData() {
 	
-	CURL* curl; //Dane dotyczące połączenia
-	CURLcode result; //Jaka odpowiedz serwera(w sensie błędy itp.)
-	std::string response; //Dane od serwera
+	CURL* curl; //data about connection
+	CURLcode result; //server's answer
+	std::string response; //data from server
 
 
 	curl = curl_easy_init();
 	if (curl) {   //Sprawdzamy czy nie został zwrócony nullptr
-		curl_easy_setopt(curl, CURLOPT_URL, "https://api.gios.gov.pl/pjp-api/rest/station/findAll"); //Wybieramy źródło
-		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_callback); //Wybieramy funkcję do zapisywania danych
-		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response); //Wybieramy miejsce do zapisywania danych
+		curl_easy_setopt(curl, CURLOPT_URL, "https://api.gios.gov.pl/pjp-api/rest/station/findAll"); 
+		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_callback); 
+		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response); 
 
-		result = curl_easy_perform(curl); //Zapytanie HTTP get
+		result = curl_easy_perform(curl); 
 		if (result == CURLE_OK) {
 			std::ofstream file("../data/data_station.json");
 
@@ -126,18 +125,18 @@ int getData() {
  */
 bool getDataWithResponse() {
 
-	CURL* curl; //Dane dotyczące połączenia
-	CURLcode result; //Jaka odpowiedz serwera(w sensie błędy itp.)
-	std::string response; //Dane od serwera
+	CURL* curl; 
+	CURLcode result; 
+	std::string response;
 
 
 	curl = curl_easy_init();
-	if (curl) {   //Sprawdzamy czy nie został zwrócony nullptr
-		curl_easy_setopt(curl, CURLOPT_URL, "https://api.gios.gov.pl/pjp-api/rest/station/findAll"); //Wybieramy źródło
-		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_callback); //Wybieramy funkcję do zapisywania danych
-		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response); //Wybieramy miejsce do zapisywania danych
+	if (curl) {  //curl is nullptr when the initialziation function is not succesfully
+		curl_easy_setopt(curl, CURLOPT_URL, "https://api.gios.gov.pl/pjp-api/rest/station/findAll"); //choose source
+		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_callback); //choose function to saving data
+		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response); //choose place to save data
 
-		result = curl_easy_perform(curl); //Zapytanie HTTP get
+		result = curl_easy_perform(curl); //request to HTTP with above parameters
 		if (result == CURLE_OK) {
 			std::ofstream file("../data/data_station.json");
 
@@ -175,9 +174,9 @@ void getStationData(int id) {
 	std::string url = "https://api.gios.gov.pl/pjp-api/rest/station/sensors/" + std::to_string(id);
 	curl = curl_easy_init();
 	if (curl) {
-		curl_easy_setopt(curl, CURLOPT_URL, url.c_str() ); //Wybieramy źródło
-		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_callback); //Wybieramy funkcję do zapisywania danych
-		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response); //Wybieramy miejsce do zapisywania danych
+		curl_easy_setopt(curl, CURLOPT_URL, url.c_str() ); //choose source URL
+		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_callback); //choose function to save data
+		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response); //chooze localization of saving data
 	}
 	result = curl_easy_perform(curl);
 	if (result == CURLE_OK) {
@@ -205,13 +204,13 @@ void getStationData(int id) {
  */
 void getSensorData(int id) {
 	
-	CURL* curl;
-	CURLcode result;
+	CURL* curl; //Includes information about connection
+	CURLcode result; //include the result of request
 	std::string response;
 	std::string url = "https://api.gios.gov.pl/pjp-api/rest/data/getData/" + std::to_string(id);
 	curl = curl_easy_init();
 	if (curl) {
-		curl_easy_setopt(curl, CURLOPT_URL, url.c_str()); //Wybieramy źródło
+		curl_easy_setopt(curl, CURLOPT_URL, url.c_str()); 
 		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_callback); //Wybieramy funkcję do zapisywania danych
 		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response); //Wybieramy miejsce do zapisywania danych
 	}

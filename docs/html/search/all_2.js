@@ -56,7 +56,7 @@ var searchData=
   ['basic_5fstring_5fview_3c_20char_20_3e_53',['basic_string_view&lt; char &gt;',['../classbasic__string__view.html',1,'']]],
   ['basic_5fstring_5fview_3c_20char_5ftype_20_3e_54',['basic_string_view&lt; char_type &gt;',['../classbasic__string__view.html',1,'']]],
   ['basic_5fstring_5fview_3c_20wchar_5ft_20_3e_55',['basic_string_view&lt; wchar_t &gt;',['../classbasic__string__view.html',1,'']]],
-  ['be_20defined_3a_56',['The following macros can be defined:',['../C:/Users/Admin/Programming/Projekt/JPOPRO/vcpkg_installed/x64-windows/include/gtest/internal/custom/README.md#autotoc_md7',1,'']]],
+  ['be_20defined_3a_56',['The following macros can be defined:',['../C:/Users/xroja/Desktop/Zaliczenie/JPOPRO/vcpkg_installed/x64-windows/include/gtest/internal/custom/README.md#autotoc_md7',1,'']]],
   ['begin_57',['begin',['../classbasic__format__parse__context.html#afb21ddaa0d32b5430f99eed530666ea9',1,'basic_format_parse_context::begin()'],['../classdetail_1_1iteration__proxy.html#a8d35bb0cd56024e1ab1c7277de32e2ab',1,'detail::iteration_proxy::begin()'],['../classbasic__json.html#a5251a08382864af52c854fca1bdba61c',1,'basic_json::begin() noexcept'],['../classbasic__json.html#aac84462424ea7a14f9abb4ddb8e6dd7f',1,'basic_json::begin() const noexcept']]],
   ['begin_5farray_58',['begin_array',['../classdetail_1_1lexer__base.html#add65fa7a85aa15052963809fbcc04540a16c226b4425b68560fea322b46dabe01',1,'detail::lexer_base']]],
   ['begin_5fobject_59',['begin_object',['../classdetail_1_1lexer__base.html#add65fa7a85aa15052963809fbcc04540a9a9ffd53b6869d4eca271b1ed5b57fe8',1,'detail::lexer_base']]],

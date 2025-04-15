@@ -26,7 +26,7 @@ var searchData=
   ['escape_23',['escape',['../namespacedetail.html#af2a9ce4740e0b45d33129e2c8e53a0a8',1,'detail']]],
   ['exception_24',['exception',['../classdetail_1_1exception.html',1,'detail']]],
   ['excessivearg_25',['ExcessiveArg',['../structtesting_1_1internal_1_1_excessive_arg.html',1,'testing::internal']]],
-  ['exporting_20api_20symbols_3a_26',['Exporting API symbols:',['../C:/Users/Admin/Programming/Projekt/JPOPRO/vcpkg_installed/x64-windows/include/gtest/internal/custom/README.md#autotoc_md12',1,'']]],
+  ['exporting_20api_20symbols_3a_26',['Exporting API symbols:',['../C:/Users/xroja/Desktop/Zaliczenie/JPOPRO/vcpkg_installed/x64-windows/include/gtest/internal/custom/README.md#autotoc_md12',1,'']]],
   ['extend_27',['Extend',['../structdetail_1_1utility__internal_1_1_extend.html',1,'detail::utility_internal']]],
   ['extend_3c_20integer_5fsequence_3c_20t_2c_20ints_2e_2e_2e_20_3e_2c_20seqsize_2c_200_20_3e_28',['Extend&lt; integer_sequence&lt; T, Ints... &gt;, SeqSize, 0 &gt;',['../structdetail_1_1utility__internal_1_1_extend_3_01integer__sequence_3_01_t_00_01_ints_8_8_8_01_4_00_01_seq_size_00_010_01_4.html',1,'detail::utility_internal']]],
   ['extend_3c_20integer_5fsequence_3c_20t_2c_20ints_2e_2e_2e_20_3e_2c_20seqsize_2c_201_20_3e_29',['Extend&lt; integer_sequence&lt; T, Ints... &gt;, SeqSize, 1 &gt;',['../structdetail_1_1utility__internal_1_1_extend_3_01integer__sequence_3_01_t_00_01_ints_8_8_8_01_4_00_01_seq_size_00_011_01_4.html',1,'detail::utility_internal']]],

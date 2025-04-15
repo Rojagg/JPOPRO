@@ -17,7 +17,7 @@ var searchData=
   ['reference_14',['reference',['../group__context.html',1,'Context reference'],['../group__init.html',1,'Initialization, version and error reference'],['../group__input.html',1,'Input reference'],['../group__monitor.html',1,'Monitor reference'],['../classdetail_1_1iter__impl.html#ac0cfb3a9727e77580cb1beada093ee81',1,'detail::iter_impl::reference'],['../classdetail_1_1json__reverse__iterator.html#a81a4d0a61246d4ece37fd14eacfadda0',1,'detail::json_reverse_iterator::reference'],['../classbasic__json.html#a6ca7bfb35987ce7cb8d27447cda5b80a',1,'basic_json::reference'],['../group__vulkan.html',1,'Vulkan support reference'],['../group__window.html',1,'Window reference']]],
   ['refreshrate_15',['refreshRate',['../struct_g_l_f_wvidmode.html#a791bdd6c7697b09f7e9c97054bf05649',1,'GLFWvidmode']]],
   ['registry_16',['Registry',['../classreg_1_1_registry.html',1,'reg']]],
-  ['related_20macros_3a_17',['Flag related macros:',['../C:/Users/Admin/Programming/Projekt/JPOPRO/vcpkg_installed/x64-windows/include/gmock/internal/custom/README.md#autotoc_md4',1,'']]],
+  ['related_20macros_3a_17',['Flag related macros:',['../C:/Users/xroja/Desktop/Zaliczenie/JPOPRO/vcpkg_installed/x64-windows/include/gmock/internal/custom/README.md#autotoc_md4',1,'']]],
   ['relationtosourcecopy_18',['RelationToSourceCopy',['../structtesting_1_1internal_1_1_relation_to_source_copy.html',1,'testing::internal']]],
   ['relationtosourcereference_19',['RelationToSourceReference',['../structtesting_1_1internal_1_1_relation_to_source_reference.html',1,'testing::internal']]],
   ['removeconstfromkey_20',['RemoveConstFromKey',['../structtesting_1_1internal_1_1_remove_const_from_key.html',1,'testing::internal']]],

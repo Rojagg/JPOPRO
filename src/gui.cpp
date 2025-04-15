@@ -28,7 +28,7 @@ void Gui::Init(GLFWwindow* window, const char* glsl_version)
 void Gui::Update()
 {
 
-	//Lista Stacji
+	//List of Stations
 	ImGui::SetNextWindowSize(ImVec2(430, 430));
 	ImGui::SetNextWindowPos(ImVec2(50, 50));
 	ImGui::Begin("Lista Stacji");
@@ -37,7 +37,7 @@ void Gui::Update()
 
 	ImGui::End();
 
-	//Wyszukiwanie
+	//Searching by localization (not detailed)
 	ImGui::SetNextWindowSize(ImVec2(430, 120));
 	ImGui::SetNextWindowPos(ImVec2(50, 500));
 	ImGui::Begin("Wyszukiwanie");
@@ -57,7 +57,7 @@ void Gui::Update()
 			bool find = findCity(text2, x, y);
 			StationInRange(input, x, y, find);
 			});
-		thread1.detach();
+		thread1.detach(); //the threads works independently (in bg), the main thread not waiting for this thread
 	}
 
 	ImGui::End();
@@ -68,6 +68,9 @@ void Gui::Update()
 	DisplayStationsInRange();
 	ImGui::End();
 
+
+
+	//Searching by localizatoin (detailed)
 	ImGui::SetNextWindowSize(ImVec2(430, 150));
 	ImGui::SetNextWindowPos(ImVec2(500, 50));
 	ImGui::Begin("Wyszukiwanie po dokładnej lokalizacji");
@@ -106,7 +109,7 @@ void Gui::Update()
 	ImGui::End();
 
 	
-
+	//Choose the measure parameter
 	ImGui::SetNextWindowSize(ImVec2(375, 250));
 	ImGui::SetNextWindowPos(ImVec2(990, 50));
 	ImGui::Begin("Wybór parametru");
@@ -116,7 +119,7 @@ void Gui::Update()
 	ImGui::SetNextWindowSize(ImVec2(375, 125));
 	ImGui::SetNextWindowPos(ImVec2(1395, 50));
 
-
+	//Choose the time range
 	ImGui::Begin("Wybór akcji");
 	displayDay();
 	ImGui::End();
@@ -126,14 +129,15 @@ void Gui::Update()
 	prepareThread.join();
 	
 
-
+	//Display analysis of data
 	ImGui::SetNextWindowSize(ImVec2(700, 185));
 	ImGui::SetNextWindowPos(ImVec2(1025, 650));
 	ImGui::Begin("Analiza");
 		Analysis();
 		ImGui::End();
 
-
+	
+	//Status of connection with server 
 	ImGui::SetNextWindowSize(ImVec2(330, 80));
 	ImGui::SetNextWindowPos(ImVec2(1240, 845));
 	ImGui::Begin("Odswiez dane");

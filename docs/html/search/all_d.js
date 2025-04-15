@@ -2,8 +2,8 @@ var searchData=
 [
   ['m_5fit_0',['m_it',['../classdetail_1_1iter__impl.html#a79b7b8c6b778d9f7e76b086b45d9ea2e',1,'detail::iter_impl']]],
   ['m_5fvalue_1',['m_value',['../classbasic__json.html#acd0f167153f047a246b51858d7c921b8',1,'basic_json']]],
-  ['macros_20can_20be_20defined_3a_2',['The following macros can be defined:',['../C:/Users/Admin/Programming/Projekt/JPOPRO/vcpkg_installed/x64-windows/include/gtest/internal/custom/README.md#autotoc_md7',1,'']]],
-  ['macros_3a_3',['Flag related macros:',['../C:/Users/Admin/Programming/Projekt/JPOPRO/vcpkg_installed/x64-windows/include/gmock/internal/custom/README.md#autotoc_md4',1,'']]],
+  ['macros_20can_20be_20defined_3a_2',['The following macros can be defined:',['../C:/Users/xroja/Desktop/Zaliczenie/JPOPRO/vcpkg_installed/x64-windows/include/gtest/internal/custom/README.md#autotoc_md7',1,'']]],
+  ['macros_3a_3',['Flag related macros:',['../C:/Users/xroja/Desktop/Zaliczenie/JPOPRO/vcpkg_installed/x64-windows/include/gmock/internal/custom/README.md#autotoc_md4',1,'']]],
   ['main_4',['main',['../main_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4',1,'main.cpp']]],
   ['main_2ecpp_5',['main.cpp',['../main_8cpp.html',1,'']]],
   ['make_5finteger_5fsequence_6',['make_integer_sequence',['../structdetail_1_1make__integer__sequence.html',1,'detail']]],
